@@ -9,21 +9,35 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- CUSTOM CSS ---
+# --- CUSTOM CSS (The "Executive Standard" Look) ---
 st.markdown("""
     <style>
-    .stApp { background-color: #D8DCE3; }
-    #MainMenu, footer, header { visibility: hidden; }
-    div[data-testid="stMetric"] {
-        background-color: #F0F2F6;
-        padding: 15px;
-        border-radius: 10px;
-        border: 1px solid #C4C9D0;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    /* Main Background - Ghost White (Clean, Modern, Professional) */
+    .stApp {
+        background-color: #F9FAFB;
     }
-    h1 { color: #2C3E50; font-family: 'Arial', sans-serif; letter-spacing: 1px; }
-    h2, h3 { color: #34495E; }
-    p, li { color: #445566; }
+    
+    /* Hide default menu elements */
+    #MainMenu, footer, header {visibility: hidden;}
+    
+    /* Styling the metrics/cards - Pure White with subtle shadow */
+    div[data-testid="stMetric"] {
+        background-color: #FFFFFF;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid #E5E7EB; /* Subtle light border */
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    
+    /* Typography - Deep Charcoal for readability */
+    h1 { color: #111827; font-family: 'Arial', sans-serif; letter-spacing: -0.5px; }
+    h2, h3 { color: #374151; }
+    p, li { color: #4B5563; }
+    
+    /* Form inputs background */
+    .stTextInput input {
+        background-color: #FFFFFF;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -55,7 +69,7 @@ aave_p, aave_d = get_price("AAVE-USD")
 mkr_p, mkr_d = get_price("MKR-USD")
 crv_p, crv_d = get_price("CRV-USD")
 
-# Metrics - Shorter lines to prevent errors
+# Metrics
 with col1:
     st.metric(label="Uniswap (UNI)", value=f"${uni_p:.2f}", delta=f"{uni_d:.2f}")
 with col2:
@@ -96,12 +110,4 @@ with c_left:
     st.markdown("### Join the Liquidity Pool")
     with st.form("defi_form"):
         email = st.text_input("Email / ENS Domain")
-        interest = st.multiselect("Interests", ["Staking", "Lending", "Flash Loans"])
-        submitted = st.form_submit_button("Connect Wallet (Simulation)")
-        if submitted:
-            st.success("Details captured. We will air-drop our whitepaper to your inbox.")
-            
-with c_right:
-    st.image("https://cryptologos.cc/logos/ethereum-eth-logo.png?v=026", width=80)
-    st.write("**Built on Ethereum.**")
-    st.caption("Audited by DeFi Labs Security.")
+        interest = st.multiselect("Interests", ["Staking
