@@ -6,46 +6,36 @@ st.set_page_config(
     page_title="Baez DeFi Protocol",
     page_icon="💸",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed" # Sidebar is now hidden by default
 )
 
-# --- CUSTOM CSS (Clean Financial Look) ---
+# --- CUSTOM CSS (The "Soft Platinum" Look) ---
 st.markdown("""
     <style>
+    /* Main Background - Muted Blue-Grey (Easy on the eyes) */
     .stApp {
-        background-color: #F8F9FA; /* Very light grey/white */
+        background-color: #CFD8DC;
     }
+    
+    /* Hide default menu elements */
     #MainMenu, footer, header {visibility: hidden;}
     
-    /* Styling the metrics to look like bank dashboard cards */
+    /* Styling the metrics/cards with a softer off-white */
     div[data-testid="stMetric"] {
-        background-color: #FFFFFF;
+        background-color: #ECEFF1; /* Soft Grey-White */
         padding: 15px;
         border-radius: 10px;
+        border: 1px solid #B0BEC5; /* Subtle border definition */
         box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     
-    h1 { color: #004085; font-family: 'Arial', sans-serif; }
-    h3 { color: #004085; }
+    /* Text Colors - Navy Slate (High contrast but not harsh black) */
+    h1 { color: #263238; font-family: 'Arial', sans-serif; }
+    h2, h3, h4 { color: #37474F; }
+    p, li { color: #455A64; }
+    
     </style>
     """, unsafe_allow_html=True)
-
-# --- SIDEBAR: YIELD CALCULATOR ---
-with st.sidebar:
-    st.header("🧮 Yield Estimator")
-    st.write("Simulate your potential staking returns.")
-    
-    deposit = st.number_input("Initial Deposit ($)", value=10000)
-    apy = st.slider("Estimated APY (%)", min_value=1.0, max_value=50.0, value=8.5)
-    duration = st.slider("Lock-up Period (Months)", 1, 36, 12)
-    
-    # Simple compound interest formula
-    final_amount = deposit * ((1 + (apy/100))**(duration/12))
-    profit = final_amount - deposit
-    
-    st.divider()
-    st.metric(label="Projected Value", value=f"${final_amount:,.2f}", delta=f"+${profit:,.2f}")
-    st.info("Note: Projections exclude gas fees and market volatility.")
 
 # --- MAIN HERO SECTION ---
 st.title("BAEZ DEFI LABS")
