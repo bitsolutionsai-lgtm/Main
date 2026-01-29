@@ -2,138 +2,161 @@ import streamlit as st
 import pandas as pd
 import yfinance as yf
 
-# --- PAGE SETUP ---
+# --- PAGE CONFIGURATION ---
 st.set_page_config(
-    page_title="Prime Protocol",
-    page_icon="🏦",
+    page_title="DeFi Labs",
+    page_icon="🔹",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# --- PROFESSIONAL STYLING ---
+# --- CUSTOM CSS (The Charcoal Terminal Look) ---
 st.markdown("""
     <style>
-    /* App Background */
-    .stApp { background-color: #F4F6F9; }
+    /* Main Background - Dark Charcoal */
+    .stApp {
+        background-color: #212529;
+    }
     
-    /* Remove default header/footer */
-    #MainMenu, footer, header { visibility: hidden; }
+    /* Hide default menu */
+    #MainMenu, footer, header {visibility: hidden;}
     
-    /* Tabs Styling - Making them look like buttons */
+    /* TEXT COLORS - Make everything light grey/white */
+    h1, h2, h3, h4, h5, p, span, div {
+        color: #E9ECEF !important;
+    }
+    
+    /* CARDS / METRICS - Slightly lighter charcoal to pop */
+    div[data-testid="stMetric"] {
+        background-color: #2C3035;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid #343A40;
+    }
+    /* Metric Value Color (The numbers) */
+    div[data-testid="stMetricValue"] {
+        color: #FFFFFF !important;
+    }
+    
+    /* TABS - Customizing the tab bar */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 20px;
+        gap: 10px;
+        background-color: transparent;
     }
     .stTabs [data-baseweb="tab"] {
-        height: 50px;
-        background-color: #FFFFFF;
+        background-color: #2C3035;
         border-radius: 5px;
-        padding-left: 20px;
-        padding-right: 20px;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        color: #ADB5BD;
+        border: 1px solid #343A40;
     }
     .stTabs [aria-selected="true"] {
-        background-color: #0d47a1; /* Bank Blue */
-        color: #FFFFFF;
+        background-color: #0d6efd; /* Electric Blue Highlight */
+        color: #FFFFFF !important;
+        border-color: #0d6efd;
     }
     
-    /* Card Styling */
-    div[data-testid="stMetric"] {
-        background-color: #FFFFFF;
+    /* DATAFRAME / TABLE styling */
+    div[data-testid="stDataFrame"] {
+        background-color: #2C3035;
         padding: 10px;
         border-radius: 8px;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
     </style>
     """, unsafe_allow_html=True)
 
-# --- HEADER ROW ---
-col_logo, col_wallet = st.columns([3, 1])
-with col_logo:
-    st.title("PRIME PROTOCOL")
-    st.caption("Decentralized Lending & Liquidity Market")
+# --- HEADER ---
+col_head, col_btn = st.columns([3, 1])
+with col_head:
+    st.title("DEFI LABS")
+    st.caption("Institutional Liquidity Protocol")
 
-with col_wallet:
-    st.write("") # Spacer
-    st.write("") # Spacer
-    # A simulated wallet button
+with col_btn:
+    st.write("")
+    st.write("")
     st.button("⚡ Connect Wallet")
 
 st.markdown("---")
 
-# --- MAIN TABS (This is the new layout) ---
-tab_market, tab_stake, tab_borrow = st.tabs(["📊 Markets", "🔒 Staking", "💸 Borrow"])
+# --- TABS NAVIGATION ---
+tab1, tab2, tab3 = st.tabs(["📊 Markets", "💎 Staking Vault", "🔄 Swap"])
 
-# --- TAB 1: MARKETS (Live Data) ---
-with tab_market:
-    st.subheader("Asset Overview")
+# --- TAB 1: MARKET DATA ---
+with tab1:
+    st.subheader("Live Market Data")
     
     # Helper for prices
     def get_price(t):
         try:
             d = yf.Ticker(t).history(period="1d")
             if not d.empty:
-                return d["Close"].iloc[-1], d["Close"].iloc[-1]-d["Open"].iloc[-1]
+                c = d["Close"].iloc[-1]
+                o = d["Open"].iloc[-1]
+                return c, c-o
             return 0.0, 0.0
         except:
             return 0.0, 0.0
 
-    # Data Fetch
-    btc_p, btc_d = get_price("BTC-USD")
-    eth_p, eth_d = get_price("ETH-USD")
-    sol_p, sol_d = get_price("SOL-USD")
-    aave_p, aave_d = get_price("AAVE-USD")
+    # Fetch Data
+    b_p, b_d = get_price("BTC-USD")
+    e_p, e_d = get_price("ETH-USD")
+    s_p, s_d = get_price("SOL-USD")
+    l_p, l_d = get_price("LINK-USD")
 
-    # Metrics Row
-    m1, m2, m3, m4 = st.columns(4)
-    m1.metric("Bitcoin", f"${btc_p:,.0f}", f"{btc_d:.2f}")
-    m2.metric("Ethereum", f"${eth_p:,.0f}", f"{eth_d:.2f}")
-    m3.metric("Solana", f"${sol_p:.2f}", f"{sol_d:.2f}")
-    m4.metric("Aave", f"${aave_p:.2f}", f"{aave_d:.2f}")
+    # Metrics
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("Bitcoin", f"${b_p:,.0f}", f"{b_d:.2f}")
+    c2.metric("Ethereum", f"${e_p:,.0f}", f"{e_d:.2f}")
+    c3.metric("Solana", f"${s_p:.2f}", f"{s_d:.2f}")
+    c4.metric("Chainlink", f"${l_p:.2f}", f"{l_d:.2f}")
 
-    # A "Fake" Market Table to look like a pro dashboard
-    st.write("### Total Value Locked (TVL)")
-    market_data = pd.DataFrame({
-        'Asset': ['USDC', 'ETH', 'WBTC', 'DAI'],
-        'Total Supplied': ['$450M', '$210M', '$180M', '$95M'],
-        'Supply APY': ['4.5%', '3.2%', '1.8%', '5.1%'],
-        'Total Borrowed': ['$320M', '$150M', '$60M', '$70M'],
-        'Borrow APY': ['6.1%', '4.5%', '2.5%', '7.2%']
+    st.write("### Top Liquidity Pools")
+    # Clean table data
+    df = pd.DataFrame({
+        'Pool Name': ['USDC-ETH', 'WBTC-DAI', 'SOL-USDC', 'LINK-ETH'],
+        'TVL (Millions)': ['$450M', '$210M', '$180M', '$95M'],
+        '24h Volume': ['$32M', '$15M', '$45M', '$8M'],
+        'APY': ['12.5%', '8.2%', '18.4%', '15.1%']
     })
-    st.dataframe(market_data, use_container_width=True)
+    st.dataframe(df, use_container_width=True, hide_index=True)
 
-# --- TAB 2: STAKING (Interactive) ---
-with tab_stake:
-    st.subheader("Earn Yield")
+# --- TAB 2: STAKING VAULT ---
+with tab2:
+    st.subheader("Yield Generation")
     
-    c1, c2 = st.columns([1, 2])
+    col_stake_left, col_stake_right = st.columns([1, 2])
     
-    with c1:
-        st.info("Choose a Pool to Stake")
-        pool = st.selectbox("Select Asset", ["Prime ETH (4.5%)", "Stable USDC (8.2%)"])
-        amount = st.number_input("Amount to Stake", value=10.0)
-        st.button("Approve & Stake")
-        
-    with c2:
-        st.success(f"**Projected Monthly Earnings:** ${(amount * 0.045 / 12) * 1000:,.2f} USD")
-        st.write("Your funds are audited and secured by Prime Protocol smart contracts.")
-        st.progress(65, text="Pool Capacity")
+    # Safe list for selectbox
+    pool_options = ["USDC Vault (8.5%)", "ETH Staking (4.2%)", "SOL Validator (7.1%)"]
+    
+    with col_stake_left:
+        with st.container():
+            st.info("Select a Vault Strategy")
+            pool = st.selectbox("Strategy", pool_options)
+            amt = st.number_input("Amount", value=1000)
+            st.button("Deposit Funds")
+            
+    with col_stake_right:
+        # Simple Math for display
+        daily = (amt * 0.085) / 365
+        monthly = daily * 30
+        st.success(f"**Estimated Monthly Yield:** ${monthly:.2f}")
+        st.write("Funds are secured by Multi-Sig Treasury.")
+        st.progress(75, text="Vault Fill Rate")
 
-# --- TAB 3: BORROW (Lending Interface) ---
-with tab_borrow:
-    st.subheader("Instant Liquidity")
-    st.write("Collateralize your assets to borrow stablecoins.")
+# --- TAB 3: SWAP INTERFACE ---
+with tab3:
+    st.subheader("Token Swap")
     
-    b1, b2 = st.columns(2)
+    c_swap_1, c_swap_2 = st.columns(2)
     
-    with b1:
-        st.markdown("#### 1. Deposit Collateral")
-        st.selectbox("Collateral Asset", ["ETH", "WBTC", "SOL"])
-        st.text_input("Deposit Amount", "0.00")
+    assets = ["ETH", "USDC", "DAI", "WBTC"]
     
-    with b2:
-        st.markdown("#### 2. Borrow Funds")
-        st.selectbox("Borrow Asset", ["USDC", "USDT", "DAI"])
-        st.text_input("Borrow Amount", "0.00")
+    with c_swap_1:
+        st.selectbox("From", assets, key="s1")
+        st.text_input("Amount In", "1.0")
         
-    st.warning("Liquidation Threshold: 82.5%")
-    st.button("Execute Borrow Transaction")
+    with c_swap_2:
+        st.selectbox("To", assets, index=1, key="s2")
+        st.text_input("Amount Out (Est.)", "2850.45")
+        
+    st.button("Execute Swap")
