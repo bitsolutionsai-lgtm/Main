@@ -3,42 +3,42 @@ import yfinance as yf
 
 # --- PAGE CONFIGURATION ---
 st.set_page_config(
-    page_title="Baez DeFi Protocol",
-    page_icon="💸",
+    page_title="DeFi Labs",
+    page_icon="🔹",
     layout="wide",
-    initial_sidebar_state="collapsed" # Sidebar is now hidden by default
+    initial_sidebar_state="collapsed"
 )
 
-# --- CUSTOM CSS (The "Soft Platinum" Look) ---
+# --- CUSTOM CSS (The "Slate-Blue" Look) ---
 st.markdown("""
     <style>
-    /* Main Background - Muted Blue-Grey (Easy on the eyes) */
+    /* Main Background - Cool Gray-Blue (Professional & Easy on eyes) */
     .stApp {
-        background-color: #CFD8DC;
+        background-color: #D8DCE3;
     }
     
     /* Hide default menu elements */
     #MainMenu, footer, header {visibility: hidden;}
     
-    /* Styling the metrics/cards with a softer off-white */
+    /* Styling the metrics/cards */
     div[data-testid="stMetric"] {
-        background-color: #ECEFF1; /* Soft Grey-White */
+        background-color: #F0F2F6; /* Very light cool grey */
         padding: 15px;
         border-radius: 10px;
-        border: 1px solid #B0BEC5; /* Subtle border definition */
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        border: 1px solid #C4C9D0;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     }
     
-    /* Text Colors - Navy Slate (High contrast but not harsh black) */
-    h1 { color: #263238; font-family: 'Arial', sans-serif; }
-    h2, h3, h4 { color: #37474F; }
-    p, li { color: #455A64; }
+    /* Typography */
+    h1 { color: #2C3E50; font-family: 'Arial', sans-serif; letter-spacing: 1px; }
+    h2, h3 { color: #34495E; }
+    p, li { color: #445566; }
     
     </style>
     """, unsafe_allow_html=True)
 
-# --- MAIN HERO SECTION ---
-st.title("BAEZ DEFI LABS")
+# --- HERO SECTION ---
+st.title("DEFI LABS")
 st.markdown("### *Institutional-Grade Decentralized Finance Strategies*")
 st.write("We architect high-yield liquidity pools and automated market making strategies for the next generation of finance.")
 st.markdown("---")
@@ -58,10 +58,10 @@ def get_price(ticker):
         return 0.0, 0.0
 
 # Fetching specific DeFi tokens
-uni_price, uni_delta = get_price("UNI-USD")   # Uniswap (Trading)
-aave_price, aave_delta = get_price("AAVE-USD") # Aave (Lending)
-mkr_price, mkr_delta = get_price("MKR-USD")   # MakerDAO (Stablecoins)
-crv_price, crv_delta = get_price("CRV-USD")   # Curve (Stable Swaps)
+uni_price, uni_delta = get_price("UNI-USD")   # Uniswap
+aave_price, aave_delta = get_price("AAVE-USD") # Aave
+mkr_price, mkr_delta = get_price("MKR-USD")   # MakerDAO
+crv_price, crv_delta = get_price("CRV-USD")   # Curve
 
 with col1:
     st.metric(label="Uniswap (UNI)", value=f"${uni_price:.2f}", delta=f"{uni_delta:.2f}")
@@ -74,7 +74,7 @@ with col4:
 
 st.markdown("---")
 
-# --- SERVICES: THE "DEFI STACK" ---
+# --- SERVICES SECTION ---
 st.header("Protocol Services")
 
 col_left, col_mid, col_right = st.columns(3)
@@ -108,6 +108,4 @@ with col1:
             st.success("Details captured. We will air-drop our whitepaper to your inbox.")
             
 with col2:
-    st.image("https://cryptologos.cc/logos/ethereum-eth-logo.png?v=026", width=100)
-    st.write("**Built on Ethereum.**")
-    st.caption("Audited by Baez Security.")
+    st.image("
