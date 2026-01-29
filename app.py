@@ -12,7 +12,7 @@ st.set_page_config(
 # --- CUSTOM CSS (The "Slate-Blue" Look) ---
 st.markdown("""
     <style>
-    /* Main Background - Cool Gray-Blue (Professional & Easy on eyes) */
+    /* Main Background - Cool Gray-Blue */
     .stApp {
         background-color: #D8DCE3;
     }
@@ -22,7 +22,7 @@ st.markdown("""
     
     /* Styling the metrics/cards */
     div[data-testid="stMetric"] {
-        background-color: #F0F2F6; /* Very light cool grey */
+        background-color: #F0F2F6;
         padding: 15px;
         border-radius: 10px;
         border: 1px solid #C4C9D0;
@@ -66,46 +66,4 @@ crv_price, crv_delta = get_price("CRV-USD")   # Curve
 with col1:
     st.metric(label="Uniswap (UNI)", value=f"${uni_price:.2f}", delta=f"{uni_delta:.2f}")
 with col2:
-    st.metric(label="Aave (AAVE)", value=f"${aave_price:.2f}", delta=f"{aave_delta:.2f}")
-with col3:
-    st.metric(label="Maker (MKR)", value=f"${mkr_price:,.2f}", delta=f"{mkr_delta:.2f}")
-with col4:
-    st.metric(label="Curve (CRV)", value=f"${crv_price:.3f}", delta=f"{crv_delta:.3f}")
-
-st.markdown("---")
-
-# --- SERVICES SECTION ---
-st.header("Protocol Services")
-
-col_left, col_mid, col_right = st.columns(3)
-
-with col_left:
-    st.subheader("🌾 Yield Farming")
-    st.info("**Strategy Optimization**")
-    st.write("We design automated strategies to maximize APY across multiple lending protocols while hedging against impermanent loss.")
-
-with col_mid:
-    st.subheader("💧 Liquidity Mining")
-    st.info("**Market Making**")
-    st.write("Provide deep liquidity to DEXs (Decentralized Exchanges). We manage the pools to ensure capital efficiency and token stability.")
-
-with col_right:
-    st.subheader("🏛️ DAO Governance")
-    st.info("**Voting & Proposals**")
-    st.write("Technical implementation of on-chain voting systems. We help you transition your project into a fully decentralized autonomous organization.")
-
-st.markdown("---")
-
-# --- CONTACT ---
-col1, col2 = st.columns([2,1])
-with col1:
-    st.markdown("### Join the Liquidity Pool")
-    with st.form("defi_form"):
-        email = st.text_input("Email / ENS Domain")
-        interest = st.multiselect("Interests", ["Staking", "Lending", "Flash Loans", "Tokenomics"])
-        submitted = st.form_submit_button("Connect Wallet (Simulation)")
-        if submitted:
-            st.success("Details captured. We will air-drop our whitepaper to your inbox.")
-            
-with col2:
-    st.image("
+    st.metric(label="Aave (AAVE)", value=f"${aave_price:.
