@@ -1,113 +1,139 @@
 import streamlit as st
+import pandas as pd
 import yfinance as yf
 
-# --- PAGE CONFIGURATION ---
+# --- PAGE SETUP ---
 st.set_page_config(
-    page_title="DeFi Labs",
-    page_icon="🔹",
+    page_title="Prime Protocol",
+    page_icon="🏦",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# --- CUSTOM CSS (Executive Standard) ---
+# --- PROFESSIONAL STYLING ---
 st.markdown("""
     <style>
-    .stApp { background-color: #F9FAFB; }
+    /* App Background */
+    .stApp { background-color: #F4F6F9; }
+    
+    /* Remove default header/footer */
     #MainMenu, footer, header { visibility: hidden; }
+    
+    /* Tabs Styling - Making them look like buttons */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 20px;
+    }
+    .stTabs [data-baseweb="tab"] {
+        height: 50px;
+        background-color: #FFFFFF;
+        border-radius: 5px;
+        padding-left: 20px;
+        padding-right: 20px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    .stTabs [aria-selected="true"] {
+        background-color: #0d47a1; /* Bank Blue */
+        color: #FFFFFF;
+    }
+    
+    /* Card Styling */
     div[data-testid="stMetric"] {
         background-color: #FFFFFF;
-        padding: 15px;
+        padding: 10px;
         border-radius: 8px;
-        border: 1px solid #E5E7EB;
         box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
-    h1 { color: #111827; font-family: 'Arial', sans-serif; }
-    h2, h3 { color: #374151; }
-    p, li { color: #4B5563; }
     </style>
     """, unsafe_allow_html=True)
 
-# --- HERO SECTION ---
-st.title("DEFI LABS")
-st.markdown("### *Institutional-Grade Decentralized Finance Strategies*")
-st.write("We architect high-yield liquidity pools and automated market making strategies.")
-st.markdown("---")
+# --- HEADER ROW ---
+col_logo, col_wallet = st.columns([3, 1])
+with col_logo:
+    st.title("PRIME PROTOCOL")
+    st.caption("Decentralized Lending & Liquidity Market")
 
-# --- DEFI MARKET WATCH ---
-st.subheader("🔵 DeFi Blue Chips")
-
-col1, col2, col3, col4 = st.columns(4)
-
-def get_price(ticker):
-    try:
-        data = yf.Ticker(ticker).history(period="1d")
-        if not data.empty:
-            c = data["Close"].iloc[-1]
-            o = data["Open"].iloc[-1]
-            return c, c - o
-        return 0.0, 0.0
-    except:
-        return 0.0, 0.0
-
-# Fetch Data
-uni_p, uni_d = get_price("UNI-USD")
-aave_p, aave_d = get_price("AAVE-USD")
-mkr_p, mkr_d = get_price("MKR-USD")
-crv_p, crv_d = get_price("CRV-USD")
-
-# Metrics
-with col1:
-    st.metric(label="Uniswap", value=f"${uni_p:.2f}", delta=f"{uni_d:.2f}")
-with col2:
-    st.metric(label="Aave", value=f"${aave_p:.2f}", delta=f"{aave_d:.2f}")
-with col3:
-    st.metric(label="Maker", value=f"${mkr_p:,.2f}", delta=f"{mkr_d:.2f}")
-with col4:
-    st.metric(label="Curve", value=f"${crv_p:.3f}", delta=f"{crv_d:.3f}")
+with col_wallet:
+    st.write("") # Spacer
+    st.write("") # Spacer
+    # A simulated wallet button
+    st.button("⚡ Connect Wallet")
 
 st.markdown("---")
 
-# --- SERVICES SECTION ---
-st.header("Protocol Services")
+# --- MAIN TABS (This is the new layout) ---
+tab_market, tab_stake, tab_borrow = st.tabs(["📊 Markets", "🔒 Staking", "💸 Borrow"])
 
-c1, c2, c3 = st.columns(3)
+# --- TAB 1: MARKETS (Live Data) ---
+with tab_market:
+    st.subheader("Asset Overview")
+    
+    # Helper for prices
+    def get_price(t):
+        try:
+            d = yf.Ticker(t).history(period="1d")
+            if not d.empty:
+                return d["Close"].iloc[-1], d["Close"].iloc[-1]-d["Open"].iloc[-1]
+            return 0.0, 0.0
+        except:
+            return 0.0, 0.0
 
-with c1:
-    st.subheader("🌾 Yield Farming")
-    st.info("**Strategy Optimization**")
-    st.write("Automated strategies to maximize APY across lending protocols.")
+    # Data Fetch
+    btc_p, btc_d = get_price("BTC-USD")
+    eth_p, eth_d = get_price("ETH-USD")
+    sol_p, sol_d = get_price("SOL-USD")
+    aave_p, aave_d = get_price("AAVE-USD")
 
-with c2:
-    st.subheader("💧 Liquidity Mining")
-    st.info("**Market Making**")
-    st.write("Provide deep liquidity to DEXs to ensure capital efficiency.")
+    # Metrics Row
+    m1, m2, m3, m4 = st.columns(4)
+    m1.metric("Bitcoin", f"${btc_p:,.0f}", f"{btc_d:.2f}")
+    m2.metric("Ethereum", f"${eth_p:,.0f}", f"{eth_d:.2f}")
+    m3.metric("Solana", f"${sol_p:.2f}", f"{sol_d:.2f}")
+    m4.metric("Aave", f"${aave_p:.2f}", f"{aave_d:.2f}")
 
-with c3:
-    st.subheader("🏛️ DAO Governance")
-    st.info("**Voting & Proposals**")
-    st.write("Technical implementation of on-chain voting systems.")
+    # A "Fake" Market Table to look like a pro dashboard
+    st.write("### Total Value Locked (TVL)")
+    market_data = pd.DataFrame({
+        'Asset': ['USDC', 'ETH', 'WBTC', 'DAI'],
+        'Total Supplied': ['$450M', '$210M', '$180M', '$95M'],
+        'Supply APY': ['4.5%', '3.2%', '1.8%', '5.1%'],
+        'Total Borrowed': ['$320M', '$150M', '$60M', '$70M'],
+        'Borrow APY': ['6.1%', '4.5%', '2.5%', '7.2%']
+    })
+    st.dataframe(market_data, use_container_width=True)
 
-st.markdown("---")
+# --- TAB 2: STAKING (Interactive) ---
+with tab_stake:
+    st.subheader("Earn Yield")
+    
+    c1, c2 = st.columns([1, 2])
+    
+    with c1:
+        st.info("Choose a Pool to Stake")
+        pool = st.selectbox("Select Asset", ["Prime ETH (4.5%)", "Stable USDC (8.2%)"])
+        amount = st.number_input("Amount to Stake", value=10.0)
+        st.button("Approve & Stake")
+        
+    with c2:
+        st.success(f"**Projected Monthly Earnings:** ${(amount * 0.045 / 12) * 1000:,.2f} USD")
+        st.write("Your funds are audited and secured by Prime Protocol smart contracts.")
+        st.progress(65, text="Pool Capacity")
 
-# --- CONTACT ---
-c_left, c_right = st.columns([2,1])
-
-# Defined options separately to prevent line-break errors
-options = ["Staking", "Lending", "Flash Loans"]
-
-with c_left:
-    st.markdown("### Join the Liquidity Pool")
-    with st.form("defi_form"):
-        email = st.text_input("Email / ENS Domain")
-        # Passing the variable instead of the list
-        interest = st.multiselect("Interests", options)
-        submitted = st.form_submit_button("Connect Wallet")
-        if submitted:
-            st.success("Details captured.")
-            
-with c_right:
-    # Short link to prevent breaking
-    img_url = "https://cryptologos.cc/logos/ethereum-eth-logo.png?v=026"
-    st.image(img_url, width=80)
-    st.write("**Built on Ethereum.**")
-    st.caption("Audited by DeFi Labs Security.")
+# --- TAB 3: BORROW (Lending Interface) ---
+with tab_borrow:
+    st.subheader("Instant Liquidity")
+    st.write("Collateralize your assets to borrow stablecoins.")
+    
+    b1, b2 = st.columns(2)
+    
+    with b1:
+        st.markdown("#### 1. Deposit Collateral")
+        st.selectbox("Collateral Asset", ["ETH", "WBTC", "SOL"])
+        st.text_input("Deposit Amount", "0.00")
+    
+    with b2:
+        st.markdown("#### 2. Borrow Funds")
+        st.selectbox("Borrow Asset", ["USDC", "USDT", "DAI"])
+        st.text_input("Borrow Amount", "0.00")
+        
+    st.warning("Liquidation Threshold: 82.5%")
+    st.button("Execute Borrow Transaction")
