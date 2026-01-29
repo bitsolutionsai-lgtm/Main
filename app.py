@@ -1,100 +1,111 @@
 import streamlit as st
-import pandas as pd
 import yfinance as yf
+import pandas as pd
 
-# 1. Page Configuration
+# --- PAGE CONFIGURATION ---
 st.set_page_config(
-    page_title="Baez IT Solutions",
-    page_icon="💻",
-    layout="wide"
+    page_title="Baez Blockchain",
+    page_icon="⛓️",
+    layout="wide",
+    initial_sidebar_state="collapsed"
 )
 
-# 2. Sidebar Navigation
-st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to", ["Home", "Services", "Market Data", "Contact Us"])
+# --- CUSTOM CSS (Clean, Modern, Edgy) ---
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
 
-# --- PAGE: HOME ---
-if page == "Home":
-    st.title("Baez IT Solutions 🚀")
-    st.subheader("Empowering Business with IT Excellence & Financial Intelligence")
-    st.image("https://images.unsplash.com/photo-1518770660439-4636190af475", use_container_width=True)
-    st.write("---")
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.header("💡 Innovation")
-        st.write("Cutting-edge technology strategies tailored for modern businesses.")
-    with col2:
-        st.header("🔒 Security")
-        st.write("Enterprise-grade cybersecurity to protect your most valuable assets.")
-    with col3:
-        st.header("📈 Growth")
-        st.write("Data-driven insights and crypto-consulting to expand your portfolio.")
+# --- HERO SECTION ---
+st.title("BAEZ BLOCKCHAIN SOLUTIONS")
+st.markdown("### *Immutable Infrastructure • Smart Contract Audits • Enterprise Web3 Integration*")
+st.markdown("We bridge the gap between traditional IT and the Decentralized Future.")
+st.markdown("---")
 
-# --- PAGE: SERVICES ---
-elif page == "Services":
-    st.title("Our Services")
-    st.write("We bridge the gap between traditional IT and the future of finance.")
-    with st.container():
-        st.write("---")
-        st.header("🖥️ Managed IT Services")
-        st.write("• 24/7 Network Monitoring\n• Cloud Migration (AWS/Azure)\n• Hardware & Software Support")
-    with st.container():
-        st.write("---")
-        st.header("🛡️ Cybersecurity")
-        st.write("• Threat Detection & Prevention\n• Data Backup & Recovery\n• Compliance Audits")
-    with st.container():
-        st.write("---")
-        st.header("💰 Crypto & Blockchain Consulting")
-        st.write("• Wallet Setup & Security\n• Mining Rig Configuration\n• Portfolio Tracking Tools")
+# --- LIVE CRYPTO METRICS ---
+st.subheader("⛓️ On-Chain Market Pulse")
+col1, col2, col3, col4 = st.columns(4)
 
-# --- PAGE: MARKET DATA (LIVE) ---
-elif page == "Market Data":
-    st.title("Live Crypto Intelligence 📊")
-    st.write("Real-time market data sourced directly from the blockchain.")
+def get_price(ticker):
+    try:
+        data = yf.Ticker(ticker).history(period="1d")
+        if not data.empty:
+            return data["Close"].iloc[-1], data["Close"].iloc[-1] - data["Open"].iloc[-1]
+        return 0.0, 0.0
+    except:
+        return 0.0, 0.0
 
-    # A function to get the data safely
-    def get_live_data(ticker):
-        data = yf.Ticker(ticker).history(period="5d")
-        current_price = data['Close'].iloc[-1]
-        prev_price = data['Close'].iloc[-2]
-        delta_percent = ((current_price - prev_price) / prev_price) * 100
-        return current_price, delta_percent, data['Close']
+# Fetch Data
+btc_price, btc_delta = get_price("BTC-USD")
+eth_price, eth_delta = get_price("ETH-USD")
+sol_price, sol_delta = get_price("SOL-USD")
+matic_price, matic_delta = get_price("MATIC-USD") # Added Polygon as it is usage-heavy
 
-    # Create 3 columns for the metrics
-    col1, col2, col3 = st.columns(3)
+with col1:
+    st.metric(label="Bitcoin (Store of Value)", value=f"${btc_price:,.0f}", delta=f"{btc_delta:.2f}")
+with col2:
+    st.metric(label="Ethereum (Smart Contracts)", value=f"${eth_price:,.0f}", delta=f"{eth_delta:.2f}")
+with col3:
+    st.metric(label="Solana (High Speed)", value=f"${sol_price:.2f}", delta=f"{sol_delta:.2f}")
+with col4:
+    st.metric(label="Polygon (Scaling)", value=f"${matic_price:.4f}", delta=f"{matic_delta:.4f}")
 
-    # Fetch and display Bitcoin
-    with col1:
-        price, delta, history = get_live_data("BTC-USD")
-        st.metric(label="Bitcoin (BTC)", value=f"${price:,.2f}", delta=f"{delta:.2f}%")
-        
-    # Fetch and display Ethereum
-    with col2:
-        price, delta, history = get_live_data("ETH-USD")
-        st.metric(label="Ethereum (ETH)", value=f"${price:,.2f}", delta=f"{delta:.2f}%")
+st.markdown("---")
 
-    # Fetch and display Solana
-    with col3:
-        price, delta, history = get_live_data("SOL-USD")
-        st.metric(label="Solana (SOL)", value=f"${price:,.2f}", delta=f"{delta:.2f}%")
+# --- BLOCKCHAIN SERVICES SECTION ---
+st.header("Decentralized Services")
 
-    st.write("---")
-    st.subheader("7-Day Price Trend (BTC)")
-    # Show a real chart of Bitcoin's recent history
-    st.line_chart(history)
+col_left, col_mid, col_right = st.columns(3)
 
-# --- PAGE: CONTACT ---
-elif page == "Contact":
-    st.title("Get In Touch")
-    st.write("Ready to upgrade your IT infrastructure?")
-    with st.form("contact_form"):
-        name = st.text_input("Your Name")
-        email = st.text_input("Email Address")
-        message = st.text_area("How can we help?")
-        submitted = st.form_submit_button("Send Message")
-        if submitted:
-            st.success(f"Thank you {name}! We have received your message.")
+with col_left:
+    st.subheader("📝 Smart Contracts")
+    st.write("""
+    Secure, audited smart contract development for Ethereum and Solana.
+    * **Automated Escrows**
+    * **NFT Minting Engines**
+    * **DAO Governance Systems**
+    """)
 
-# Footer
-st.sidebar.markdown("---")
-st.sidebar.write("© 2026 Baez IT Solutions")
+with col_mid:
+    st.subheader("🏦 DeFi Integration")
+    st.write("""
+    Launch your own financial protocols or integrate existing ones.
+    * **Staking Mechanisms**
+    * **Liquidity Pools**
+    * **Tokenomics Strategy**
+    """)
+
+with col_right:
+    st.subheader("🌐 Enterprise Web3")
+    st.write("""
+    Moving real-world assets (RWA) onto the blockchain.
+    * **Supply Chain Tracking**
+    * **Asset Tokenization**
+    * **Private Permissioned Chains**
+    """)
+
+st.markdown("---")
+
+# --- CONTACT SECTION ---
+col_contact_left, col_contact_right = st.columns([2, 1])
+
+with col_contact_left:
+    st.header("Build on Chain")
+    st.write("Ready to deploy? Tell us about your protocol or project.")
+    
+    contact_form = st.form(key='contact_form')
+    email = contact_form.text_input("Wallet Address or Email")
+    message = contact_form.text_area("Project Scope (e.g., 'I need a staking token')")
+    submit = contact_form.form_submit_button("Initialize Project")
+    
+    if submit:
+        st.success("Transmission Received. We will contact you shortly.")
+
+with col_contact_right:
+    st.info("📍 **Base:** New York, NY")
+    st.info("🔐 **Security:** Audited & Verified")
+    st.info("⛓️ **Focus:** ETH, SOL, POLYGON")
