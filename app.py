@@ -134,23 +134,53 @@ else:
     with tab_learn:
         st.header("Blockchain Fundamentals")
         
+        # --- EXPANDED LESSON 1 ---
         with st.expander("Lesson 1: Blockchain Basics & Real World Use"):
-            st.subheader("1. The Origin")
-            st.write("In 2008, Satoshi Nakamoto released the Bitcoin Whitepaper.")
-            st.link_button("📄 Read the Bitcoin Whitepaper (PDF)", "https://bitcoin.org/bitcoin.pdf")
+            st.subheader("1. What IS a Blockchain?")
+            st.write("Think of a Blockchain like a **shared Google Sheet** that everyone can read, but NO ONE can delete.")
+            
+            c_concept1, c_concept2 = st.columns(2)
+            
+            with c_concept1:
+                st.info("🧱 **The 'Block' (The Page)**")
+                st.write("""
+                Imagine a notebook page filled with transactions (Alice sent Bob $5). 
+                Once the page is full, it gets sealed.
+                """)
+                
+            with c_concept2:
+                st.info("🔗 **The 'Chain' (The Glue)**")
+                st.write("""
+                Each new page is mathematically glued to the previous one. 
+                If you try to rip out an old page (to erase a debt), the whole notebook falls apart. This makes it **Immutable** (Unchangeable).
+                """)
             
             st.divider()
-            st.subheader("2. Real World Use")
+            
+            st.subheader("2. Beyond Money: Real World Use Cases")
+            st.write("Because we can trust the data without a middleman, we can use it for huge industries:")
+            
             c_use1, c_use2 = st.columns(2)
             with c_use1:
-                st.info("🚚 **Supply Chain (Walmart)**")
-                st.write("Tracking food from farm to store to prevent disease.")
+                st.success("🚚 **Supply Chain (Walmart)**")
+                st.write("Walmart puts mangoes on the blockchain. If there is E. coli, they trace it to the exact farm in 2.2 seconds (used to take 7 days).")
             with c_use2:
-                st.info("🏥 **Healthcare Records**")
-                st.write("Patient data controlled by the patient, not the hospital.")
-            st.write("**The Flavors:** ETH (Truck), SOL (Race Car), AVAX (Fleet), BASE (Express Lane).")
+                st.success("🏠 **Real Estate (Tokenization)**")
+                st.write("Instead of buying a whole house, you can buy 1/100th of a house token instantly. It proves your ownership without a lawyer.")
+                
+            c_use3, c_use4 = st.columns(2)
+            with c_use3:
+                st.success("🗳️ **Voting Systems**")
+                st.write("A blockchain vote cannot be deleted or faked. You can verify your vote was counted from your phone.")
+            with c_use4:
+                st.success("🏥 **Medical Records**")
+                st.write("You own your X-rays in your wallet. When you switch doctors, you grant them access instantly. No fax machines needed.")
 
-        # --- EXPANDED LESSON 2 ---
+            st.divider()
+            st.subheader("3. The Origin")
+            st.write("It all started in 2008 with a whitepaper by **Satoshi Nakamoto**.")
+            st.link_button("📄 Read the Bitcoin Whitepaper (PDF)", "https://bitcoin.org/bitcoin.pdf")
+
         with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
             
             st.subheader("1. What makes it 'Smart'?")
