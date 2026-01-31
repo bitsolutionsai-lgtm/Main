@@ -150,35 +150,62 @@ else:
                 st.write("Patient data controlled by the patient, not the hospital.")
             st.write("**The Flavors:** ETH (Truck), SOL (Race Car), AVAX (Fleet), BASE (Express Lane).")
 
+        # --- EXPANDED LESSON 2 ---
         with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
-            st.subheader("1. The Vending Machine Analogy (Deep Dive)")
-            st.write("The best way to understand a Smart Contract is to compare a **Barista** vs. a **Vending Machine**.")
+            
+            st.subheader("1. What makes it 'Smart'?")
+            st.write("A Smart Contract is just **Programmable Money**. It's code that holds money and releases it only when a condition is met.")
+            st.info("💡 **Think:** 'If This Happens, Then Pay That.'")
+
+            st.divider()
+
+            st.subheader("2. The Vending Machine Analogy")
+            st.write("The best way to understand it is to compare a **Human Barista** vs. a **Vending Machine**.")
+            
             c_human, c_bot = st.columns(2)
             with c_human:
-                st.error("☕ The Human Way")
-                st.write("Subjective, biased, and requires trust.")
+                st.error("☕ The Old Way (Human Contract)")
+                st.write("""
+                * **Slow:** Need a lawyer/bank to verify.
+                * **Expensive:** You pay fees to the middleman.
+                * **Trust-Based:** You hope they don't cheat you.
+                """)
             with c_bot:
-                st.success("🤖 The Smart Contract")
-                st.write("Deterministic, unbiased, and trustless.")
-                
+                st.success("🤖 The New Way (Smart Contract)")
+                st.write("""
+                * **Instant:** Runs 24/7 on the blockchain.
+                * **Cheap:** No middleman fees.
+                * **Trustless:** The machine *cannot* cheat. If you put $2 in, the soda *must* drop.
+                """)
+            
             st.divider()
-            st.subheader("2. Try it Real Life")
+
+            st.subheader("3. A Simple Example: The Sports Bet")
+            st.write("""
+            Two friends, **Alice** and **Bob**, want to bet $100 on the Super Bowl.
+            
+            * **Without Crypto:** Alice bets on Team A. Bob bets on Team B. Team A wins. Bob refuses to pay. Alice loses her money.
+            * **With a Smart Contract:**
+                1. Alice and Bob both send $100 to a **Digital Vault** (the contract).
+                2. The Vault locks the funds ($200 total).
+                3. The Vault checks the official score online (via an 'Oracle').
+                4. **IF** Team A wins -> **THEN** The Vault automatically sends $200 to Alice.
+            
+            **Result:** Bob cannot refuse to pay. The code forces the payment.
+            """)
+
+            st.divider()
+            
+            st.subheader("4. Real World Apps")
             c_app1, c_app2 = st.columns(2)
             with c_app1:
                 st.info("🏦 **Aave (Lending)**")
+                st.write("A bank run by code. Depositors earn interest, borrowers pay interest. No CEO involved.")
                 st.link_button("Visit Aave ↗", "https://aave.com")
             with c_app2:
                 st.info("⚡ **Drift (Trading)**")
+                st.write("A stock exchange run by code. Trades settle instantly on Solana.")
                 st.link_button("Visit Drift ↗", "https://www.drift.trade")
-
-            st.divider()
-            st.code("""
-            function fund_project():
-                if total_donations >= $10,000:
-                    send_money_to_creator()
-                else:
-                    refund_all_donors()
-            """, language="python")
 
         with st.expander("Lesson 3: The 3 Types of Staking (Detailed Breakdown)"):
             st.write("In crypto, there is no CEO. The network runs itself. But how do we stop people from cheating? We use **Consensus Mechanisms**.")
@@ -209,7 +236,6 @@ else:
             st.subheader("💧 3. Liquid Staking")
             st.write("Regular staking locks your money. **Liquid Staking** gives you a 'Receipt Token' (stETH) that you can still use/sell.")
 
-        # --- REVERTED LESSON 4 (Back to Original) ---
         with st.expander("Lesson 4: What actually IS a Wallet? (Keys explained)"):
             st.subheader("1. The Big Misconception: 'The Bag vs. The Browser'")
             st.write("The wallet is just a **Web Browser** that views your money on the blockchain. It does not store the money inside.")
@@ -237,7 +263,6 @@ else:
             with btn3:
                 st.link_button("Tangem (Card) ↗", "https://tangem.com")
 
-        # --- EXPANDED LESSON 5 ---
         with st.expander("Lesson 5: 🛡️ Security & Scams (THE SURVIVAL GUIDE)"):
             st.error("⚠️ THE GOLDEN RULE: Never, ever share your Seed Phrase with anyone. Support will NEVER ask for it.")
             
