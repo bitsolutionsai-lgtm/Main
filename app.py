@@ -66,15 +66,39 @@ tab_learn, tab_sim, tab_data = st.tabs(["📖 Learn Concepts", "🧪 Lab Simulat
 with tab_learn:
     st.header("Blockchain Fundamentals")
     
-    with st.expander("Lesson 1: The 'Flavors' of Blockchain (ETH, SOL, AVAX, BASE)"):
-        st.write("Not all blockchains are the same. Some are heavy trucks (ETH), some are race cars (SOL).")
+    # --- EXPANDED LESSON 1 ---
+    with st.expander("Lesson 1: Blockchain Basics & Real World Use"):
+        st.subheader("1. The Origin")
+        st.write("""
+        In 2008, an anonymous person named **Satoshi Nakamoto** released a document that changed the world. 
+        It proposed a "Peer-to-Peer Electronic Cash System" that didn't need a bank.
+        """)
+        st.link_button("📄 Read the Bitcoin Whitepaper (PDF)", "https://bitcoin.org/bitcoin.pdf")
+        
+        st.divider()
+        
+        st.subheader("2. It's Not Just for Money (Real World Use)")
+        st.write("Blockchain is just a **Public Digital Ledger**. Companies use it for trust, not just trading.")
+        
+        c_use1, c_use2 = st.columns(2)
+        with c_use1:
+            st.info("🚚 **Supply Chain (Walmart)**")
+            st.write("Walmart uses blockchain to track lettuce from farm to store. If there is E. coli, they can trace exactly which farm it came from in seconds, not weeks.")
+        with c_use2:
+            st.info("🏥 **Healthcare Records**")
+            st.write("Hospitals can store patient data on a private blockchain. You control your own data key, so you can share your history with a new doctor instantly.")
+            
+        st.divider()
+
+        st.subheader("3. The 'Flavors' of Blockchain")
+        st.write("Not all blockchains are the same. They are like vehicles:")
         c1, c2 = st.columns(2)
         with c1:
-            st.info("**Ethereum:** Secure, but expensive.")
-            st.info("**Solana:** Fast, but less stable.")
+            st.markdown("**Ethereum (The Semi-Truck):** Secure, heavy duty, carries high value, but slow.")
+            st.markdown("**Solana (The Race Car):** Extremely fast and cheap, but less stable.")
         with c2:
-            st.info("**Avalanche:** Custom networks.")
-            st.info("**Base:** Cheap transactions on Ethereum.")
+            st.markdown("**Avalanche (The Fleet):** Custom networks for gaming/business.")
+            st.markdown("**Base (The Express Lane):** Built on top of Ethereum to make it faster.")
 
     with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
         st.subheader("1. The Vending Machine Analogy")
@@ -130,38 +154,25 @@ with tab_learn:
         st.write("* **Cold Wallet:** Offline USB (Ledger). Good for saving.")
         st.link_button("Download Coinbase App (Hot Wallet) ↗", "https://www.coinbase.com")
 
-    # --- EXPANDED LESSON 5 ---
     with st.expander("Lesson 5: 🛡️ Security & Scams (HOW TO SURVIVE)"):
         st.error("⚠️ THE GOLDEN RULE: Never, ever share your Seed Phrase with anyone. Support will NEVER ask for it.")
         
         st.subheader("1. The 'Paper vs. Cloud' Rule")
         st.write("""
         When you create a wallet, you get 12-24 words.
-        * **✅ CORRECT:** Write them on paper. Store it in a fireproof safe or lockbox.
-        * **❌ WRONG:** Do not take a screenshot. Do not save it in Google Drive. Do not email it to yourself. If your cloud gets hacked, your money is gone.
+        * **✅ CORRECT:** Write them on paper. Store it in a fireproof safe.
+        * **❌ WRONG:** Do not take a screenshot. Do not save in Google Drive.
         """)
         
         st.divider()
-        
         st.subheader("2. Common Attack Vectors")
-        
         c_scam_1, c_scam_2 = st.columns(2)
-        
         with c_scam_1:
             st.warning("🎣 **Phishing Sites**")
-            st.write("""
-            Hackers buy Google Ads to make fake sites look real.
-            * **Fake:** `www.coinbaze.com`
-            * **Real:** `www.coinbase.com`
-            * **Tip:** Always bookmark the real site and ONLY use your bookmark.
-            """)
-            
+            st.write("Fake sites like `Coinbaze.com`. Always bookmark the real one.")
         with c_scam_2:
             st.warning("📱 **SIM Swapping (2FA)**")
-            st.write("""
-            Hackers can trick AT&T/Verizon into transferring your phone number to them. They then intercept your 2FA texts.
-            * **Fix:** Never use SMS for 2FA. Always use an app like **Google Authenticator** or a YubiKey.
-            """)
+            st.write("Never use SMS for 2FA. Use Google Authenticator.")
 
 # --- TAB 2: THE SANDBOX ---
 with tab_sim:
