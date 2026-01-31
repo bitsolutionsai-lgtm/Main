@@ -176,34 +176,66 @@ else:
                 st.info("🎟️ **Concert Tickets (Ticketmaster)**")
                 st.write("Blockchain tickets cannot be photocopied. You can check on your phone if the ticket is real instantly.")
 
+        # --- EXPANDED LESSON 2 (Smart Contracts) ---
         with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
+            
             st.subheader("1. What makes it 'Smart'?")
-            st.write("A Smart Contract is just **Programmable Money**. It's code that holds money and releases it only when a condition is met.")
-            st.info("💡 **Think:** 'If This Happens, Then Pay That.'")
+            st.write("A Smart Contract is NOT Artificial Intelligence. It is just **Programmable Money**.")
+            st.info("💡 **Think of it as 'If-This-Then-That' logic for money.**")
+            st.write("It is a piece of code that lives on the blockchain. It holds funds and releases them **automatically** when a specific condition is met.")
+
             st.divider()
-            st.subheader("2. The Vending Machine Analogy")
-            st.write("The best way to understand it is to compare a **Human Barista** vs. a **Vending Machine**.")
+
+            st.subheader("2. The Vending Machine Analogy (Perfect Example)")
+            st.write("The best way to explain this to a client is the **Vending Machine**.")
+            
             c_human, c_bot = st.columns(2)
             with c_human:
-                st.error("☕ The Old Way (Human Contract)")
-                st.write("Slow, Expensive, Trust-Based.")
+                st.error("☕ The Old Way (The Barista)")
+                st.write("""
+                * You order a coffee.
+                * You hand them cash.
+                * You **TRUST** they will give you the coffee and not steal your money.
+                * **Problem:** Humans can lie, steal, or make mistakes.
+                """)
             with c_bot:
                 st.success("🤖 The New Way (Smart Contract)")
-                st.write("Instant, Cheap, Trustless.")
+                st.write("""
+                * You put $2 into the machine.
+                * You press 'B4'.
+                * The machine **MUST** drop the soda. It has no choice. It is programmed to do exactly that.
+                * **Benefit:** You don't need to 'trust' the machine.
+                """)
+            
             st.divider()
-            st.subheader("3. A Simple Example: The Sports Bet")
-            st.write("Two friends bet on the Super Bowl. The code holds the money and automatically pays the winner based on the official score. No fighting.")
-            st.divider()
-            st.subheader("4. Real World Apps")
-            c_app1, c_app2 = st.columns(2)
-            with c_app1:
-                st.info("🏦 **Aave (Lending)**")
-                st.link_button("Visit Aave ↗", "https://aave.com")
-            with c_app2:
-                st.info("⚡ **Drift (Trading)**")
-                st.link_button("Visit Drift ↗", "https://www.drift.trade")
 
-        # --- EXPANDED LESSON 3 (Liquid Staking) ---
+            st.subheader("3. Real World Examples (Beyond Coffee)")
+            
+            c_ex1, c_ex2 = st.columns(2)
+            
+            with c_ex1:
+                st.warning("🏠 **Buying a House (Escrow)**")
+                st.write("**The Problem:** You need a lawyer to hold the money until the deed is signed. The lawyer charges 3%.")
+                st.write("**The Smart Contract:** The code holds the money. Once the digital deed is transferred, the code instantly sends the money to the seller. **Cost: $5.**")
+                
+            with c_ex2:
+                st.info("✈️ **Flight Insurance**")
+                st.write("**The Problem:** Your flight is cancelled. You have to fill out forms and wait 3 months for a refund.")
+                st.write("**The Smart Contract:** The code checks flight data. If Flight #902 is >3 hours late, it **automatically** sends money to your wallet before you even leave the airport.")
+            
+            st.divider()
+            
+            st.subheader("4. Try it Yourself")
+            st.write("Imagine writing a contract for your kid's allowance:")
+            st.code("""
+            # Simple Smart Contract Logic
+            IF (Chores_Done == TRUE) AND (Date == Friday):
+                Send $20 to Kid_Wallet
+            ELSE:
+                Keep money in Dad_Wallet
+            """, language="python")
+            st.caption("This code runs on the blockchain forever. You can't 'forget' to pay them!")
+
         with st.expander("Lesson 3: The 3 Types of Staking (Expanded Liquid Staking)"):
             st.write("In crypto, there is no CEO. The network runs itself. But how do we stop people from cheating? We use **Consensus Mechanisms**.")
             c_pow, c_pos = st.columns(2)
