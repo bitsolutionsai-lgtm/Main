@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import numpy as np # Needed for the math charts
+import numpy as np
 import yfinance as yf
 import time
 
@@ -12,14 +12,14 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# --- SESSION STATE (Track if user is on Cover or Main) ---
+# --- SESSION STATE ---
 if 'page' not in st.session_state:
     st.session_state.page = 'cover'
 
 def enter_site():
     st.session_state.page = 'main'
 
-# --- CUSTOM CSS (Cyber Blue Theme) ---
+# --- CUSTOM CSS ---
 st.markdown("""
     <style>
     /* BACKGROUND IMAGE SETTINGS */
@@ -33,7 +33,7 @@ st.markdown("""
     
     /* Text Readability */
     h1, h2, h3 { color: #FFFFFF !important; text-shadow: 0px 2px 4px rgba(0,0,0,0.5); }
-    p, li { color: #E0E0E0 !important; font-size: 1.1em; line-height: 1.6; }
+    p, li, label { color: #E0E0E0 !important; font-size: 1.1em; line-height: 1.6; }
     
     /* Info Boxes */
     div[data-baseweb="notification"] {
@@ -43,7 +43,7 @@ st.markdown("""
         backdrop-filter: blur(5px);
     }
     
-    /* Buttons (Make them pop) */
+    /* Buttons */
     div.stButton > button {
         background-color: #00BFA5;
         color: white;
@@ -58,14 +58,11 @@ st.markdown("""
         box-shadow: 0px 0px 10px #00BFA5;
     }
     
-    /* Sidebar Styling */
+    /* Sidebar */
     section[data-testid="stSidebar"] {
         background-color: rgba(33, 37, 41, 0.95);
         border-right: 1px solid #343A40;
     }
-    
-    /* Hide Menu */
-    #MainMenu, footer, header {visibility: hidden;}
     
     /* Tabs */
     .stTabs [data-baseweb="tab-list"] { gap: 10px; }
@@ -80,7 +77,7 @@ st.markdown("""
         border-color: #00BFA5;
     }
     
-    /* Code Block Styling */
+    /* Code Block */
     code {
         color: #e83e8c;
         background-color: #f1f3f5;
@@ -146,35 +143,56 @@ else:
     st.markdown("---")
 
     # --- NAVIGATION ---
-    tab_learn, tab_sim, tab_data = st.tabs(["📖 Learn Concepts", "🧪 Lab Simulation", "📊 Live Market"])
+    tab_learn, tab_sim, tab_data, tab_quiz = st.tabs(["📖 Learn Concepts", "🧪 Lab Simulation", "📊 Live Market", "🧠 Knowledge Quiz"])
 
     # --- TAB 1: THE CLASSROOM ---
     with tab_learn:
         st.header("Blockchain Fundamentals")
         
-        with st.expander("Lesson 1: Blockchain Basics & Real World Use"):
-            st.subheader("1. What IS a Blockchain?")
-            st.write("Think of a Blockchain like a **shared Google Sheet** that everyone can read, but NO ONE can delete.")
-            c_concept1, c_concept2 = st.columns(2)
-            with c_concept1:
-                st.info("🧱 **The 'Block' (The Page)**")
-                st.write("Imagine a notebook page filled with transactions. Once full, it gets sealed.")
-            with c_concept2:
-                st.info("🔗 **The 'Chain' (The Glue)**")
-                st.write("Each page is mathematically glued to the previous one. You cannot rip out old pages.")
+        # --- EXPANDED & SIMPLIFIED LESSON 1 ---
+        with st.expander("Lesson 1: Blockchain Basics (For Total Beginners)"):
+            
+            st.subheader("1. The Simple Analogy: 'The Group Chat'")
+            st.write("Imagine a **WhatsApp Group Chat** with your friends, but it has 2 special rules:")
+            
+            c_chat1, c_chat2 = st.columns(2)
+            with c_chat1:
+                st.info("👁️ Rule 1: Everyone Sees Everything")
+                st.write("If you say *'I owe Bob $5'*, everyone in the group sees it. You cannot lie later and say you didn't say it.")
+            with c_chat2:
+                st.info("🔒 Rule 2: No Deleting")
+                st.write("Once a message is sent, it is carved in stone. You cannot delete it. You cannot edit it.")
+                
+            st.write("**That is a Blockchain.** It is just a record of events that everyone has a copy of, and no one can erase.")
+
             st.divider()
-            st.subheader("2. Beyond Money: Real World Use Cases")
-            c_use1, c_use2 = st.columns(2)
-            with c_use1:
-                st.success("🚚 **Supply Chain (Walmart)**")
-                st.write("Walmart traces mangoes to the farm in 2.2 seconds.")
-            with c_use2:
-                st.success("🏠 **Real Estate (Tokenization)**")
-                st.write("Buy 1/100th of a house instantly.")
+
+            st.subheader("2. Why do we need this? (The 'Trust' Problem)")
+            st.write("In the normal world, we need **Middlemen** to build trust.")
+            
+            st.warning("🏦 **The Old Way (Bank):** If I send you $50, the Bank has to verify I have the money. We trust the Bank.")
+            st.success("⛓️ **The New Way (Blockchain):** The 'Group Chat' verifies I have the money because everyone has the history. We don't need the Bank.")
+
             st.divider()
-            st.subheader("3. The Origin")
-            st.write("It all started in 2008 with a whitepaper by **Satoshi Nakamoto**.")
-            st.link_button("📄 Read the Bitcoin Whitepaper (PDF)", "https://bitcoin.org/bitcoin.pdf")
+            
+            st.subheader("3. Real Life Examples (Not just money!)")
+            st.write("Since we can prove who owns what without a middleman, we can fix annoying real-world problems.")
+            
+            c_ex1, c_ex2 = st.columns(2)
+            with c_ex1:
+                st.info("👟 **Nike Sneakers (Authenticity)**")
+                st.write("""
+                **Problem:** You buy Jordans on eBay. Are they fake?
+                **Solution:** The shoe comes with a 'Digital Token' on the blockchain. You scan it, and the blockchain confirms it came from the Nike factory.
+                """)
+            with c_ex2:
+                st.info("🎟️ **Concert Tickets (Ticketmaster)**")
+                st.write("""
+                **Problem:** You buy a Taylor Swift ticket from a scalper. It's a photocopy. You get denied at the gate.
+                **Solution:** Blockchain tickets cannot be photocopied. You can check on your phone if the ticket is real instantly.
+                """)
+            
+            
 
         with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
             st.subheader("1. What makes it 'Smart'?")
@@ -272,110 +290,100 @@ else:
             st.subheader("3. Daily Habits")
             st.write("1. **The $1 Test**\n2. **No SMS 2FA**\n3. **Bookmark Everything**")
 
-    # --- TAB 2: THE SANDBOX (NEW & IMPROVED) ---
+    # --- TAB 2: THE SANDBOX ---
     with tab_sim:
         st.header("🧪 Interactive Lab")
         st.write("Experiment with the mechanics of DeFi in a safe, simulated environment.")
         
-        # --- SECTION 1: THE GAS STATION ---
+        # --- SECTION 1: GAS STATION ---
         st.subheader("1. Gas Fee Simulator")
-        st.write("See how network congestion affects the cost of using the blockchain.")
-        
         traffic = st.select_slider("Select Network Traffic Level:", options=["Low", "Medium", "High", "Extreme"])
-        
-        # Fees logic (Simulated)
         if traffic == "Low": eth_fee, l2_fee, sol_fee = 2.50, 0.05, 0.0001
         elif traffic == "Medium": eth_fee, l2_fee, sol_fee = 8.00, 0.12, 0.0001
         elif traffic == "High": eth_fee, l2_fee, sol_fee = 25.00, 0.40, 0.0005
         else: eth_fee, l2_fee, sol_fee = 120.00, 1.50, 0.002
-        
         c_gas1, c_gas2, c_gas3 = st.columns(3)
-        with c_gas1:
-            st.metric("Ethereum (L1)", f"${eth_fee:.2f}", delta=None, help="The main highway. Gets jammed easily.")
-        with c_gas2:
-            st.metric("Base/Optimism (L2)", f"${l2_fee:.2f}", delta="-98%", delta_color="normal", help="The express lane built on top of Ethereum.")
-        with c_gas3:
-            st.metric("Solana", f"${sol_fee:.4f}", delta="Cheap", help="A different, high-speed blockchain.")
-            
+        with c_gas1: st.metric("Ethereum (L1)", f"${eth_fee:.2f}")
+        with c_gas2: st.metric("Base (L2)", f"${l2_fee:.2f}", delta="-98%")
+        with c_gas3: st.metric("Solana", f"${sol_fee:.4f}", delta="Cheap")
         st.markdown("---")
 
-        # --- SECTION 2: THE COMPOUND INTEREST MACHINE ---
-        st.subheader("2. The Power of Staking (Compound Interest)")
-        
+        # --- SECTION 2: COMPOUND INTEREST ---
+        st.subheader("2. Staking Calculator")
         c_calc1, c_calc2 = st.columns([1, 2])
-        
         with c_calc1:
             initial = st.number_input("Initial Investment ($)", value=1000)
             apy = st.slider("APY (%)", 1, 100, 8)
             years = st.slider("Years to Hold", 1, 20, 5)
-            
         with c_calc2:
-            # Create data for the chart
-            data = []
-            for i in range(years + 1):
-                amount = initial * ((1 + (apy/100)) ** i)
-                data.append(amount)
-            
+            data = [initial * ((1 + (apy/100)) ** i) for i in range(years + 1)]
             chart_data = pd.DataFrame(data, columns=["Portfolio Value"])
             st.line_chart(chart_data)
-            
-            final_val = data[-1]
-            profit = final_val - initial
-            st.success(f"💰 In {years} years, your ${initial} becomes **${final_val:,.2f}**")
-            st.caption(f"Total Profit: ${profit:,.2f} (That is the power of compounding!)")
-
+            st.success(f"💰 In {years} years: **${data[-1]:,.2f}**")
         st.markdown("---")
 
         # --- SECTION 3: DEX SIMULATOR ---
-        st.subheader("3. Decentralized Exchange (DEX) Simulator")
-        
+        st.subheader("3. DEX Simulator (Swap)")
         c_dex1, c_dex2 = st.columns(2)
-        
         with c_dex1:
-            st.info("Parameters")
             sell_amt = st.number_input("Amount to Swap (USDC)", value=1000)
-            
-            # Slippage Logic
-            slippage = 0
-            if sell_amt > 100000:
-                slippage = 5.0
-                st.warning("⚠️ **High Slippage Warning:** You are moving the market price because your order is too big!")
-            elif sell_amt > 10000:
-                slippage = 1.0
-                st.info("ℹ️ Slight Slippage: Large order detected.")
-                
+            slippage = 5.0 if sell_amt > 100000 else (1.0 if sell_amt > 10000 else 0)
+            if slippage > 0: st.warning(f"⚠️ High Volume: {slippage}% Slippage")
         with c_dex2:
-            st.info("Output")
             if st.button("Execute Swap"):
-                with st.spinner("Routing transaction..."):
+                with st.spinner("Routing..."):
                     time.sleep(1)
-                
-                received = sell_amt * (1 - (slippage/100))
-                st.metric("You Receive (ETH)", f"${received:,.2f}", delta=f"-{slippage}% Price Impact", delta_color="inverse")
-                
-                if slippage > 2:
-                    st.error("You lost significant value due to low liquidity!")
-                else:
-                    st.success("Swap Confirmed!")
+                st.success(f"✅ Received ${(sell_amt * (1 - slippage/100)):,.2f} ETH")
 
-    # --- TAB 3: REAL WORLD DATA ---
+    # --- TAB 3: REAL WORLD DATA (ENHANCED) ---
     with tab_data:
-        st.header("Live Market Data")
+        st.header("Live Market Data (24h Change)")
         
-        def get_price(t):
+        def get_data(t):
             try:
-                d = yf.Ticker(t).history(period="1d")
-                return d["Close"].iloc[-1]
-            except: return 0.0
+                # Get 2 days of data to calculate change
+                d = yf.Ticker(t).history(period="5d") 
+                current = d["Close"].iloc[-1]
+                prev = d["Close"].iloc[-2]
+                change = ((current - prev) / prev) * 100
+                return current, change, d["Close"]
+            except: return 0.0, 0.0, []
 
-        btc = get_price("BTC-USD")
-        eth = get_price("ETH-USD")
-        sol = get_price("SOL-USD")
+        btc_p, btc_c, btc_h = get_data("BTC-USD")
+        eth_p, eth_c, eth_h = get_data("ETH-USD")
+        sol_p, sol_c, sol_h = get_data("SOL-USD")
         
         m1, m2, m3 = st.columns(3)
-        m1.metric("Bitcoin", f"${btc:,.0f}")
-        m2.metric("Ethereum", f"${eth:,.0f}")
-        m3.metric("Solana", f"${sol:.2f}")
+        m1.metric("Bitcoin", f"${btc_p:,.0f}", f"{btc_c:.2f}%")
+        m2.metric("Ethereum", f"${eth_p:,.0f}", f"{eth_c:.2f}%")
+        m3.metric("Solana", f"${sol_p:.2f}", f"{sol_c:.2f}%")
         
-        st.line_chart(yf.Ticker("BTC-USD").history(period="1mo")["Close"])
-        st.caption("Bitcoin Price Trend")
+        st.area_chart(btc_h)
+        st.caption("Bitcoin Price Trend (Last 5 Days)")
+
+    # --- TAB 4: QUIZ (NEW) ---
+    with tab_quiz:
+        st.header("🧠 Knowledge Check")
+        st.write("Test your understanding of the Academy lessons.")
+        
+        score = 0
+        
+        q1 = st.radio("1. Where is your crypto actually stored?", 
+                      ["In my Ledger USB stick", "On the Blockchain", "In the Coinbase App"])
+        if q1 == "On the Blockchain": score += 1
+        
+        q2 = st.radio("2. What happens if you lose your Seed Phrase?", 
+                      ["I can reset it via email", "I lose my money forever", "Support can recover it"])
+        if q2 == "I lose my money forever": score += 1
+        
+        q3 = st.radio("3. Which wallet type is safer for long-term storage?", 
+                      ["Hot Wallet", "Cold Wallet", "Exchange Wallet"])
+        if q3 == "Cold Wallet": score += 1
+        
+        st.markdown("---")
+        if st.button("Check Score"):
+            if score == 3:
+                st.balloons()
+                st.success(f"🎉 Perfect Score! 3/3. You are ready for DeFi.")
+            else:
+                st.warning(f"You got {score}/3. Review the lessons and try again!")
