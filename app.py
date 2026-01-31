@@ -67,16 +67,14 @@ with tab_learn:
     st.header("Blockchain Fundamentals")
     
     with st.expander("Lesson 1: The 'Flavors' of Blockchain (ETH, SOL, AVAX, BASE)"):
-        st.write("""
-        Not all blockchains are the same. Think of them like **vehicles**—some are built for heavy cargo, some for racing.
-        """)
+        st.write("Not all blockchains are the same. Some are heavy trucks (ETH), some are race cars (SOL).")
         c1, c2 = st.columns(2)
         with c1:
-            st.info("**Ethereum (The Semi-Truck):** Secure, heavy duty, but can be slow.")
-            st.info("**Solana (The Race Car):** Fast and cheap, but has had engine trouble.")
+            st.info("**Ethereum:** Secure, but expensive.")
+            st.info("**Solana:** Fast, but less stable.")
         with c2:
-            st.info("**Avalanche (The Fleet):** Custom networks for specific businesses.")
-            st.info("**Base (The Express Lane):** Built on top of Ethereum to save costs.")
+            st.info("**Avalanche:** Custom networks.")
+            st.info("**Base:** Cheap transactions on Ethereum.")
 
     with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
         st.subheader("The Vending Machine Analogy")
@@ -87,49 +85,54 @@ with tab_learn:
                 send_money(customer, $500)
         """, language="python")
 
-    # --- EXPANDED LESSON 3 ---
-    with st.expander("Lesson 3: Consensus & Staking (How It Works)"):
-        st.write("How do strangers agree on who owns what without a bank? They use a 'Consensus Mechanism'.")
+    with st.expander("Lesson 3: Consensus & Staking"):
+        st.write("How strangers agree on truth.")
+        c1, c2 = st.columns(2)
+        with c1:
+            st.warning("Miners (Proof of Work): Solve puzzles.")
+        with c2:
+            st.success("Validators (Proof of Stake): Lock up money.")
+        st.info("Liquid Staking = Valet Parking (Get a claim ticket for your parked car).")
+
+    # --- EXPANDED LESSON 4 ---
+    with st.expander("Lesson 4: What actually IS a Wallet?"):
+        st.subheader("1. The Big Misconception")
+        st.write("""
+        Most people think a crypto wallet is like a leather wallet where you store coins inside. **It is not.**
         
-        col_pow, col_pos = st.columns(2)
+        * **Your Money:** Lives on the Blockchain (in the cloud).
+        * **Your Wallet:** Is just the **Key Ring** or **Remote Control** that lets you move that money.
         
-        with col_pow:
-            st.subheader("⛏️ Proof of Work (Bitcoin)")
-            st.info("**The 'Sudoku Puzzle' Method**")
+        If you destroy your phone (your wallet), your money is still safe on the blockchain, as long as you have your backup keys (Seed Phrase).
+        """)
+        
+        st.subheader("2. The Email Analogy (Public vs. Private Keys)")
+        
+        c_mail_1, c_mail_2 = st.columns(2)
+        with c_mail_1:
+            st.success("🟢 Public Key (The Mailbox)")
             st.write("""
-            * **How it works:** Computers (Miners) race to solve a super-hard math puzzle. The winner gets to write the next page of the ledger.
-            * **Why it's secure:** To cheat, you would need more electricity than a small country.
-            * **Downside:** Uses a lot of energy.
+            * **Like your Email Address.**
+            * You can share this with ANYONE.
+            * People use this to send you money.
+            * Example: `0x71C...9A23`
             """)
-            
-        with col_pos:
-            st.subheader("🥩 Proof of Stake (Ethereum)")
-            st.info("**The 'Security Deposit' Method**")
+        with c_mail_2:
+            st.error("🔴 Private Key (The Password)")
             st.write("""
-            * **How it works:** Instead of burning energy, Validators lock up their own money (32 ETH) as a security deposit.
-            * **Why it's secure:** If a Validator tries to cheat, the network confiscates their deposit (called "Slashing").
-            * **Benefit:** 99.9% less energy usage.
+            * **Like your Email Password.**
+            * You must NEVER share this.
+            * This allows you to 'Login' and spend the money.
+            * If someone gets this, they steal your funds.
             """)
             
         st.divider()
-        
-        st.subheader("💧 What is Liquid Staking?")
-        st.warning("Advanced Concept: Solving the 'Locked Money' Problem")
-        
+        st.subheader("3. Types of Wallets")
         st.write("""
-        **The Problem:** When you stake ETH, it is locked. You can't sell it or use it. It's stuck.
-        
-        **The Solution (Liquid Staking):** Imagine **Valet Parking**.
-        1. You give your car (ETH) to the Valet (Lido or Rocket Pool).
-        2. The Valet gives you a **Claim Ticket** (`stETH`).
-        3. **The Magic:** This Claim Ticket has value! You can sell the ticket, lend the ticket, or use the ticket as collateral—all while your car is still parked safely.
-        
-        **Result:** You earn Staking Rewards (Parking Rewards) + You can still use your funds (The Ticket) in DeFi.
+        * **🔥 Hot Wallet (Software):** An app connected to the internet (Coinbase, MetaMask). Easy to use, good for pocket money.
+        * **❄️ Cold Wallet (Hardware):** A USB stick that never touches the internet (Ledger). Hard to hack, best for life savings.
         """)
-
-    with st.expander("Lesson 4: Digital Wallets"):
-        st.write("Hot Wallets (Online Apps) vs Cold Wallets (Offline USB Sticks).")
-        st.link_button("Download Coinbase App ↗", "https://www.coinbase.com")
+        st.link_button("Download Coinbase App (Hot Wallet) ↗", "https://www.coinbase.com")
 
     with st.expander("Lesson 5: 🛡️ Security & Scams"):
         st.error("⚠️ THE GOLDEN RULE: Never share your Seed Phrase.")
