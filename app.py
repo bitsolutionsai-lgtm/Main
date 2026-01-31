@@ -76,14 +76,44 @@ with tab_learn:
             st.info("**Avalanche:** Custom networks.")
             st.info("**Base:** Cheap transactions on Ethereum.")
 
+    # --- EXPANDED LESSON 2 ---
     with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
-        st.subheader("The Vending Machine Analogy")
-        st.write("A Smart Contract is a vending machine: You put money in, the snack comes out. No employee needed.")
+        st.subheader("1. The Vending Machine Analogy")
+        st.write("""
+        A traditional contract (like buying a house) requires lawyers, notaries, and banks to verify it.
+        
+        A **Smart Contract** is like a **Vending Machine**:
+        * **Input:** You insert $2.00.
+        * **Logic:** You press 'A1'.
+        * **Output:** The machine *must* drop the soda. 
+        * **No Employee Needed:** The machine doesn't get tired, doesn't need a bribe, and can't change its mind.
+        """)
+        
+        st.divider()
+        
+        st.subheader("2. Real World Examples")
+        c_ex1, c_ex2 = st.columns(2)
+        with c_ex1:
+            st.info("🏦 **DeFi Lending (Aave)**")
+            st.write("You want to borrow money. Instead of a bank credit check, the code says: *'If user deposits 1 Bitcoin collateral, let them borrow $50,000. If Bitcoin drops 20%, sell it to pay back the loan.'*")
+        with c_ex2:
+            st.info("🎨 **NFTs & Gaming**")
+            st.write("In a video game: *'If player defeats the Boss Level, automatically generate the Golden Sword NFT and send it to their wallet.'* No game master needed.")
+
+        st.divider()
+        
+        st.subheader("3. See the Logic (Kickstarter Example)")
+        st.write("Imagine a fundraising site where the money is *only* released if the goal is met.")
         st.code("""
-        function pay_insurance():
-            if flight_status == "CANCELLED":
-                send_money(customer, $500)
+        # This code lives on the blockchain forever
+        function fund_project():
+            if total_donations >= $10,000:
+                send_money_to_creator()
+            else:
+                refund_all_donors()
         """, language="python")
+        
+        st.warning("⚠️ **Note:** Once deployed, this code cannot be changed. If there is a bug, it stays there. This is why 'Audits' are so important in crypto.")
 
     with st.expander("Lesson 3: Consensus & Staking"):
         st.write("How strangers agree on truth.")
@@ -94,44 +124,23 @@ with tab_learn:
             st.success("Validators (Proof of Stake): Lock up money.")
         st.info("Liquid Staking = Valet Parking (Get a claim ticket for your parked car).")
 
-    # --- EXPANDED LESSON 4 ---
     with st.expander("Lesson 4: What actually IS a Wallet?"):
         st.subheader("1. The Big Misconception")
-        st.write("""
-        Most people think a crypto wallet is like a leather wallet where you store coins inside. **It is not.**
+        st.write("The wallet is the **Remote Control**, not the money vault.")
         
-        * **Your Money:** Lives on the Blockchain (in the cloud).
-        * **Your Wallet:** Is just the **Key Ring** or **Remote Control** that lets you move that money.
-        
-        If you destroy your phone (your wallet), your money is still safe on the blockchain, as long as you have your backup keys (Seed Phrase).
-        """)
-        
-        st.subheader("2. The Email Analogy (Public vs. Private Keys)")
-        
+        st.subheader("2. The Email Analogy")
         c_mail_1, c_mail_2 = st.columns(2)
         with c_mail_1:
-            st.success("🟢 Public Key (The Mailbox)")
-            st.write("""
-            * **Like your Email Address.**
-            * You can share this with ANYONE.
-            * People use this to send you money.
-            * Example: `0x71C...9A23`
-            """)
+            st.success("🟢 Public Key (Email Address)")
+            st.write("Share this with anyone to receive money.")
         with c_mail_2:
-            st.error("🔴 Private Key (The Password)")
-            st.write("""
-            * **Like your Email Password.**
-            * You must NEVER share this.
-            * This allows you to 'Login' and spend the money.
-            * If someone gets this, they steal your funds.
-            """)
+            st.error("🔴 Private Key (Password)")
+            st.write("NEVER share this. It allows spending.")
             
         st.divider()
-        st.subheader("3. Types of Wallets")
-        st.write("""
-        * **🔥 Hot Wallet (Software):** An app connected to the internet (Coinbase, MetaMask). Easy to use, good for pocket money.
-        * **❄️ Cold Wallet (Hardware):** A USB stick that never touches the internet (Ledger). Hard to hack, best for life savings.
-        """)
+        st.write("**Types of Wallets:**")
+        st.write("* **Hot Wallet:** Online app (Coinbase). Good for spending.")
+        st.write("* **Cold Wallet:** Offline USB (Ledger). Good for saving.")
         st.link_button("Download Coinbase App (Hot Wallet) ↗", "https://www.coinbase.com")
 
     with st.expander("Lesson 5: 🛡️ Security & Scams"):
