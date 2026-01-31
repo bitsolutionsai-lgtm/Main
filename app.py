@@ -134,7 +134,6 @@ else:
     with tab_learn:
         st.header("Blockchain Fundamentals")
         
-        # --- EXPANDED LESSON 1 ---
         with st.expander("Lesson 1: Blockchain Basics & Real World Use"):
             st.subheader("1. What IS a Blockchain?")
             st.write("Think of a Blockchain like a **shared Google Sheet** that everyone can read, but NO ONE can delete.")
@@ -182,7 +181,6 @@ else:
             st.link_button("📄 Read the Bitcoin Whitepaper (PDF)", "https://bitcoin.org/bitcoin.pdf")
 
         with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
-            
             st.subheader("1. What makes it 'Smart'?")
             st.write("A Smart Contract is just **Programmable Money**. It's code that holds money and releases it only when a condition is met.")
             st.info("💡 **Think:** 'If This Happens, Then Pay That.'")
@@ -266,32 +264,73 @@ else:
             st.subheader("💧 3. Liquid Staking")
             st.write("Regular staking locks your money. **Liquid Staking** gives you a 'Receipt Token' (stETH) that you can still use/sell.")
 
-        with st.expander("Lesson 4: What actually IS a Wallet? (Keys explained)"):
-            st.subheader("1. The Big Misconception: 'The Bag vs. The Browser'")
-            st.write("The wallet is just a **Web Browser** that views your money on the blockchain. It does not store the money inside.")
+        # --- EXPANDED LESSON 4 ---
+        with st.expander("Lesson 4: What actually IS a Wallet? (A Beginner's Guide)"):
+            
+            st.subheader("1. The Big Misconception")
+            st.write("""
+            **Stop thinking of it as a 'Leather Wallet'.**
+            Your crypto is **NOT** inside the app. It is **NOT** inside the USB stick.
+            
+            * **The Blockchain:** Is the cloud (like Google Drive) where the money lives.
+            * **Your Wallet:** Is just the **Password (Key)** that lets you move that money.
+            
+            *If you lose your phone, your money is still safe on the cloud... IF you have your Key.*
+            """)
             
             st.divider()
-            st.subheader("2. The Keys: Public vs. Private")
+
+            st.subheader("2. The Email Analogy (Public vs. Private Keys)")
+            st.write("Every wallet comes with a Key Pair. It works exactly like Email.")
+            
             c_key1, c_key2 = st.columns(2)
             with c_key1:
-                st.success("🟢 Public Key (The 'Account Number')")
-                st.write("Like your Email Address. Safe to share.")
+                st.success("🟢 Public Key (The Address)")
+                st.write("""
+                * **Like your:** Email Address.
+                * **Function:** You give this to people so they can send you money.
+                * **Safety:** 100% Safe to share on Instagram/Twitter.
+                * **Looks like:** `0x71C...9A23`
+                """)
             with c_key2:
-                st.error("🔴 Private Key (The 'PIN Code')")
-                st.write("Like your Password. NEVER share this.")
-                
+                st.error("🔴 Private Key (The Seed Phrase)")
+                st.write("""
+                * **Like your:** Email Password.
+                * **Function:** This signs the check to move the money out.
+                * **Safety:** NEVER SHARE THIS. Anyone who sees it owns your money.
+                * **Looks like:** 12 random words (`apple river galaxy...`).
+                """)
+
             st.divider()
-            st.write("**Types of Wallets:**")
-            st.write("* **Hot Wallet:** Online app (Coinbase). Good for spending.")
-            st.write("* **Cold Wallet:** Offline USB (Ledger). Good for saving.")
+
+            st.subheader("3. Hot vs. Cold Wallets (Which do I need?)")
+            
+            c_hot, c_cold = st.columns(2)
+            with c_hot:
+                st.warning("🔥 Hot Wallet (Software)")
+                st.write("""
+                * **What is it?** An app on your phone (like Coinbase Wallet).
+                * **Best for:** Spending, trading, small amounts.
+                * **Risk:** It's connected to the internet, so hackers *could* reach it.
+                """)
+            with c_cold:
+                st.info("❄️ Cold Wallet (Hardware)")
+                st.write("""
+                * **What is it?** A USB stick (like Ledger) that stays offline.
+                * **Best for:** Life savings, long-term holding.
+                * **Security:** Unhackable unless you physically give it away.
+                """)
+
+            st.divider()
+            st.write("**Top Recommendations:**")
             
             btn1, btn2, btn3 = st.columns(3)
             with btn1:
-                st.link_button("Coinbase (App) ↗", "https://www.coinbase.com")
+                st.link_button("Coinbase (Hot Wallet) ↗", "https://www.coinbase.com")
             with btn2:
-                st.link_button("Ledger (USB) ↗", "https://www.ledger.com")
+                st.link_button("Ledger (Cold Wallet) ↗", "https://www.ledger.com")
             with btn3:
-                st.link_button("Tangem (Card) ↗", "https://tangem.com")
+                st.link_button("Tangem (Card Wallet) ↗", "https://tangem.com")
 
         with st.expander("Lesson 5: 🛡️ Security & Scams (THE SURVIVAL GUIDE)"):
             st.error("⚠️ THE GOLDEN RULE: Never, ever share your Seed Phrase with anyone. Support will NEVER ask for it.")
