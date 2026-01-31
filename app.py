@@ -66,40 +66,25 @@ tab_learn, tab_sim, tab_data = st.tabs(["📖 Learn Concepts", "🧪 Lab Simulat
 with tab_learn:
     st.header("Blockchain Fundamentals")
     
-    # --- EXPANDED LESSON 1 ---
     with st.expander("Lesson 1: Blockchain Basics & Real World Use"):
         st.subheader("1. The Origin")
-        st.write("""
-        In 2008, an anonymous person named **Satoshi Nakamoto** released a document that changed the world. 
-        It proposed a "Peer-to-Peer Electronic Cash System" that didn't need a bank.
-        """)
+        st.write("In 2008, Satoshi Nakamoto released the Bitcoin Whitepaper.")
         st.link_button("📄 Read the Bitcoin Whitepaper (PDF)", "https://bitcoin.org/bitcoin.pdf")
         
         st.divider()
-        
-        st.subheader("2. It's Not Just for Money (Real World Use)")
-        st.write("Blockchain is just a **Public Digital Ledger**. Companies use it for trust, not just trading.")
-        
+        st.subheader("2. Real World Use")
         c_use1, c_use2 = st.columns(2)
         with c_use1:
             st.info("🚚 **Supply Chain (Walmart)**")
-            st.write("Walmart uses blockchain to track lettuce from farm to store. If there is E. coli, they can trace exactly which farm it came from in seconds, not weeks.")
+            st.write("Tracking food from farm to store to prevent disease.")
         with c_use2:
             st.info("🏥 **Healthcare Records**")
-            st.write("Hospitals can store patient data on a private blockchain. You control your own data key, so you can share your history with a new doctor instantly.")
+            st.write("Patient data controlled by the patient, not the hospital.")
             
         st.divider()
+        st.write("**The Flavors:** ETH (Truck), SOL (Race Car), AVAX (Fleet), BASE (Express Lane).")
 
-        st.subheader("3. The 'Flavors' of Blockchain")
-        st.write("Not all blockchains are the same. They are like vehicles:")
-        c1, c2 = st.columns(2)
-        with c1:
-            st.markdown("**Ethereum (The Semi-Truck):** Secure, heavy duty, carries high value, but slow.")
-            st.markdown("**Solana (The Race Car):** Extremely fast and cheap, but less stable.")
-        with c2:
-            st.markdown("**Avalanche (The Fleet):** Custom networks for gaming/business.")
-            st.markdown("**Base (The Express Lane):** Built on top of Ethereum to make it faster.")
-
+    # --- EXPANDED LESSON 2 ---
     with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
         st.subheader("1. The Vending Machine Analogy")
         st.write("""
@@ -109,7 +94,32 @@ with tab_learn:
         * **Output:** The machine *must* drop the soda. 
         """)
         
-        st.subheader("2. Kickstarter Example")
+        st.divider()
+        
+        st.subheader("2. Try it Real Life (Live Apps)")
+        st.write("These are not websites run by companies. They are **Smart Contracts** that run themselves.")
+        
+        c_app1, c_app2 = st.columns(2)
+        
+        with c_app1:
+            st.info("🏦 **Aave (on Ethereum)**")
+            st.write("""
+            **What is it?** A global lending pool.
+            **Smart Contract:** If you deposit ETH, the code automatically pays you interest from borrowers. No bank manager involved.
+            """)
+            st.link_button("Visit Aave Protocol ↗", "https://aave.com")
+            
+        with c_app2:
+            st.info("⚡ **Drift (on Solana)**")
+            st.write("""
+            **What is it?** A high-speed trading floor.
+            **Smart Contract:** You can trade with leverage (borrowed money). The code manages the risk and executes trades in milliseconds.
+            """)
+            st.link_button("Visit Drift Protocol ↗", "https://www.drift.trade")
+
+        st.divider()
+        
+        st.subheader("3. Kickstarter Code Example")
         st.write("Imagine a fundraising site where the money is *only* released if the goal is met.")
         st.code("""
         function fund_project():
