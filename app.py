@@ -149,12 +149,9 @@ else:
     with tab_learn:
         st.header("Blockchain Fundamentals")
         
-        # --- EXPANDED & SIMPLIFIED LESSON 1 ---
         with st.expander("Lesson 1: Blockchain Basics (For Total Beginners)"):
-            
             st.subheader("1. The Simple Analogy: 'The Group Chat'")
             st.write("Imagine a **WhatsApp Group Chat** with your friends, but it has 2 special rules:")
-            
             c_chat1, c_chat2 = st.columns(2)
             with c_chat1:
                 st.info("👁️ Rule 1: Everyone Sees Everything")
@@ -162,37 +159,22 @@ else:
             with c_chat2:
                 st.info("🔒 Rule 2: No Deleting")
                 st.write("Once a message is sent, it is carved in stone. You cannot delete it. You cannot edit it.")
-                
             st.write("**That is a Blockchain.** It is just a record of events that everyone has a copy of, and no one can erase.")
-
             st.divider()
-
             st.subheader("2. Why do we need this? (The 'Trust' Problem)")
             st.write("In the normal world, we need **Middlemen** to build trust.")
-            
             st.warning("🏦 **The Old Way (Bank):** If I send you $50, the Bank has to verify I have the money. We trust the Bank.")
             st.success("⛓️ **The New Way (Blockchain):** The 'Group Chat' verifies I have the money because everyone has the history. We don't need the Bank.")
-
             st.divider()
-            
-            st.subheader("3. Real Life Examples (Not just money!)")
+            st.subheader("3. Real Life Examples")
             st.write("Since we can prove who owns what without a middleman, we can fix annoying real-world problems.")
-            
             c_ex1, c_ex2 = st.columns(2)
             with c_ex1:
                 st.info("👟 **Nike Sneakers (Authenticity)**")
-                st.write("""
-                **Problem:** You buy Jordans on eBay. Are they fake?
-                **Solution:** The shoe comes with a 'Digital Token' on the blockchain. You scan it, and the blockchain confirms it came from the Nike factory.
-                """)
+                st.write("The shoe comes with a 'Digital Token'. You scan it, and the blockchain confirms it came from the Nike factory.")
             with c_ex2:
                 st.info("🎟️ **Concert Tickets (Ticketmaster)**")
-                st.write("""
-                **Problem:** You buy a Taylor Swift ticket from a scalper. It's a photocopy. You get denied at the gate.
-                **Solution:** Blockchain tickets cannot be photocopied. You can check on your phone if the ticket is real instantly.
-                """)
-            
-            
+                st.write("Blockchain tickets cannot be photocopied. You can check on your phone if the ticket is real instantly.")
 
         with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
             st.subheader("1. What makes it 'Smart'?")
@@ -273,22 +255,53 @@ else:
             with btn3:
                 st.link_button("Tangem (Card Wallet) ↗", "https://tangem.com")
 
-        with st.expander("Lesson 5: 🛡️ Security & Scams (THE SURVIVAL GUIDE)"):
-            st.error("⚠️ THE GOLDEN RULE: Never, ever share your Seed Phrase with anyone. Support will NEVER ask for it.")
-            st.subheader("1. Storage Security")
-            st.write("* **✅ CORRECT:** Write it on paper. Store in physical safe.\n* **❌ WRONG:** Screenshot, Google Drive, Email.")
+        # --- REWRITTEN LESSON 5 (For Beginners) ---
+        with st.expander("Lesson 5: 🛡️ Security (How Not To Lose Money)"):
+            st.subheader("1. The Golden Rule: The '12 Words'")
+            st.write("When you create a wallet, it gives you 12 random words. This is your **Master Key**.")
+            st.error("⚠️ IMPORTANT: If you lose these words, your money is gone forever. There is no 'Forgot Password' button.")
+            
             st.divider()
-            st.subheader("2. Advanced Threats")
-            c_scam_1, c_scam_2 = st.columns(2)
-            with c_scam_1:
-                st.warning("📋 **Clipboard Hijacking**")
-                st.write("Malware that swaps copied addresses. Always check the first 4 and last 4 digits.")
-            with c_scam_2:
-                st.warning("🔓 **The 'Unlimited Approval' Trap**")
-                st.write("Fake sites ask for unlimited permission. Read the popup before clicking Approve.")
+            
+            st.subheader("2. Where to hide the Key?")
+            st.write("Imagine these 12 words are a gold bar. Where would you put it?")
+            
+            c_safe, c_danger = st.columns(2)
+            with c_safe:
+                st.success("✅ The Safe Way")
+                st.write("""
+                * Write it on **Paper** or metal.
+                * Put it in a real, physical safe or a hidden spot.
+                * **Why?** Hackers cannot hack a piece of paper in your drawer.
+                """)
+            with c_danger:
+                st.error("❌ The Dangerous Way")
+                st.write("""
+                * Taking a **Screenshot**.
+                * Saving it in **Notes** or **Email**.
+                * **Why?** Many apps scan your photos. If your email gets hacked, they find the words and steal your money.
+                """)
+                
             st.divider()
-            st.subheader("3. Daily Habits")
-            st.write("1. **The $1 Test**\n2. **No SMS 2FA**\n3. **Bookmark Everything**")
+            
+            st.subheader("3. Common Tricks (The 'Fake Envelope')")
+            st.write("Hackers don't usually 'break in'. They trick you into opening the door.")
+            
+            st.warning("📋 **The Copy-Paste Trick (Clipboard Hijacking)**")
+            st.write("""
+            **The Trick:** You copy your friend's address. A virus on your computer secretly changes the address when you paste it.
+            **The Fix:** Always read the **First 4** and **Last 4** letters after pasting. 
+            * Expected: `0x71...9A23`
+            * Pasted: `0x71...9A23` (Good!)
+            """)
+            
+            st.warning("🚗 **The Valet Key (Unlimited Approvals)**")
+            st.write("""
+            **The Trick:** When you connect to a website, it asks for permission.
+            **The Fix:** Read the pop-up!
+            * **Safe:** "Allow this site to view my balance."
+            * **Dangerous:** "Allow this site to spend Unlimited USDC." (This is like giving a valet the keys to your house, not just your car.)
+            """)
 
     # --- TAB 2: THE SANDBOX ---
     with tab_sim:
