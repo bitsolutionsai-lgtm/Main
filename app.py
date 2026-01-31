@@ -76,53 +76,65 @@ with tab_learn:
             st.info("**Avalanche:** Custom networks.")
             st.info("**Base:** Cheap transactions on Ethereum.")
 
-    # --- EXPANDED LESSON 2 ---
     with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
         st.subheader("1. The Vending Machine Analogy")
         st.write("""
-        A traditional contract (like buying a house) requires lawyers, notaries, and banks to verify it.
-        
-        A **Smart Contract** is like a **Vending Machine**:
+        A Smart Contract is like a **Vending Machine**:
         * **Input:** You insert $2.00.
         * **Logic:** You press 'A1'.
         * **Output:** The machine *must* drop the soda. 
-        * **No Employee Needed:** The machine doesn't get tired, doesn't need a bribe, and can't change its mind.
         """)
         
-        st.divider()
-        
-        st.subheader("2. Real World Examples")
-        c_ex1, c_ex2 = st.columns(2)
-        with c_ex1:
-            st.info("🏦 **DeFi Lending (Aave)**")
-            st.write("You want to borrow money. Instead of a bank credit check, the code says: *'If user deposits 1 Bitcoin collateral, let them borrow $50,000. If Bitcoin drops 20%, sell it to pay back the loan.'*")
-        with c_ex2:
-            st.info("🎨 **NFTs & Gaming**")
-            st.write("In a video game: *'If player defeats the Boss Level, automatically generate the Golden Sword NFT and send it to their wallet.'* No game master needed.")
-
-        st.divider()
-        
-        st.subheader("3. See the Logic (Kickstarter Example)")
+        st.subheader("2. Kickstarter Example")
         st.write("Imagine a fundraising site where the money is *only* released if the goal is met.")
         st.code("""
-        # This code lives on the blockchain forever
         function fund_project():
             if total_donations >= $10,000:
                 send_money_to_creator()
             else:
                 refund_all_donors()
         """, language="python")
-        
-        st.warning("⚠️ **Note:** Once deployed, this code cannot be changed. If there is a bug, it stays there. This is why 'Audits' are so important in crypto.")
 
-    with st.expander("Lesson 3: Consensus & Staking"):
-        st.write("How strangers agree on truth.")
-        c1, c2 = st.columns(2)
-        with c1:
-            st.warning("Miners (Proof of Work): Solve puzzles.")
-        with c2:
-            st.success("Validators (Proof of Stake): Lock up money.")
-        st.info("Liquid Staking = Valet Parking (Get a claim ticket for your parked car).")
+    # --- EXPANDED LESSON 3 ---
+    with st.expander("Lesson 3: Consensus & Liquid Staking (The 'Valet' Analogy)"):
+        st.write("In crypto, there is no CEO. So how do we agree on the truth? We use **Consensus**.")
+        
+        c_pow, c_pos = st.columns(2)
+        
+        with c_pow:
+            st.subheader("⛏️ Proof of Work (Bitcoin)")
+            st.info("**The 'Sudoku Puzzle'**")
+            st.write("""
+            Miners race to solve a super-hard math puzzle.
+            * **Pros:** Extremely secure (Bitcoin has never been hacked).
+            * **Cons:** Uses massive amounts of electricity.
+            """)
+            
+        with c_pos:
+            st.subheader("🥩 Proof of Stake (Ethereum)")
+            st.info("**The 'Security Deposit'**")
+            st.write("""
+            Validators lock up their own money (ETH) as a bond.
+            * **Pros:** 99% less energy usage.
+            * **Cons:** If you act badly, the network takes your deposit ("Slashing").
+            """)
+            
+        st.divider()
+        
+        st.subheader("💧 The Magic of 'Liquid Staking'")
+        st.warning("The Problem: Regular Staking locks your money. You can't spend it.")
+        
+        st.write("""
+        **The Solution: The Valet Parking Analogy**
+        
+        1. **Park Your Car (Stake ETH):** You give your ETH to a protocol (like Lido).
+        2. **Get a Ticket (Receive stETH):** They give you a "Claim Ticket" token.
+        3. **Use the Ticket:** Here is the magic part—**The Ticket is worth money!**
+        
+        You can sell the ticket, lend the ticket, or trade the ticket... all while your original car is still parked and earning interest.
+        """)
+        
+        st.success("✅ **Result:** You get the staking rewards (Parking Yield) + You have liquid funds to use (The Ticket).")
 
     with st.expander("Lesson 4: What actually IS a Wallet?"):
         st.subheader("1. The Big Misconception")
