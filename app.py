@@ -203,7 +203,8 @@ else:
                 st.info("⚡ **Drift (Trading)**")
                 st.link_button("Visit Drift ↗", "https://www.drift.trade")
 
-        with st.expander("Lesson 3: The 3 Types of Staking (Detailed Breakdown)"):
+        # --- EXPANDED LESSON 3 (Liquid Staking) ---
+        with st.expander("Lesson 3: The 3 Types of Staking (Expanded Liquid Staking)"):
             st.write("In crypto, there is no CEO. The network runs itself. But how do we stop people from cheating? We use **Consensus Mechanisms**.")
             c_pow, c_pos = st.columns(2)
             with c_pow:
@@ -214,9 +215,36 @@ else:
                 st.subheader("🥩 2. Proof of Stake (Ethereum)")
                 st.info("**The 'Financial Bond'**")
                 st.write("Validators lock up money. If they cheat, they lose the money.")
+            
             st.divider()
-            st.subheader("💧 3. Liquid Staking")
-            st.write("Regular staking locks your money. **Liquid Staking** gives you a 'Receipt Token' (stETH) that you can still use/sell.")
+            
+            st.subheader("💧 3. Liquid Staking (The Smart Solution)")
+            st.write("This is the most popular form of staking today. It solves the biggest problem with normal staking: **Locking your money.**")
+
+            st.markdown("#### The Analogy: The Coat Check Ticket")
+            c_liq1, c_liq2 = st.columns(2)
+            
+            with c_liq1:
+                st.warning("🚫 Normal Staking (Coat Check)")
+                st.write("""
+                * You give your coat (ETH) to the attendant.
+                * It is locked in the room. 
+                * You **cannot** wear it or trade it until you leave the party.
+                """)
+                
+            with c_liq2:
+                st.success("✅ Liquid Staking (The Ticket)")
+                st.write("""
+                * You give your coat (ETH) to the attendant.
+                * They give you a **Paper Ticket** (stETH).
+                * **The Magic:** This ticket is worth exactly 1 Coat. You can sell the ticket, lend the ticket, or use the ticket while the coat stays safe.
+                """)
+            
+            st.divider()
+            st.write("**Why is this better?**")
+            st.write("If the market crashes, normal stakers are stuck waiting days to 'unlock' their money. Liquid stakers can just sell the ticket (stETH) instantly on an app like Uniswap.")
+            
+            st.info("**Real World Examples:** Lido (stETH), Rocket Pool (rETH), Jito (JitoSOL).")
 
         with st.expander("Lesson 4: What actually IS a Wallet? (A Beginner's Guide)"):
             st.subheader("1. The Big Misconception")
@@ -255,7 +283,6 @@ else:
             with btn3:
                 st.link_button("Tangem (Card Wallet) ↗", "https://tangem.com")
 
-        # --- REWRITTEN LESSON 5 (For Beginners) ---
         with st.expander("Lesson 5: 🛡️ Security (How Not To Lose Money)"):
             st.subheader("1. The Golden Rule: The '12 Words'")
             st.write("When you create a wallet, it gives you 12 random words. This is your **Master Key**.")
