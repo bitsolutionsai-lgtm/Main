@@ -95,46 +95,21 @@ with tab_learn:
                 refund_all_donors()
         """, language="python")
 
-    # --- EXPANDED LESSON 3 ---
     with st.expander("Lesson 3: Consensus & Liquid Staking (The 'Valet' Analogy)"):
         st.write("In crypto, there is no CEO. So how do we agree on the truth? We use **Consensus**.")
-        
         c_pow, c_pos = st.columns(2)
-        
         with c_pow:
             st.subheader("⛏️ Proof of Work (Bitcoin)")
             st.info("**The 'Sudoku Puzzle'**")
-            st.write("""
-            Miners race to solve a super-hard math puzzle.
-            * **Pros:** Extremely secure (Bitcoin has never been hacked).
-            * **Cons:** Uses massive amounts of electricity.
-            """)
-            
+            st.write("Miners race to solve hard math puzzles. Secure, but high energy.")
         with c_pos:
             st.subheader("🥩 Proof of Stake (Ethereum)")
             st.info("**The 'Security Deposit'**")
-            st.write("""
-            Validators lock up their own money (ETH) as a bond.
-            * **Pros:** 99% less energy usage.
-            * **Cons:** If you act badly, the network takes your deposit ("Slashing").
-            """)
+            st.write("Validators lock up money as a bond. Efficient, but strict rules.")
             
         st.divider()
-        
-        st.subheader("💧 The Magic of 'Liquid Staking'")
-        st.warning("The Problem: Regular Staking locks your money. You can't spend it.")
-        
-        st.write("""
-        **The Solution: The Valet Parking Analogy**
-        
-        1. **Park Your Car (Stake ETH):** You give your ETH to a protocol (like Lido).
-        2. **Get a Ticket (Receive stETH):** They give you a "Claim Ticket" token.
-        3. **Use the Ticket:** Here is the magic part—**The Ticket is worth money!**
-        
-        You can sell the ticket, lend the ticket, or trade the ticket... all while your original car is still parked and earning interest.
-        """)
-        
-        st.success("✅ **Result:** You get the staking rewards (Parking Yield) + You have liquid funds to use (The Ticket).")
+        st.subheader("💧 Liquid Staking (The 'Valet' Analogy)")
+        st.warning("Regular staking locks your car. Liquid staking gives you a claim ticket you can still use.")
 
     with st.expander("Lesson 4: What actually IS a Wallet?"):
         st.subheader("1. The Big Misconception")
@@ -155,8 +130,38 @@ with tab_learn:
         st.write("* **Cold Wallet:** Offline USB (Ledger). Good for saving.")
         st.link_button("Download Coinbase App (Hot Wallet) ↗", "https://www.coinbase.com")
 
-    with st.expander("Lesson 5: 🛡️ Security & Scams"):
-        st.error("⚠️ THE GOLDEN RULE: Never share your Seed Phrase.")
+    # --- EXPANDED LESSON 5 ---
+    with st.expander("Lesson 5: 🛡️ Security & Scams (HOW TO SURVIVE)"):
+        st.error("⚠️ THE GOLDEN RULE: Never, ever share your Seed Phrase with anyone. Support will NEVER ask for it.")
+        
+        st.subheader("1. The 'Paper vs. Cloud' Rule")
+        st.write("""
+        When you create a wallet, you get 12-24 words.
+        * **✅ CORRECT:** Write them on paper. Store it in a fireproof safe or lockbox.
+        * **❌ WRONG:** Do not take a screenshot. Do not save it in Google Drive. Do not email it to yourself. If your cloud gets hacked, your money is gone.
+        """)
+        
+        st.divider()
+        
+        st.subheader("2. Common Attack Vectors")
+        
+        c_scam_1, c_scam_2 = st.columns(2)
+        
+        with c_scam_1:
+            st.warning("🎣 **Phishing Sites**")
+            st.write("""
+            Hackers buy Google Ads to make fake sites look real.
+            * **Fake:** `www.coinbaze.com`
+            * **Real:** `www.coinbase.com`
+            * **Tip:** Always bookmark the real site and ONLY use your bookmark.
+            """)
+            
+        with c_scam_2:
+            st.warning("📱 **SIM Swapping (2FA)**")
+            st.write("""
+            Hackers can trick AT&T/Verizon into transferring your phone number to them. They then intercept your 2FA texts.
+            * **Fix:** Never use SMS for 2FA. Always use an app like **Google Authenticator** or a YubiKey.
+            """)
 
 # --- TAB 2: THE SANDBOX ---
 with tab_sim:
