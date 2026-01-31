@@ -124,21 +124,47 @@ with tab_learn:
                 refund_all_donors()
         """, language="python")
 
-    with st.expander("Lesson 3: Consensus & Liquid Staking (The 'Valet' Analogy)"):
-        st.write("In crypto, there is no CEO. So how do we agree on the truth? We use **Consensus**.")
+    # --- EXPANDED LESSON 3 ---
+    with st.expander("Lesson 3: The 3 Types of Staking (Detailed Breakdown)"):
+        st.write("In crypto, there is no CEO. The network runs itself. But how do we stop people from cheating? We use **Consensus Mechanisms**.")
+        
         c_pow, c_pos = st.columns(2)
+        
         with c_pow:
-            st.subheader("⛏️ Proof of Work (Bitcoin)")
-            st.info("**The 'Sudoku Puzzle'**")
-            st.write("Miners race to solve hard math puzzles. Secure, but high energy.")
+            st.subheader("⛏️ 1. Proof of Work (Bitcoin)")
+            st.info("**The 'Hardware Race'**")
+            st.write("""
+            * **Who runs it:** "Miners" with powerful computers.
+            * **How it works:** They race to solve a math puzzle. The winner gets to write the next block.
+            * **Security:** To hack Bitcoin, you would need more electricity than a small country.
+            * **Downside:** Very slow and energy-intensive.
+            """)
+            
         with c_pos:
-            st.subheader("🥩 Proof of Stake (Ethereum)")
-            st.info("**The 'Security Deposit'**")
-            st.write("Validators lock up money as a bond. Efficient, but strict rules.")
+            st.subheader("🥩 2. Proof of Stake (Ethereum)")
+            st.info("**The 'Financial Bond'**")
+            st.write("""
+            * **Who runs it:** "Validators" who lock up money (32 ETH).
+            * **How it works:** The network randomly picks a validator to write the next block.
+            * **Security (Slashing):** If a validator tries to cheat, the network **confiscates** their money. This penalty is called "Slashing."
+            * **Downside:** Rich get richer (you need money to start).
+            """)
             
         st.divider()
-        st.subheader("💧 Liquid Staking (The 'Valet' Analogy)")
-        st.warning("Regular staking locks your car. Liquid staking gives you a claim ticket you can still use.")
+        
+        st.subheader("💧 3. Liquid Staking (The Modern Solution)")
+        st.write("The problem with regular staking (Proof of Stake) is that your money is **locked**. You cannot sell it if an emergency happens.")
+        
+        st.success("**The Solution: The Valet Parking Receipt**")
+        st.write("""
+        1. **You Stake:** You give your ETH to a protocol (like Lido).
+        2. **You Get a Receipt:** They give you a token called `stETH` (Stamped ETH).
+        3. **The Magic:**
+           * The `stETH` **automatically increases** in value every day as rewards come in.
+           * You can **sell** the `stETH` at any time on the market.
+           * You can use `stETH` as collateral to borrow money.
+        """)
+        st.caption("Summary: Liquid Staking gives you the rewards of staking without the 'lock-up' period.")
 
     with st.expander("Lesson 4: What actually IS a Wallet? (Keys explained)"):
         st.subheader("1. The Big Misconception: 'The Bag vs. The Browser'")
@@ -159,7 +185,6 @@ with tab_learn:
         st.write("* **Hot Wallet:** Online app (Coinbase). Good for spending.")
         st.write("* **Cold Wallet:** Offline USB (Ledger). Good for saving.")
         
-        # --- UPDATED: 3 BUTTONS (Coinbase, Ledger, Tangem) ---
         btn1, btn2, btn3 = st.columns(3)
         with btn1:
             st.link_button("Coinbase (App) ↗", "https://www.coinbase.com")
