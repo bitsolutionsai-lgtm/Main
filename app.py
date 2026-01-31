@@ -209,29 +209,33 @@ else:
             st.subheader("💧 3. Liquid Staking")
             st.write("Regular staking locks your money. **Liquid Staking** gives you a 'Receipt Token' (stETH) that you can still use/sell.")
 
-        with st.expander("Lesson 4: What actually IS a Wallet? (Deep Dive)"):
+        # --- REVERTED LESSON 4 (Back to Original) ---
+        with st.expander("Lesson 4: What actually IS a Wallet? (Keys explained)"):
             st.subheader("1. The Big Misconception: 'The Bag vs. The Browser'")
-            st.write("Your wallet does **not** store your crypto. Your crypto lives on the Blockchain (the cloud). Your wallet is just the **Password Manager** or **Browser** that lets you access it.")
+            st.write("The wallet is just a **Web Browser** that views your money on the blockchain. It does not store the money inside.")
             
             st.divider()
-            st.subheader("2. Custodial vs. Non-Custodial (Crucial!)")
-            c_cust, c_noncust = st.columns(2)
-            with c_cust:
-                st.warning("🏨 **Custodial (The Bank)**")
-                st.write("**Example:** Coinbase. They hold the keys. If they go bankrupt, your money is gone.")
-            with c_noncust:
-                st.success("🏰 **Non-Custodial (The Safe)**")
-                st.write("**Example:** Ledger. YOU hold the keys. Total control.")
-
+            st.subheader("2. The Keys: Public vs. Private")
+            c_key1, c_key2 = st.columns(2)
+            with c_key1:
+                st.success("🟢 Public Key (The 'Account Number')")
+                st.write("Like your Email Address. Safe to share.")
+            with c_key2:
+                st.error("🔴 Private Key (The 'PIN Code')")
+                st.write("Like your Password. NEVER share this.")
+                
             st.divider()
-            st.write("**Recommended Wallets:**")
+            st.write("**Types of Wallets:**")
+            st.write("* **Hot Wallet:** Online app (Coinbase). Good for spending.")
+            st.write("* **Cold Wallet:** Offline USB (Ledger). Good for saving.")
+            
             btn1, btn2, btn3 = st.columns(3)
             with btn1:
-                st.link_button("Coinbase (App / Custodial) ↗", "https://www.coinbase.com")
+                st.link_button("Coinbase (App) ↗", "https://www.coinbase.com")
             with btn2:
-                st.link_button("Ledger (USB / Non-Custodial) ↗", "https://www.ledger.com")
+                st.link_button("Ledger (USB) ↗", "https://www.ledger.com")
             with btn3:
-                st.link_button("Tangem (Card / Non-Custodial) ↗", "https://tangem.com")
+                st.link_button("Tangem (Card) ↗", "https://tangem.com")
 
         # --- EXPANDED LESSON 5 ---
         with st.expander("Lesson 5: 🛡️ Security & Scams (THE SURVIVAL GUIDE)"):
