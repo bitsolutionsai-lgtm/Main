@@ -66,88 +66,73 @@ tab_learn, tab_sim, tab_data = st.tabs(["📖 Learn Concepts", "🧪 Lab Simulat
 with tab_learn:
     st.header("Blockchain Fundamentals")
     
-    # --- EXPANDED LESSON 1 ---
     with st.expander("Lesson 1: The 'Flavors' of Blockchain (ETH, SOL, AVAX, BASE)"):
         st.write("""
-        Not all blockchains are the same. Think of them like **vehicles**—some are built for heavy cargo, some for racing, and some for cheap commuting.
+        Not all blockchains are the same. Think of them like **vehicles**—some are built for heavy cargo, some for racing.
         """)
-        
         c1, c2 = st.columns(2)
-        
         with c1:
-            st.markdown("### 🔵 Ethereum (The World Computer)")
-            st.info("**Role: The Heavy Duty Semi-Truck**")
-            st.write("""
-            * **What is it?** The first blockchain to introduce Smart Contracts.
-            * **Pros:** Extremely secure, massive ecosystem, most money is here.
-            * **Cons:** Can be slow and expensive ("Gas Fees") during busy times.
-            """)
-            
-            st.markdown("### 🟣 Solana (The Speedster)")
-            st.info("**Role: The F1 Race Car**")
-            st.write("""
-            * **What is it?** Built purely for speed and low cost.
-            * **Pros:** Transactions cost $0.0001 and settle in milliseconds.
-            * **Cons:** Has had network outages in the past (sacrifices some stability for speed).
-            """)
-
+            st.info("**Ethereum (The Semi-Truck):** Secure, heavy duty, but can be slow.")
+            st.info("**Solana (The Race Car):** Fast and cheap, but has had engine trouble.")
         with c2:
-            st.markdown("### 🔺 Avalanche (The Network of Networks)")
-            st.info("**Role: The Fleet of Custom Vans**")
-            st.write("""
-            * **What is it?** Allows companies to build their *own* custom blockchains ("Subnets").
-            * **Pros:** Highly scalable; gaming companies love it.
-            * **Cons:** More complex to understand than a single chain.
-            """)
-            
-            st.markdown("### 🔵 Base (The Layer 2 Helper)")
-            st.info("**Role: The Express Lane**")
-            st.write("""
-            * **What is it?** Base is built *on top* of Ethereum (by Coinbase).
-            * **How it works:** It bundles 1,000 transactions into one package and sends it to Ethereum.
-            * **Result:** You get Ethereum's security but with 90% lower fees.
-            """)
+            st.info("**Avalanche (The Fleet):** Custom networks for specific businesses.")
+            st.info("**Base (The Express Lane):** Built on top of Ethereum to save costs.")
 
     with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
-        st.subheader("1. The Vending Machine Analogy")
-        st.write("""
-        A Smart Contract is like a **Vending Machine**:
-        * **You put money in.**
-        * **The machine drops the snack.**
-        * **No middleman required.** The machine *cannot* cheat you.
-        """)
-        
-        st.subheader("2. Real World Example: Flight Insurance")
-        st.write("""
-        **Old Way:** Call insurance, wait on hold, fill forms, wait weeks.
-        **Smart Contract Way:** IF `Flight #902` is `Cancelled` -> THEN `Send $500` instantly.
-        """)
-        
+        st.subheader("The Vending Machine Analogy")
+        st.write("A Smart Contract is a vending machine: You put money in, the snack comes out. No employee needed.")
         st.code("""
         function pay_insurance():
             if flight_status == "CANCELLED":
                 send_money(customer, $500)
         """, language="python")
 
-    with st.expander("Lesson 3: Proof of Work vs. Stake"):
-        c1, c2 = st.columns(2)
-        with c1:
-            st.markdown("#### ⛏️ Proof of Work (Bitcoin)")
-            st.write("Miners use massive electricity to solve math puzzles.")
-        with c2:
-            st.markdown("#### 🥩 Proof of Stake (Ethereum)")
-            st.write("Validators 'lock up' their coins to secure the network.")
+    # --- EXPANDED LESSON 3 ---
+    with st.expander("Lesson 3: Consensus & Staking (How It Works)"):
+        st.write("How do strangers agree on who owns what without a bank? They use a 'Consensus Mechanism'.")
+        
+        col_pow, col_pos = st.columns(2)
+        
+        with col_pow:
+            st.subheader("⛏️ Proof of Work (Bitcoin)")
+            st.info("**The 'Sudoku Puzzle' Method**")
+            st.write("""
+            * **How it works:** Computers (Miners) race to solve a super-hard math puzzle. The winner gets to write the next page of the ledger.
+            * **Why it's secure:** To cheat, you would need more electricity than a small country.
+            * **Downside:** Uses a lot of energy.
+            """)
             
-    with st.expander("Lesson 4: Digital Wallets (Your Bank Account)"):
+        with col_pos:
+            st.subheader("🥩 Proof of Stake (Ethereum)")
+            st.info("**The 'Security Deposit' Method**")
+            st.write("""
+            * **How it works:** Instead of burning energy, Validators lock up their own money (32 ETH) as a security deposit.
+            * **Why it's secure:** If a Validator tries to cheat, the network confiscates their deposit (called "Slashing").
+            * **Benefit:** 99.9% less energy usage.
+            """)
+            
+        st.divider()
+        
+        st.subheader("💧 What is Liquid Staking?")
+        st.warning("Advanced Concept: Solving the 'Locked Money' Problem")
+        
         st.write("""
-        * **🔥 Hot Wallet:** App on your phone (e.g., Coinbase). Good for spending.
-        * **❄️ Cold Wallet:** USB stick (e.g., Ledger). Good for saving.
+        **The Problem:** When you stake ETH, it is locked. You can't sell it or use it. It's stuck.
+        
+        **The Solution (Liquid Staking):** Imagine **Valet Parking**.
+        1. You give your car (ETH) to the Valet (Lido or Rocket Pool).
+        2. The Valet gives you a **Claim Ticket** (`stETH`).
+        3. **The Magic:** This Claim Ticket has value! You can sell the ticket, lend the ticket, or use the ticket as collateral—all while your car is still parked safely.
+        
+        **Result:** You earn Staking Rewards (Parking Rewards) + You can still use your funds (The Ticket) in DeFi.
         """)
+
+    with st.expander("Lesson 4: Digital Wallets"):
+        st.write("Hot Wallets (Online Apps) vs Cold Wallets (Offline USB Sticks).")
         st.link_button("Download Coinbase App ↗", "https://www.coinbase.com")
 
-    with st.expander("Lesson 5: 🛡️ Security & Scams (CRITICAL)"):
+    with st.expander("Lesson 5: 🛡️ Security & Scams"):
         st.error("⚠️ THE GOLDEN RULE: Never share your Seed Phrase.")
-        st.write("If you lose your 12-word phrase, you lose your money forever. No bank can help you.")
 
 # --- TAB 2: THE SANDBOX ---
 with tab_sim:
@@ -185,7 +170,7 @@ with tab_data:
 
     btc = get_price("BTC-USD")
     eth = get_price("ETH-USD")
-    sol = get_price("SOL-USD") # Added Solana Price
+    sol = get_price("SOL-USD")
     
     m1, m2, m3 = st.columns(3)
     m1.metric("Bitcoin", f"${btc:,.0f}")
