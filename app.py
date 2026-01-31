@@ -11,13 +11,10 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- CUSTOM CSS (New Cyber Background) ---
+# --- CUSTOM CSS (Cyber Blue Theme) ---
 st.markdown("""
     <style>
-    /* BACKGROUND IMAGE SETTINGS 
-       New Image: A smooth, dark digital wave/circuit feel.
-       Tint: Slightly darker (0.90) to ensure text pops perfectly.
-    */
+    /* BACKGROUND IMAGE SETTINGS */
     .stApp {
         background-image: linear-gradient(rgba(0, 0, 0, 0.90), rgba(0, 0, 0, 0.90)), 
                           url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2940&auto=format&fit=crop');
@@ -30,12 +27,12 @@ st.markdown("""
     h1, h2, h3 { color: #FFFFFF !important; text-shadow: 0px 2px 4px rgba(0,0,0,0.5); }
     p, li { color: #E0E0E0 !important; font-size: 1.1em; line-height: 1.6; }
     
-    /* Info Boxes - made them slightly more transparent to blend with the cyber look */
+    /* Info Boxes */
     div[data-baseweb="notification"] {
         background-color: rgba(13, 71, 161, 0.8);
         color: white;
         border: 1px solid #1976D2;
-        backdrop-filter: blur(5px); /* Glassmorphism effect */
+        backdrop-filter: blur(5px);
     }
     
     /* Hide Menu */
@@ -161,7 +158,13 @@ with tab_learn:
         st.write("**Types of Wallets:**")
         st.write("* **Hot Wallet:** Online app (Coinbase). Good for spending.")
         st.write("* **Cold Wallet:** Offline USB (Ledger). Good for saving.")
-        st.link_button("Download Coinbase App (Hot Wallet) ↗", "https://www.coinbase.com")
+        
+        # --- NEW: SIDE BY SIDE BUTTONS ---
+        btn1, btn2 = st.columns(2)
+        with btn1:
+            st.link_button("Download Coinbase App (Hot Wallet) ↗", "https://www.coinbase.com")
+        with btn2:
+            st.link_button("Buy Ledger (Cold Wallet) ↗", "https://www.ledger.com")
 
     with st.expander("Lesson 5: 🛡️ Security & Scams (HOW TO SURVIVE)"):
         st.error("⚠️ THE GOLDEN RULE: Never, ever share your Seed Phrase with anyone. Support will NEVER ask for it.")
