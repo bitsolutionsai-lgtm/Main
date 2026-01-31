@@ -159,12 +159,14 @@ with tab_learn:
         st.write("* **Hot Wallet:** Online app (Coinbase). Good for spending.")
         st.write("* **Cold Wallet:** Offline USB (Ledger). Good for saving.")
         
-        # --- NEW: SIDE BY SIDE BUTTONS ---
-        btn1, btn2 = st.columns(2)
+        # --- UPDATED: 3 BUTTONS (Coinbase, Ledger, Tangem) ---
+        btn1, btn2, btn3 = st.columns(3)
         with btn1:
-            st.link_button("Download Coinbase App (Hot Wallet) ↗", "https://www.coinbase.com")
+            st.link_button("Coinbase (App) ↗", "https://www.coinbase.com")
         with btn2:
-            st.link_button("Buy Ledger (Cold Wallet) ↗", "https://www.ledger.com")
+            st.link_button("Ledger (USB) ↗", "https://www.ledger.com")
+        with btn3:
+            st.link_button("Tangem (Card) ↗", "https://tangem.com")
 
     with st.expander("Lesson 5: 🛡️ Security & Scams (HOW TO SURVIVE)"):
         st.error("⚠️ THE GOLDEN RULE: Never, ever share your Seed Phrase with anyone. Support will NEVER ask for it.")
