@@ -38,6 +38,14 @@ st.markdown("""
         background-color: #198754;
         color: #FFFFFF !important;
     }
+    
+    /* Code Block Styling */
+    code {
+        color: #e83e8c;
+        background-color: #f1f3f5;
+        padding: 2px 4px;
+        border-radius: 4px;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -66,14 +74,40 @@ with tab_learn:
         """)
         st.info("💡 Key Concept: 'Trustless' means you don't need to trust a stranger; you only need to trust the code.")
 
-    with st.expander("Lesson 2: Smart Contracts"):
+    # --- EXPANDED LESSON 2 ---
+    with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
+        st.subheader("1. The Vending Machine Analogy")
         st.write("""
-        A Smart Contract is just **digital vending machine code**.
-        * **Input:** You send 1 ETH.
-        * **Code:** If 1 ETH is received -> Send 1 NFT.
-        * **Output:** You get your NFT instantly.
+        Think of a traditional contract like a **Restaurant**: You order food, eat it, and then pay. If you refuse to pay, the restaurant has to call the police (a middleman).
+        
+        A Smart Contract is like a **Vending Machine**:
+        * **You put money in.**
+        * **The machine drops the snack.**
+        * **No middleman required.** The machine *cannot* cheat you. If you don't put money in, it gives no snack. If you do, it *must* give the snack.
         """)
         
+        st.subheader("2. Real World Example: Flight Insurance")
+        st.write("""
+        **Old Way:** Your flight is cancelled. You call insurance, wait on hold, fill out forms, and wait 3 weeks for a check.
+        
+        **Smart Contract Way:**
+        1. You buy a policy on the blockchain.
+        2. The contract is connected to Flight Data.
+        3. **IF** `Flight #902` is `Cancelled` -> **THEN** `Send $500 to Your Wallet` instantly.
+        """)
+        
+        st.subheader("3. The Logic (If-This-Then-That)")
+        st.code("""
+        # This is how the code actually thinks:
+        
+        function pay_insurance():
+            if flight_status == "CANCELLED":
+                send_money(customer_wallet, $500)
+            else:
+                keep_premium()
+        """, language="python")
+        st.success("Result: No lawyers, no waiting, no 'claim denied' by a human.")
+
     with st.expander("Lesson 3: Proof of Work vs. Stake"):
         c1, c2 = st.columns(2)
         with c1:
@@ -90,24 +124,11 @@ with tab_learn:
         """)
         st.link_button("Download Coinbase App ↗", "https://www.coinbase.com")
 
-    # --- NEW LESSON 5: SECURITY ---
     with st.expander("Lesson 5: 🛡️ Security & Scams (CRITICAL)"):
         st.error("⚠️ THE GOLDEN RULE: Never, ever share your Seed Phrase.")
-        
         st.write("""
-        **1. The Seed Phrase (Recovery Phase)**
-        When you create a wallet, you get 12-24 random words. 
-        * **If you lose these words:** You lose your money forever.
-        * **If someone else gets them:** They steal your money instantly.
-        * **Support will NEVER ask for this.**
-        
-        **2. Phishing Scams**
-        Hackers create fake websites that look like the real thing (e.g., `Coinbaze.com` instead of `Coinbase.com`).
-        * **Always check the URL.**
-        * **Bookmark your favorite sites.**
-        
-        **3. Two-Factor Authentication (2FA)**
-        Turn this on everywhere! Use an app like **Google Authenticator**, not SMS text messages (which can be hacked).
+        **1. The Seed Phrase:** 12-24 random words. If you lose them, you lose your money. If someone else gets them, they steal your money.
+        **2. Phishing:** Always check the URL (e.g., `Coinbaze.com` is a fake).
         """)
 
 # --- TAB 2: THE SANDBOX ---
