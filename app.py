@@ -86,12 +86,31 @@ with tab_learn:
 
     # --- EXPANDED LESSON 2 ---
     with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
-        st.subheader("1. The Vending Machine Analogy")
+        st.subheader("1. The Vending Machine Analogy (Deep Dive)")
         st.write("""
-        A Smart Contract is like a **Vending Machine**:
-        * **Input:** You insert $2.00.
-        * **Logic:** You press 'A1'.
-        * **Output:** The machine *must* drop the soda. 
+        The best way to understand a Smart Contract is to compare a **Barista** vs. a **Vending Machine**.
+        """)
+        
+        c_human, c_bot = st.columns(2)
+        
+        with c_human:
+            st.error("☕ The Human Way (The Barista)")
+            st.write("""
+            * **Subjective:** They might be tired, grumpy, or mishear your order.
+            * **Bias:** They might serve their friend before you.
+            * **Trust Required:** You have to trust that they won't steal your change.
+            """)
+            
+        with c_bot:
+            st.success("🤖 The Smart Contract (The Vending Machine)")
+            st.write("""
+            * **Deterministic:** If you put in $2.00, the soda drops. Every single time.
+            * **Unbiased:** It doesn't care who you are (rich, poor, famous).
+            * **Trustless:** You don't trust the machine; you trust the **mechanism**. If the money goes in, the product comes out.
+            """)
+            
+        st.write("""
+        **Why this matters for Crypto:** A Smart Contract locks the money inside the "machine." Nobody—not even the person who built the machine—can steal the funds once the code is running.
         """)
         
         st.divider()
@@ -103,24 +122,17 @@ with tab_learn:
         
         with c_app1:
             st.info("🏦 **Aave (on Ethereum)**")
-            st.write("""
-            **What is it?** A global lending pool.
-            **Smart Contract:** If you deposit ETH, the code automatically pays you interest from borrowers. No bank manager involved.
-            """)
+            st.write("Replaces the Bank. The code holds the money and pays interest automatically.")
             st.link_button("Visit Aave Protocol ↗", "https://aave.com")
             
         with c_app2:
             st.info("⚡ **Drift (on Solana)**")
-            st.write("""
-            **What is it?** A high-speed trading floor.
-            **Smart Contract:** You can trade with leverage (borrowed money). The code manages the risk and executes trades in milliseconds.
-            """)
+            st.write("Replaces the Stock Broker. The code executes trades instantly.")
             st.link_button("Visit Drift Protocol ↗", "https://www.drift.trade")
 
         st.divider()
         
-        st.subheader("3. Kickstarter Code Example")
-        st.write("Imagine a fundraising site where the money is *only* released if the goal is met.")
+        st.subheader("3. Code Example")
         st.code("""
         function fund_project():
             if total_donations >= $10,000:
