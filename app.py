@@ -60,8 +60,7 @@ with col2:
 st.markdown("---")
 
 # --- NAVIGATION ---
-# Added the "Quiz" Tab
-tab_learn, tab_sim, tab_data, tab_quiz = st.tabs(["📖 Learn Concepts", "🧪 Lab Simulation", "📊 Live Market", "📝 Quiz & Cert"])
+tab_learn, tab_sim, tab_data = st.tabs(["📖 Learn Concepts", "🧪 Lab Simulation", "📊 Live Market"])
 
 # --- TAB 1: THE CLASSROOM ---
 with tab_learn:
@@ -95,13 +94,44 @@ with tab_learn:
             st.success("Validators (Proof of Stake): Lock up money.")
         st.info("Liquid Staking = Valet Parking (Get a claim ticket for your parked car).")
 
+    # --- EXPANDED LESSON 4 ---
     with st.expander("Lesson 4: What actually IS a Wallet?"):
-        st.write("The wallet is the **Remote Control**, not the money vault.")
+        st.subheader("1. The Big Misconception")
+        st.write("""
+        Most people think a crypto wallet is like a leather wallet where you store coins inside. **It is not.**
+        
+        * **Your Money:** Lives on the Blockchain (in the cloud).
+        * **Your Wallet:** Is just the **Key Ring** or **Remote Control** that lets you move that money.
+        
+        If you destroy your phone (your wallet), your money is still safe on the blockchain, as long as you have your backup keys (Seed Phrase).
+        """)
+        
+        st.subheader("2. The Email Analogy (Public vs. Private Keys)")
+        
         c_mail_1, c_mail_2 = st.columns(2)
         with c_mail_1:
-            st.success("🟢 Public Key (Email Address): Share with anyone.")
+            st.success("🟢 Public Key (The Mailbox)")
+            st.write("""
+            * **Like your Email Address.**
+            * You can share this with ANYONE.
+            * People use this to send you money.
+            * Example: `0x71C...9A23`
+            """)
         with c_mail_2:
-            st.error("🔴 Private Key (Password): NEVER share this.")
+            st.error("🔴 Private Key (The Password)")
+            st.write("""
+            * **Like your Email Password.**
+            * You must NEVER share this.
+            * This allows you to 'Login' and spend the money.
+            * If someone gets this, they steal your funds.
+            """)
+            
+        st.divider()
+        st.subheader("3. Types of Wallets")
+        st.write("""
+        * **🔥 Hot Wallet (Software):** An app connected to the internet (Coinbase, MetaMask). Easy to use, good for pocket money.
+        * **❄️ Cold Wallet (Hardware):** A USB stick that never touches the internet (Ledger). Hard to hack, best for life savings.
+        """)
         st.link_button("Download Coinbase App (Hot Wallet) ↗", "https://www.coinbase.com")
 
     with st.expander("Lesson 5: 🛡️ Security & Scams"):
@@ -152,57 +182,3 @@ with tab_data:
     
     st.line_chart(yf.Ticker("BTC-USD").history(period="1mo")["Close"])
     st.caption("Bitcoin Price Trend")
-
-# --- TAB 4: QUIZ & CERTIFICATE (NEW) ---
-with tab_quiz:
-    st.header("📝 Final Exam")
-    st.write("Answer 3 questions to earn your Bit Solutions Certificate.")
-    
-    with st.form("quiz_form"):
-        # Question 1
-        q1 = st.radio(
-            "1. What is the 'Golden Rule' of Crypto Security?",
-            ["Share your password with support", "Never share your Seed Phrase", "Use the same password everywhere"]
-        )
-        
-        # Question 2
-        q2 = st.radio(
-            "2. Which blockchain is described as a 'Race Car' (Fast but less stable)?",
-            ["Bitcoin", "Ethereum", "Solana"]
-        )
-        
-        # Question 3
-        q3 = st.radio(
-            "3. If you lose your Cold Wallet (USB stick), is your money gone?",
-            ["Yes, it's inside the stick", "No, you can recover it with your Seed Phrase"]
-        )
-        
-        submit_quiz = st.form_submit_button("Submit Answers")
-        
-        if submit_quiz:
-            # Check Answers
-            if q1 == "Never share your Seed Phrase" and q2 == "Solana" and q3 == "No, you can recover it with your Seed Phrase":
-                st.balloons()
-                st.success("🎉 CONGRATULATIONS! You passed.")
-                
-                st.markdown("""
-                <div style="background-color: #198754; padding: 20px; border-radius: 10px; border: 2px solid gold; text-align: center;">
-                    <h2 style="color: white !important;">🏆 Certificate of Completion</h2>
-                    <p style="color: white !important;">This certifies that the student has mastered the basics of Blockchain Technology.</p>
-                    <p style="color: white !important;"><b>Issued by: Bit Solutions Academy</b></p>
-                </div>
-                """, unsafe_allow_html=True)
-                
-                st.divider()
-                st.write("### 🚀 Ready for the next step?")
-                st.write("Need help setting up your own mining rig, wallet, or business blockchain?")
-                
-                # Simple Contact Simulation
-                with st.expander("Book a Private Consultation"):
-                    st.text_input("Your Email")
-                    st.text_area("What do you need help with?")
-                    if st.button("Request Call"):
-                        st.success("Request Sent! We will contact you shortly.")
-                
-            else:
-                st.error("❌ One or more answers were incorrect. Review the lessons and try again!")
