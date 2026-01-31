@@ -83,19 +83,32 @@ with tab_learn:
             st.markdown("#### 🥩 Proof of Stake (Ethereum)")
             st.write("Validators 'lock up' their coins to secure the network.")
             
-    # --- NEW LESSON 4 ---
     with st.expander("Lesson 4: Digital Wallets (Your Bank Account)"):
         st.write("""
-        A digital wallet is where you store your crypto. There are two main types:
-        
-        * **🔥 Hot Wallet (Software):** An app on your phone. Convenient for spending, but connected to the internet. (Example: Coinbase, MetaMask).
-        * **❄️ Cold Wallet (Hardware):** A USB stick that stays offline. Extremely secure for long-term savings. (Example: Ledger, Trezor).
+        * **🔥 Hot Wallet (Software):** An app on your phone. Convenient but online. (Example: Coinbase).
+        * **❄️ Cold Wallet (Hardware):** A USB stick that stays offline. Extremely secure. (Example: Ledger).
         """)
-        
-        st.info("✅ **Recommendation:** Start with a trusted Hot Wallet to learn the basics.")
-        
-        # Link to Coinbase
         st.link_button("Download Coinbase App ↗", "https://www.coinbase.com")
+
+    # --- NEW LESSON 5: SECURITY ---
+    with st.expander("Lesson 5: 🛡️ Security & Scams (CRITICAL)"):
+        st.error("⚠️ THE GOLDEN RULE: Never, ever share your Seed Phrase.")
+        
+        st.write("""
+        **1. The Seed Phrase (Recovery Phase)**
+        When you create a wallet, you get 12-24 random words. 
+        * **If you lose these words:** You lose your money forever.
+        * **If someone else gets them:** They steal your money instantly.
+        * **Support will NEVER ask for this.**
+        
+        **2. Phishing Scams**
+        Hackers create fake websites that look like the real thing (e.g., `Coinbaze.com` instead of `Coinbase.com`).
+        * **Always check the URL.**
+        * **Bookmark your favorite sites.**
+        
+        **3. Two-Factor Authentication (2FA)**
+        Turn this on everywhere! Use an app like **Google Authenticator**, not SMS text messages (which can be hacked).
+        """)
 
 # --- TAB 2: THE SANDBOX ---
 with tab_sim:
@@ -132,3 +145,12 @@ with tab_data:
         except: return 0.0
 
     btc = get_price("BTC-USD")
+    eth = get_price("ETH-USD")
+    
+    m1, m2, m3 = st.columns(3)
+    m1.metric("Bitcoin Price", f"${btc:,.0f}")
+    m2.metric("Ethereum Price", f"${eth:,.0f}")
+    m3.metric("Gas Fee (Est)", "12 Gwei", "Low Cost")
+    
+    st.line_chart(yf.Ticker("BTC-USD").history(period="1mo")["Close"])
+    st.caption("1-Month Bitcoin Trend")
