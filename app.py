@@ -11,17 +11,31 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- CUSTOM CSS ---
+# --- CUSTOM CSS (New Cyber Background) ---
 st.markdown("""
     <style>
-    .stApp { background-color: #212529; }
-    h1, h2, h3 { color: #F8F9FA !important; }
-    p, li { color: #DDE2E6 !important; font-size: 1.1em; line-height: 1.6; }
+    /* BACKGROUND IMAGE SETTINGS 
+       New Image: A smooth, dark digital wave/circuit feel.
+       Tint: Slightly darker (0.90) to ensure text pops perfectly.
+    */
+    .stApp {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.90), rgba(0, 0, 0, 0.90)), 
+                          url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2940&auto=format&fit=crop');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
     
-    /* Info Boxes */
+    /* Text Readability */
+    h1, h2, h3 { color: #FFFFFF !important; text-shadow: 0px 2px 4px rgba(0,0,0,0.5); }
+    p, li { color: #E0E0E0 !important; font-size: 1.1em; line-height: 1.6; }
+    
+    /* Info Boxes - made them slightly more transparent to blend with the cyber look */
     div[data-baseweb="notification"] {
-        background-color: #0D47A1;
+        background-color: rgba(13, 71, 161, 0.8);
         color: white;
+        border: 1px solid #1976D2;
+        backdrop-filter: blur(5px); /* Glassmorphism effect */
     }
     
     /* Hide Menu */
@@ -30,13 +44,14 @@ st.markdown("""
     /* Tabs */
     .stTabs [data-baseweb="tab-list"] { gap: 10px; }
     .stTabs [data-baseweb="tab"] {
-        background-color: #2C3035;
+        background-color: rgba(33, 37, 41, 0.9);
         color: #ADB5BD;
         border: 1px solid #343A40;
     }
     .stTabs [aria-selected="true"] {
-        background-color: #198754;
+        background-color: #00BFA5; /* Cyber Teal Highlight */
         color: #FFFFFF !important;
+        border-color: #00BFA5;
     }
     
     /* Code Block Styling */
@@ -80,15 +95,11 @@ with tab_learn:
         with c_use2:
             st.info("🏥 **Healthcare Records**")
             st.write("Patient data controlled by the patient, not the hospital.")
-            
-        st.divider()
         st.write("**The Flavors:** ETH (Truck), SOL (Race Car), AVAX (Fleet), BASE (Express Lane).")
 
     with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
         st.subheader("1. The Vending Machine Analogy (Deep Dive)")
-        st.write("""
-        The best way to understand a Smart Contract is to compare a **Barista** vs. a **Vending Machine**.
-        """)
+        st.write("The best way to understand a Smart Contract is to compare a **Barista** vs. a **Vending Machine**.")
         c_human, c_bot = st.columns(2)
         with c_human:
             st.error("☕ The Human Way")
@@ -132,42 +143,20 @@ with tab_learn:
         st.subheader("💧 Liquid Staking (The 'Valet' Analogy)")
         st.warning("Regular staking locks your car. Liquid staking gives you a claim ticket you can still use.")
 
-    # --- EXPANDED LESSON 4 ---
     with st.expander("Lesson 4: What actually IS a Wallet? (Keys explained)"):
         st.subheader("1. The Big Misconception: 'The Bag vs. The Browser'")
-        st.write("""
-        Most people think a crypto wallet is like a leather bag with coins inside. 
-        **It is NOT.** * **The Blockchain:** Is the cloud where your money lives.
-        * **Your Wallet:** Is just a **Web Browser** (or Remote Control) that lets you view and move that money.
-        
-        If you lose your phone (the remote), your money is safe on the blockchain, as long as you have your **Key**.
-        """)
+        st.write("The wallet is just a **Web Browser** that views your money on the blockchain.")
         
         st.divider()
-        
         st.subheader("2. The Keys: Public vs. Private")
-        st.write("Every wallet is made of a Key Pair. You cannot have one without the other.")
-
         c_key1, c_key2 = st.columns(2)
-        
         with c_key1:
             st.success("🟢 Public Key (The 'Account Number')")
-            st.write("""
-            * **Analogy:** Like your Bank Account Number or Email Address.
-            * **Action:** You GIVE this to people so they can send you money.
-            * **Safety:** Safe to share on Twitter/Instagram.
-            * **Looks like:** `0x71C...9A23`
-            """)
-            
+            st.write("Like your Email Address. Safe to share.")
         with c_key2:
             st.error("🔴 Private Key (The 'PIN Code')")
-            st.write("""
-            * **Analogy:** Like your ATM PIN or Email Password.
-            * **Action:** You USE this to sign transactions (approve spending).
-            * **Safety:** NEVER share this. If someone sees it, they can empty your account.
-            * **Looks like:** A long string of random letters, or your **12-word Seed Phrase**.
-            """)
-
+            st.write("Like your Password. NEVER share this.")
+            
         st.divider()
         st.write("**Types of Wallets:**")
         st.write("* **Hot Wallet:** Online app (Coinbase). Good for spending.")
@@ -179,9 +168,8 @@ with tab_learn:
         
         st.subheader("1. The 'Paper vs. Cloud' Rule")
         st.write("""
-        When you create a wallet, you get 12-24 words.
-        * **✅ CORRECT:** Write them on paper. Store it in a fireproof safe.
-        * **❌ WRONG:** Do not take a screenshot. Do not save in Google Drive.
+        * **✅ CORRECT:** Write seed phrase on paper. Store in safe.
+        * **❌ WRONG:** Do not screenshot. Do not save in Cloud.
         """)
         
         st.divider()
@@ -189,7 +177,7 @@ with tab_learn:
         c_scam_1, c_scam_2 = st.columns(2)
         with c_scam_1:
             st.warning("🎣 **Phishing Sites**")
-            st.write("Fake sites like `Coinbaze.com`. Always bookmark the real one.")
+            st.write("Fake sites like `Coinbaze.com`. Bookmark the real one.")
         with c_scam_2:
             st.warning("📱 **SIM Swapping (2FA)**")
             st.write("Never use SMS for 2FA. Use Google Authenticator.")
