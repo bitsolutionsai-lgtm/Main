@@ -3,6 +3,9 @@ import pandas as pd
 import numpy as np
 import yfinance as yf
 import time
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 # --- PAGE CONFIGURATION ---
 st.set_page_config(
@@ -18,6 +21,32 @@ if 'page' not in st.session_state:
 
 def enter_site():
     st.session_state.page = 'main'
+
+# --- EMAIL FUNCTION (NEW) ---
+def send_email(user_email, user_message):
+    try:
+        # Load credentials from secrets
+        sender_email = st.secrets["email"]["sender_email"]
+        sender_password = st.secrets["email"]["sender_password"]
+        receiver_email = st.secrets["email"]["receiver_email"]
+
+        msg = MIMEMultipart()
+        msg['From'] = sender_email
+        msg['To'] = receiver_email
+        msg['Subject'] = f"New Inquiry from {user_email}"
+
+        body = f"User Email: {user_email}\n\nMessage:\n{user_message}"
+        msg.attach(MIMEText(body, 'plain'))
+
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(sender_email, sender_password)
+        text = msg.as_string()
+        server.sendmail(sender_email, receiver_email, text)
+        server.quit()
+        return True
+    except Exception as e:
+        return False
 
 # --- CUSTOM CSS ---
 st.markdown("""
@@ -88,7 +117,7 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # ==========================================
-# SIDEBAR: BUSINESS CONTACT
+# SIDEBAR: BUSINESS CONTACT (UPDATED)
 # ==========================================
 with st.sidebar:
     st.header("Baez IT Solutions")
@@ -101,10 +130,23 @@ with st.sidebar:
     
     st.markdown("---")
     st.write("**Need Help?**")
-    contact_email = st.text_input("Your Email (for inquiry)")
-    contact_msg = st.text_area("How can we help?")
-    if st.button("Send Inquiry"):
-        st.success("Message sent! We will contact you shortly.")
+    
+    # --- NEW EMAIL FORM ---
+    with st.form("contact_form"):
+        contact_email = st.text_input("Your Email (for inquiry)")
+        contact_msg = st.text_area("How can we help?")
+        submit_button = st.form_submit_button("Send Inquiry")
+
+    if submit_button:
+        if contact_email and contact_msg:
+            with st.spinner("Sending message..."):
+                success = send_email(contact_email, contact_msg)
+                if success:
+                    st.success("✅ Message sent! We will contact you shortly.")
+                else:
+                    st.error("❌ Error sending. Check your Secrets configuration.")
+        else:
+            st.warning("Please fill out both fields.")
 
 # ==========================================
 # PAGE 1: THE COVER PAGE
