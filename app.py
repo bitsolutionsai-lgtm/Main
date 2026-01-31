@@ -66,112 +66,49 @@ tab_learn, tab_sim, tab_data = st.tabs(["📖 Learn Concepts", "🧪 Lab Simulat
 with tab_learn:
     st.header("Blockchain Fundamentals")
     
-    with st.expander("Lesson 1: What is a Blockchain?"):
+    # --- EXPANDED LESSON 1 ---
+    with st.expander("Lesson 1: The 'Flavors' of Blockchain (ETH, SOL, AVAX, BASE)"):
         st.write("""
-        Imagine a Google Doc that **nobody can delete or edit**, only add to.
-        * **Decentralized:** No single bank owns it. It lives on thousands of computers.
-        * **Immutable:** Once a transaction is written, it is carved in stone.
+        Not all blockchains are the same. Think of them like **vehicles**—some are built for heavy cargo, some for racing, and some for cheap commuting.
         """)
-        st.info("💡 Key Concept: 'Trustless' means you don't need to trust a stranger; you only need to trust the code.")
+        
+        c1, c2 = st.columns(2)
+        
+        with c1:
+            st.markdown("### 🔵 Ethereum (The World Computer)")
+            st.info("**Role: The Heavy Duty Semi-Truck**")
+            st.write("""
+            * **What is it?** The first blockchain to introduce Smart Contracts.
+            * **Pros:** Extremely secure, massive ecosystem, most money is here.
+            * **Cons:** Can be slow and expensive ("Gas Fees") during busy times.
+            """)
+            
+            st.markdown("### 🟣 Solana (The Speedster)")
+            st.info("**Role: The F1 Race Car**")
+            st.write("""
+            * **What is it?** Built purely for speed and low cost.
+            * **Pros:** Transactions cost $0.0001 and settle in milliseconds.
+            * **Cons:** Has had network outages in the past (sacrifices some stability for speed).
+            """)
 
-    # --- EXPANDED LESSON 2 ---
+        with c2:
+            st.markdown("### 🔺 Avalanche (The Network of Networks)")
+            st.info("**Role: The Fleet of Custom Vans**")
+            st.write("""
+            * **What is it?** Allows companies to build their *own* custom blockchains ("Subnets").
+            * **Pros:** Highly scalable; gaming companies love it.
+            * **Cons:** More complex to understand than a single chain.
+            """)
+            
+            st.markdown("### 🔵 Base (The Layer 2 Helper)")
+            st.info("**Role: The Express Lane**")
+            st.write("""
+            * **What is it?** Base is built *on top* of Ethereum (by Coinbase).
+            * **How it works:** It bundles 1,000 transactions into one package and sends it to Ethereum.
+            * **Result:** You get Ethereum's security but with 90% lower fees.
+            """)
+
     with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
         st.subheader("1. The Vending Machine Analogy")
         st.write("""
-        Think of a traditional contract like a **Restaurant**: You order food, eat it, and then pay. If you refuse to pay, the restaurant has to call the police (a middleman).
-        
         A Smart Contract is like a **Vending Machine**:
-        * **You put money in.**
-        * **The machine drops the snack.**
-        * **No middleman required.** The machine *cannot* cheat you. If you don't put money in, it gives no snack. If you do, it *must* give the snack.
-        """)
-        
-        st.subheader("2. Real World Example: Flight Insurance")
-        st.write("""
-        **Old Way:** Your flight is cancelled. You call insurance, wait on hold, fill out forms, and wait 3 weeks for a check.
-        
-        **Smart Contract Way:**
-        1. You buy a policy on the blockchain.
-        2. The contract is connected to Flight Data.
-        3. **IF** `Flight #902` is `Cancelled` -> **THEN** `Send $500 to Your Wallet` instantly.
-        """)
-        
-        st.subheader("3. The Logic (If-This-Then-That)")
-        st.code("""
-        # This is how the code actually thinks:
-        
-        function pay_insurance():
-            if flight_status == "CANCELLED":
-                send_money(customer_wallet, $500)
-            else:
-                keep_premium()
-        """, language="python")
-        st.success("Result: No lawyers, no waiting, no 'claim denied' by a human.")
-
-    with st.expander("Lesson 3: Proof of Work vs. Stake"):
-        c1, c2 = st.columns(2)
-        with c1:
-            st.markdown("#### ⛏️ Proof of Work (Bitcoin)")
-            st.write("Miners use massive electricity to solve math puzzles.")
-        with c2:
-            st.markdown("#### 🥩 Proof of Stake (Ethereum)")
-            st.write("Validators 'lock up' their coins to secure the network.")
-            
-    with st.expander("Lesson 4: Digital Wallets (Your Bank Account)"):
-        st.write("""
-        * **🔥 Hot Wallet (Software):** An app on your phone. Convenient but online. (Example: Coinbase).
-        * **❄️ Cold Wallet (Hardware):** A USB stick that stays offline. Extremely secure. (Example: Ledger).
-        """)
-        st.link_button("Download Coinbase App ↗", "https://www.coinbase.com")
-
-    with st.expander("Lesson 5: 🛡️ Security & Scams (CRITICAL)"):
-        st.error("⚠️ THE GOLDEN RULE: Never, ever share your Seed Phrase.")
-        st.write("""
-        **1. The Seed Phrase:** 12-24 random words. If you lose them, you lose your money. If someone else gets them, they steal your money.
-        **2. Phishing:** Always check the URL (e.g., `Coinbaze.com` is a fake).
-        """)
-
-# --- TAB 2: THE SANDBOX ---
-with tab_sim:
-    st.header("Interactive Sandbox")
-    st.write("Don't just read about it. **Try it.** (Simulation only).")
-    
-    col_sim_1, col_sim_2 = st.columns(2)
-    
-    with col_sim_1:
-        st.subheader("Try a Token Swap")
-        sell = st.selectbox("Sell Asset", ["USDC (Stablecoin)", "ETH (Volatile)"])
-        amount = st.number_input("Amount to Sell", value=100)
-        
-        if st.button("Simulate Swap"):
-            with st.spinner("Finding Liquidity Route..."):
-                time.sleep(1)
-            st.success(f"✅ Swapped {amount} {sell} successfully!")
-
-    with col_sim_2:
-        st.subheader("Understand Staking Yield")
-        st.write("If you lock **10 ETH** for **1 Year** at **5% APY**...")
-        if st.button("Calculate Reward"):
-            st.balloons()
-            st.metric("You Earn", "+0.5 ETH", "Passive Income")
-
-# --- TAB 3: REAL WORLD DATA ---
-with tab_data:
-    st.header("Live Market Data")
-    
-    def get_price(t):
-        try:
-            d = yf.Ticker(t).history(period="1d")
-            return d["Close"].iloc[-1]
-        except: return 0.0
-
-    btc = get_price("BTC-USD")
-    eth = get_price("ETH-USD")
-    
-    m1, m2, m3 = st.columns(3)
-    m1.metric("Bitcoin Price", f"${btc:,.0f}")
-    m2.metric("Ethereum Price", f"${eth:,.0f}")
-    m3.metric("Gas Fee (Est)", "12 Gwei", "Low Cost")
-    
-    st.line_chart(yf.Ticker("BTC-USD").history(period="1mo")["Close"])
-    st.caption("1-Month Bitcoin Trend")
