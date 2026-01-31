@@ -204,37 +204,61 @@ else:
                 * **Security (Slashing):** If they cheat, the network takes their money.
                 * **Downside:** Rich get richer.
                 """)
-                
-            st.divider()
             
-            st.subheader("💧 3. Liquid Staking (The Modern Solution)")
+            st.divider()
+            st.subheader("💧 3. Liquid Staking")
             st.write("Regular staking locks your money. **Liquid Staking** gives you a 'Receipt Token' (stETH) that you can still use/sell.")
-            st.success("Result: Earn interest + Keep liquidity.")
 
-        with st.expander("Lesson 4: What actually IS a Wallet? (Keys explained)"):
-            st.subheader("1. The Big Misconception")
-            st.write("The wallet is just a **Web Browser** that views your money on the blockchain.")
+        # --- EXPANDED LESSON 4 ---
+        with st.expander("Lesson 4: What actually IS a Wallet? (Deep Dive)"):
+            st.subheader("1. The Big Misconception: 'The Bag vs. The Browser'")
+            st.write("Your wallet does **not** store your crypto. Your crypto lives on the Blockchain (the cloud). Your wallet is just the **Password Manager** or **Browser** that lets you access it.")
             
             st.divider()
-            st.subheader("2. The Keys: Public vs. Private")
-            c_key1, c_key2 = st.columns(2)
-            with c_key1:
-                st.success("🟢 Public Key (Account Number)")
-                st.write("Safe to share.")
-            with c_key2:
-                st.error("🔴 Private Key (PIN Code)")
-                st.write("NEVER share this.")
+            
+            st.subheader("2. Custodial vs. Non-Custodial (Crucial!)")
+            st.write("Who actually holds the keys to the safe?")
+            
+            c_cust, c_noncust = st.columns(2)
+            
+            with c_cust:
+                st.warning("🏨 **Custodial (The Bank)**")
+                st.write("""
+                * **Examples:** Coinbase, Binance, Kraken.
+                * **How it works:** They hold the keys. You have a login/password.
+                * **Risk:** If they go bankrupt (like FTX), your money is gone.
+                * **Pro:** If you lose your password, they can reset it.
+                """)
                 
+            with c_noncust:
+                st.success("🏰 **Non-Custodial (The Safe)**")
+                st.write("""
+                * **Examples:** Ledger, Tangem, MetaMask.
+                * **How it works:** YOU hold the keys (Seed Phrase). No company can touch it.
+                * **Risk:** If you lose your seed phrase, the money is gone forever.
+                * **Pro:** Total control. "Not your keys, not your crypto."
+                """)
+
+            st.divider()
+            
+            st.subheader("3. The Master Key (Seed Phrase)")
+            st.write("""
+            When you set up a wallet, you get **12-24 Words**. 
+            * This is the **Master Key**. 
+            * It generates the keys for your Bitcoin, Ethereum, Solana, and everything else.
+            * You can take these 12 words, buy a *new* Ledger, type them in, and all your money reappears.
+            """)
+            
             st.divider()
             st.write("**Recommended Wallets:**")
             
             btn1, btn2, btn3 = st.columns(3)
             with btn1:
-                st.link_button("Coinbase (App) ↗", "https://www.coinbase.com")
+                st.link_button("Coinbase (App / Custodial) ↗", "https://www.coinbase.com")
             with btn2:
-                st.link_button("Ledger (USB) ↗", "https://www.ledger.com")
+                st.link_button("Ledger (USB / Non-Custodial) ↗", "https://www.ledger.com")
             with btn3:
-                st.link_button("Tangem (Card) ↗", "https://tangem.com")
+                st.link_button("Tangem (Card / Non-Custodial) ↗", "https://tangem.com")
 
         with st.expander("Lesson 5: 🛡️ Security & Scams (HOW TO SURVIVE)"):
             st.error("⚠️ THE GOLDEN RULE: Never, ever share your Seed Phrase with anyone. Support will NEVER ask for it.")
