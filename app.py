@@ -149,25 +149,58 @@ else:
     with tab_learn:
         st.header("Blockchain Fundamentals")
         
-        with st.expander("Lesson 1: Blockchain Basics & Real World Use"):
-            st.subheader("1. What IS a Blockchain?")
-            st.write("Think of a Blockchain like a **shared Google Sheet** that everyone can read, but NO ONE can delete.")
-            c_concept1, c_concept2 = st.columns(2)
-            with c_concept1:
-                st.info("🧱 **The 'Block' (The Page)**")
-                st.write("Imagine a notebook page filled with transactions. Once full, it gets sealed.")
-            with c_concept2:
-                st.info("🔗 **The 'Chain' (The Glue)**")
-                st.write("Each page is mathematically glued to the previous one. You cannot rip out old pages.")
+        # --- EXPANDED LESSON 1 (Blockchain Deep Dive) ---
+        with st.expander("Lesson 1: What is a Blockchain? (The Foundation)"):
+            
+            st.subheader("1. The Problem with 'Normal' Money")
+            st.write("Right now, if I send you $50, we both trust the **Bank** to update the ledger. The Bank has the 'Master Book'.")
+            st.error("❌ **The Risk:** What if the Bank makes a mistake? What if they freeze your account? You don't own your data.")
+
             st.divider()
-            st.subheader("2. Beyond Money: Real World Use Cases")
+
+            st.subheader("2. The Solution: The 'Stone Tablet' Analogy")
+            st.write("Imagine a giant **Stone Tablet** in the middle of the Town Square.")
+            
+            c_concept1, c_concept2 = st.columns(2)
+            
+            with c_concept1:
+                st.info("📢 **Public & Transparent**")
+                st.write("""
+                * Everyone in town can see the tablet.
+                * If Alice sends Bob $5, a 'Miner' carves it into the stone.
+                * **Everyone sees it happen.** No secrets.
+                """)
+            
+            with c_concept2:
+                st.success("🔒 **Immutable (Permanent)**")
+                st.write("""
+                * Once carved, it is there **forever**.
+                * You cannot use an eraser.
+                * You cannot tear out the page.
+                * This creates **Total Trust** without a middleman.
+                """)
+            
+            st.divider()
+            
+            st.subheader("3. How does it actually work?")
+            st.write("It's not just one tablet. It is **Distributed**.")
+            st.write("Imagine if **10,000 people** took a photo of that stone tablet instantly.")
+            st.caption("If a hacker tries to change ONE photo, the other 9,999 people will say: 'Hey! That's fake!' and reject it. That is why Bitcoin has never been hacked.")
+
+            st.divider()
+
+            st.subheader("4. Real World Use Cases (Beyond Bitcoin)")
+            
             c_use1, c_use2 = st.columns(2)
             with c_use1:
-                st.success("🚚 **Supply Chain (Walmart)**")
-                st.write("Walmart traces mangoes to the farm in 2.2 seconds.")
+                st.warning("☕ **Supply Chain (Starbucks)**")
+                st.write("**The Problem:** Is this coffee actually Fair Trade? Or did they just slap a sticker on it?")
+                st.write("**Blockchain:** You scan the bag. You see the *exact date* the farmer picked the beans, recorded on the blockchain. It cannot be faked.")
+            
             with c_use2:
-                st.success("🏠 **Real Estate (Tokenization)**")
-                st.write("Buy 1/100th of a house instantly.")
+                st.info("🏡 **Real Estate (The Deed)**")
+                st.write("**The Problem:** Buying a house takes 30 days because lawyers have to verify the paper title history.")
+                st.write("**Blockchain:** The 'Title' is a token. You send the money, the house token hits your wallet. Deal done in 10 seconds.")
 
         with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
             st.subheader("1. What makes it 'Smart'?")
@@ -189,15 +222,11 @@ else:
 
         # --- UPDATED LESSON 3: Staking & Liquid Staking (The Casino Chip Analogy) ---
         with st.expander("Lesson 3: Staking & Liquid Staking (How to Earn Interest)"):
-            
             st.subheader("1. What is Staking?")
             st.write("Staking is basically a **High-Yield Savings Account** for the internet. You lock up your crypto to help secure the network, and the network pays you interest (usually 4-7%).")
-            
             st.divider()
-            
             st.subheader("2. The Problem: 'The Locked Vault'")
             st.write("In standard staking, your money is **LOCKED**. You cannot touch it. If an emergency happens, you have to wait days to get it out.")
-            
             c_lock1, c_lock2 = st.columns(2)
             with c_lock1:
                 st.error("🚫 Standard Staking (Bank CD)")
@@ -207,7 +236,6 @@ else:
                 * **Use:** None. It sits there.
                 * **Exit:** Wait 5-7 days to withdraw.
                 """)
-                
             with c_lock2:
                 st.success("💧 Liquid Staking (The Solution)")
                 st.write("""
@@ -216,9 +244,7 @@ else:
                 * **Status:** You hold the receipt in your wallet.
                 * **Use:** You can sell the receipt instantly if you need cash.
                 """)
-            
             st.divider()
-
             st.subheader("3. The 'Casino Chip' Analogy (Best for Beginners)")
             st.info("Think of Liquid Staking like walking into a Casino.")
             st.write("""
@@ -227,9 +253,9 @@ else:
             3.  **The Magic:** While you hold that chip, it automatically grows in value. When you leave, you might cash out **$105**.
             4.  **The Freedom:** If you don't want to wait at the cashier, you can just give the chip to a friend (trade it) for cash instantly. You aren't stuck.
             """)
-            
             st.write("**Top Examples:** Lido (stETH), Coinbase (cbETH), Rocket Pool (rETH).")
 
+        # --- EXPANDED LESSON 4 (Wallets - Kept from previous) ---
         with st.expander("Lesson 4: What actually IS a Wallet? (Deep Dive)"):
             st.subheader("1. The 'Glass Box' Analogy")
             st.write("Crypto is confusing because you can't 'see' the money. Here is the best way to visualize it:")
