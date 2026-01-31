@@ -139,42 +139,24 @@ else:
             st.write("Think of a Blockchain like a **shared Google Sheet** that everyone can read, but NO ONE can delete.")
             
             c_concept1, c_concept2 = st.columns(2)
-            
             with c_concept1:
                 st.info("🧱 **The 'Block' (The Page)**")
-                st.write("""
-                Imagine a notebook page filled with transactions (Alice sent Bob $5). 
-                Once the page is full, it gets sealed.
-                """)
-                
+                st.write("Imagine a notebook page filled with transactions. Once full, it gets sealed.")
             with c_concept2:
                 st.info("🔗 **The 'Chain' (The Glue)**")
-                st.write("""
-                Each new page is mathematically glued to the previous one. 
-                If you try to rip out an old page (to erase a debt), the whole notebook falls apart. This makes it **Immutable** (Unchangeable).
-                """)
+                st.write("Each page is mathematically glued to the previous one. You cannot rip out old pages.")
             
             st.divider()
             
             st.subheader("2. Beyond Money: Real World Use Cases")
-            st.write("Because we can trust the data without a middleman, we can use it for huge industries:")
-            
             c_use1, c_use2 = st.columns(2)
             with c_use1:
                 st.success("🚚 **Supply Chain (Walmart)**")
-                st.write("Walmart puts mangoes on the blockchain. If there is E. coli, they trace it to the exact farm in 2.2 seconds (used to take 7 days).")
+                st.write("Walmart traces mangoes to the farm in 2.2 seconds.")
             with c_use2:
                 st.success("🏠 **Real Estate (Tokenization)**")
-                st.write("Instead of buying a whole house, you can buy 1/100th of a house token instantly. It proves your ownership without a lawyer.")
+                st.write("Buy 1/100th of a house instantly.")
                 
-            c_use3, c_use4 = st.columns(2)
-            with c_use3:
-                st.success("🗳️ **Voting Systems**")
-                st.write("A blockchain vote cannot be deleted or faked. You can verify your vote was counted from your phone.")
-            with c_use4:
-                st.success("🏥 **Medical Records**")
-                st.write("You own your X-rays in your wallet. When you switch doctors, you grant them access instantly. No fax machines needed.")
-
             st.divider()
             st.subheader("3. The Origin")
             st.write("It all started in 2008 with a whitepaper by **Satoshi Nakamoto**.")
@@ -193,137 +175,89 @@ else:
             c_human, c_bot = st.columns(2)
             with c_human:
                 st.error("☕ The Old Way (Human Contract)")
-                st.write("""
-                * **Slow:** Need a lawyer/bank to verify.
-                * **Expensive:** You pay fees to the middleman.
-                * **Trust-Based:** You hope they don't cheat you.
-                """)
+                st.write("Slow, Expensive, Trust-Based.")
             with c_bot:
                 st.success("🤖 The New Way (Smart Contract)")
-                st.write("""
-                * **Instant:** Runs 24/7 on the blockchain.
-                * **Cheap:** No middleman fees.
-                * **Trustless:** The machine *cannot* cheat. If you put $2 in, the soda *must* drop.
-                """)
+                st.write("Instant, Cheap, Trustless.")
             
             st.divider()
-
             st.subheader("3. A Simple Example: The Sports Bet")
-            st.write("""
-            Two friends, **Alice** and **Bob**, want to bet $100 on the Super Bowl.
-            
-            * **Without Crypto:** Alice bets on Team A. Bob bets on Team B. Team A wins. Bob refuses to pay. Alice loses her money.
-            * **With a Smart Contract:**
-                1. Alice and Bob both send $100 to a **Digital Vault** (the contract).
-                2. The Vault locks the funds ($200 total).
-                3. The Vault checks the official score online (via an 'Oracle').
-                4. **IF** Team A wins -> **THEN** The Vault automatically sends $200 to Alice.
-            
-            **Result:** Bob cannot refuse to pay. The code forces the payment.
-            """)
+            st.write("Two friends bet on the Super Bowl. The code holds the money and automatically pays the winner based on the official score. No fighting.")
 
-            st.divider()
-            
-            st.subheader("4. Real World Apps")
-            c_app1, c_app2 = st.columns(2)
-            with c_app1:
-                st.info("🏦 **Aave (Lending)**")
-                st.write("A bank run by code. Depositors earn interest, borrowers pay interest. No CEO involved.")
-                st.link_button("Visit Aave ↗", "https://aave.com")
-            with c_app2:
-                st.info("⚡ **Drift (Trading)**")
-                st.write("A stock exchange run by code. Trades settle instantly on Solana.")
-                st.link_button("Visit Drift ↗", "https://www.drift.trade")
-
-        with st.expander("Lesson 3: The 3 Types of Staking (Detailed Breakdown)"):
+        # --- EXPANDED LESSON 3 ---
+        with st.expander("Lesson 3: The 3 Types of Staking (Expanded Liquid Staking)"):
             st.write("In crypto, there is no CEO. The network runs itself. But how do we stop people from cheating? We use **Consensus Mechanisms**.")
             
             c_pow, c_pos = st.columns(2)
-            
             with c_pow:
                 st.subheader("⛏️ 1. Proof of Work (Bitcoin)")
                 st.info("**The 'Hardware Race'**")
-                st.write("""
-                * **Who runs it:** "Miners" with powerful computers.
-                * **How it works:** They race to solve a math puzzle.
-                * **Security:** Extremely high.
-                * **Downside:** High energy use.
-                """)
-                
+                st.write("Miners race to solve math puzzles. Secure, but high energy.")
             with c_pos:
                 st.subheader("🥩 2. Proof of Stake (Ethereum)")
                 st.info("**The 'Financial Bond'**")
-                st.write("""
-                * **Who runs it:** "Validators" who lock up money.
-                * **How it works:** Random selection based on deposit size.
-                * **Security (Slashing):** If they cheat, the network takes their money.
-                * **Downside:** Rich get richer.
-                """)
+                st.write("Validators lock up money. If they cheat, they lose the money.")
             
             st.divider()
-            st.subheader("💧 3. Liquid Staking")
-            st.write("Regular staking locks your money. **Liquid Staking** gives you a 'Receipt Token' (stETH) that you can still use/sell.")
-
-        # --- EXPANDED LESSON 4 ---
-        with st.expander("Lesson 4: What actually IS a Wallet? (A Beginner's Guide)"):
             
-            st.subheader("1. The Big Misconception")
+            st.subheader("💧 3. Liquid Staking (The 'Double Dip')")
             st.write("""
-            **Stop thinking of it as a 'Leather Wallet'.**
-            Your crypto is **NOT** inside the app. It is **NOT** inside the USB stick.
+            **The Problem with Regular Staking:** When you stake your Solana or ETH, it is **LOCKED**. You can't sell it, and you can't use it. It's like putting money in a CD at a bank.
             
-            * **The Blockchain:** Is the cloud (like Google Drive) where the money lives.
-            * **Your Wallet:** Is just the **Password (Key)** that lets you move that money.
-            
-            *If you lose your phone, your money is still safe on the cloud... IF you have your Key.*
+            **The Solution: Liquid Staking**
+            Imagine if the bank gave you a "Receipt" for your CD, and that Receipt was *also* worth money and could be traded.
             """)
+            
+            c_step1, c_step2, c_step3 = st.columns(3)
+            with c_step1:
+                st.info("1. You Stake")
+                st.write("You give 10 SOL to a protocol like **Jito**.")
+            with c_step2:
+                st.info("2. You Get Receipt")
+                st.write("Jito gives you 10 `JitoSOL`. This token rises in value automatically.")
+            with c_step3:
+                st.success("3. You Re-Use")
+                st.write("You take that `JitoSOL` and lend it on **Aave** to earn *extra* interest.")
+            
+            st.write("**Why do this?** You earn Staking Rewards (approx 7%) + Lending Rewards (approx 2%) at the same time.")
+            
+            st.divider()
+            st.write("**Top Liquid Staking Tools:**")
+            
+            btn_s1, btn_s2 = st.columns(2)
+            with btn_s1:
+                st.link_button("Staking on Solana (Jito) ↗", "https://www.jito.network/staking/")
+            with btn_s2:
+                st.link_button("Lending on Aave ↗", "https://aave.com")
+
+        with st.expander("Lesson 4: What actually IS a Wallet? (A Beginner's Guide)"):
+            st.subheader("1. The Big Misconception")
+            st.write("Your wallet does **not** store your crypto. It is just the **Key** to access your money on the Blockchain.")
             
             st.divider()
 
             st.subheader("2. The Email Analogy (Public vs. Private Keys)")
-            st.write("Every wallet comes with a Key Pair. It works exactly like Email.")
-            
             c_key1, c_key2 = st.columns(2)
             with c_key1:
                 st.success("🟢 Public Key (The Address)")
-                st.write("""
-                * **Like your:** Email Address.
-                * **Function:** You give this to people so they can send you money.
-                * **Safety:** 100% Safe to share on Instagram/Twitter.
-                * **Looks like:** `0x71C...9A23`
-                """)
+                st.write("Like your Email Address. Safe to share.")
             with c_key2:
                 st.error("🔴 Private Key (The Seed Phrase)")
-                st.write("""
-                * **Like your:** Email Password.
-                * **Function:** This signs the check to move the money out.
-                * **Safety:** NEVER SHARE THIS. Anyone who sees it owns your money.
-                * **Looks like:** 12 random words (`apple river galaxy...`).
-                """)
+                st.write("Like your Password. NEVER SHARE THIS.")
 
             st.divider()
 
-            st.subheader("3. Hot vs. Cold Wallets (Which do I need?)")
-            
+            st.subheader("3. Hot vs. Cold Wallets")
             c_hot, c_cold = st.columns(2)
             with c_hot:
                 st.warning("🔥 Hot Wallet (Software)")
-                st.write("""
-                * **What is it?** An app on your phone (like Coinbase Wallet).
-                * **Best for:** Spending, trading, small amounts.
-                * **Risk:** It's connected to the internet, so hackers *could* reach it.
-                """)
+                st.write("App on phone. Convenient but less secure.")
             with c_cold:
                 st.info("❄️ Cold Wallet (Hardware)")
-                st.write("""
-                * **What is it?** A USB stick (like Ledger) that stays offline.
-                * **Best for:** Life savings, long-term holding.
-                * **Security:** Unhackable unless you physically give it away.
-                """)
+                st.write("USB stick. Offline and very secure.")
 
             st.divider()
             st.write("**Top Recommendations:**")
-            
             btn1, btn2, btn3 = st.columns(3)
             with btn1:
                 st.link_button("Coinbase (Hot Wallet) ↗", "https://www.coinbase.com")
@@ -337,40 +271,20 @@ else:
             
             st.subheader("1. Storage Security (Paper vs. Cloud)")
             st.write("""
-            The most common way people get hacked is by saving their 12 words in a password manager, email, or photo album.
-            * **✅ CORRECT:** Write it on paper (or steel). Store it in a physical safe.
-            * **❌ WRONG:** Taking a screenshot, saving to Google Drive, emailing it to yourself.
+            * **✅ CORRECT:** Write it on paper. Store in physical safe.
+            * **❌ WRONG:** Screenshot, Google Drive, Email.
             """)
             
             st.divider()
             
             st.subheader("2. Advanced Threats (Know Your Enemy)")
-            
             c_scam_1, c_scam_2 = st.columns(2)
-            
             with c_scam_1:
                 st.warning("📋 **Clipboard Hijacking**")
-                st.write("""
-                **The Attack:** Malware on your computer watches for crypto addresses. When you copy an address and paste it, the virus **swaps** the address for the hacker's address.
-                
-                **The Fix:** Always read the **First 4** and **Last 4** characters of the address AFTER pasting.
-                """)
-                
+                st.write("Malware that swaps copied addresses. Always check the first 4 and last 4 digits.")
             with c_scam_2:
                 st.warning("🔓 **The 'Unlimited Approval' Trap**")
-                st.write("""
-                **The Attack:** A scam website asks you to "Connect Wallet" and "Approve" access. You think you are signing a login, but you are actually giving them permission to **drain all your USDC**.
-                
-                **The Fix:** Read the popup carefully! If it says "Set Approval for All" or "Unlimited," REJECT it unless you trust the site 100%.
-                """)
-
-            st.divider()
-            st.subheader("3. Daily Habits for Survival")
-            st.write("""
-            1.  **The $1 Test:** Before sending $10,000, send $1.00 first. If it arrives, send the rest.
-            2.  **No SMS 2FA:** Hackers can steal your phone number (SIM Swap). Use an Authenticator App (Google/Authy) or a YubiKey.
-            3.  **Bookmark Everything:** Never search "Coinbase" on Google. You might click a fake ad. Bookmark the real URL and only use that.
-            """)
+                st.write("Fake sites ask for unlimited permission. Read the popup before clicking Approve.")
 
     # --- TAB 2: THE SANDBOX ---
     with tab_sim:
