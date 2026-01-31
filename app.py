@@ -184,80 +184,94 @@ else:
             st.subheader("3. A Simple Example: The Sports Bet")
             st.write("Two friends bet on the Super Bowl. The code holds the money and automatically pays the winner based on the official score. No fighting.")
 
-        # --- EXPANDED LESSON 3 ---
-        with st.expander("Lesson 3: The 3 Types of Staking (Expanded Liquid Staking)"):
+        # --- REVERTED LESSON 3 (Simple Version) ---
+        with st.expander("Lesson 3: The 3 Types of Staking (Detailed Breakdown)"):
             st.write("In crypto, there is no CEO. The network runs itself. But how do we stop people from cheating? We use **Consensus Mechanisms**.")
             
             c_pow, c_pos = st.columns(2)
             with c_pow:
                 st.subheader("⛏️ 1. Proof of Work (Bitcoin)")
                 st.info("**The 'Hardware Race'**")
-                st.write("Miners race to solve math puzzles. Secure, but high energy.")
+                st.write("""
+                * **Who runs it:** "Miners" with powerful computers.
+                * **How it works:** They race to solve a math puzzle.
+                * **Security:** Extremely high.
+                * **Downside:** High energy use.
+                """)
             with c_pos:
                 st.subheader("🥩 2. Proof of Stake (Ethereum)")
                 st.info("**The 'Financial Bond'**")
-                st.write("Validators lock up money. If they cheat, they lose the money.")
+                st.write("""
+                * **Who runs it:** "Validators" who lock up money.
+                * **How it works:** Random selection based on deposit size.
+                * **Security (Slashing):** If they cheat, the network takes their money.
+                * **Downside:** Rich get richer.
+                """)
             
             st.divider()
-            
-            st.subheader("💧 3. Liquid Staking (The 'Double Dip')")
-            st.write("""
-            **The Problem with Regular Staking:** When you stake your Solana or ETH, it is **LOCKED**. You can't sell it, and you can't use it. It's like putting money in a CD at a bank.
-            
-            **The Solution: Liquid Staking**
-            Imagine if the bank gave you a "Receipt" for your CD, and that Receipt was *also* worth money and could be traded.
-            """)
-            
-            c_step1, c_step2, c_step3 = st.columns(3)
-            with c_step1:
-                st.info("1. You Stake")
-                st.write("You give 10 SOL to a protocol like **Jito**.")
-            with c_step2:
-                st.info("2. You Get Receipt")
-                st.write("Jito gives you 10 `JitoSOL`. This token rises in value automatically.")
-            with c_step3:
-                st.success("3. You Re-Use")
-                st.write("You take that `JitoSOL` and lend it on **Aave** to earn *extra* interest.")
-            
-            st.write("**Why do this?** You earn Staking Rewards (approx 7%) + Lending Rewards (approx 2%) at the same time.")
-            
-            st.divider()
-            st.write("**Top Liquid Staking Tools:**")
-            
-            btn_s1, btn_s2 = st.columns(2)
-            with btn_s1:
-                st.link_button("Staking on Solana (Jito) ↗", "https://www.jito.network/staking/")
-            with btn_s2:
-                st.link_button("Lending on Aave ↗", "https://aave.com")
+            st.subheader("💧 3. Liquid Staking")
+            st.write("Regular staking locks your money. **Liquid Staking** gives you a 'Receipt Token' (stETH) that you can still use/sell.")
+            st.success("Result: Earn interest + Keep liquidity.")
 
+        # --- EXPANDED LESSON 4 (Beginner's Guide) ---
         with st.expander("Lesson 4: What actually IS a Wallet? (A Beginner's Guide)"):
             st.subheader("1. The Big Misconception")
-            st.write("Your wallet does **not** store your crypto. It is just the **Key** to access your money on the Blockchain.")
+            st.write("""
+            **Stop thinking of it as a 'Leather Wallet'.**
+            Your crypto is **NOT** inside the app. It is **NOT** inside the USB stick.
+            
+            * **The Blockchain:** Is the cloud (like Google Drive) where the money lives.
+            * **Your Wallet:** Is just the **Password (Key)** that lets you move that money.
+            
+            *If you lose your phone, your money is still safe on the cloud... IF you have your Key.*
+            """)
             
             st.divider()
 
             st.subheader("2. The Email Analogy (Public vs. Private Keys)")
+            st.write("Every wallet comes with a Key Pair. It works exactly like Email.")
+            
             c_key1, c_key2 = st.columns(2)
             with c_key1:
                 st.success("🟢 Public Key (The Address)")
-                st.write("Like your Email Address. Safe to share.")
+                st.write("""
+                * **Like your:** Email Address.
+                * **Function:** You give this to people so they can send you money.
+                * **Safety:** 100% Safe to share on Instagram/Twitter.
+                * **Looks like:** `0x71C...9A23`
+                """)
             with c_key2:
                 st.error("🔴 Private Key (The Seed Phrase)")
-                st.write("Like your Password. NEVER SHARE THIS.")
+                st.write("""
+                * **Like your:** Email Password.
+                * **Function:** This signs the check to move the money out.
+                * **Safety:** NEVER SHARE THIS. Anyone who sees it owns your money.
+                * **Looks like:** 12 random words (`apple river galaxy...`).
+                """)
 
             st.divider()
 
-            st.subheader("3. Hot vs. Cold Wallets")
+            st.subheader("3. Hot vs. Cold Wallets (Which do I need?)")
+            
             c_hot, c_cold = st.columns(2)
             with c_hot:
                 st.warning("🔥 Hot Wallet (Software)")
-                st.write("App on phone. Convenient but less secure.")
+                st.write("""
+                * **What is it?** An app on your phone (like Coinbase Wallet).
+                * **Best for:** Spending, trading, small amounts.
+                * **Risk:** It's connected to the internet, so hackers *could* reach it.
+                """)
             with c_cold:
                 st.info("❄️ Cold Wallet (Hardware)")
-                st.write("USB stick. Offline and very secure.")
+                st.write("""
+                * **What is it?** A USB stick (like Ledger) that stays offline.
+                * **Best for:** Life savings, long-term holding.
+                * **Security:** Unhackable unless you physically give it away.
+                """)
 
             st.divider()
             st.write("**Top Recommendations:**")
+            
             btn1, btn2, btn3 = st.columns(3)
             with btn1:
                 st.link_button("Coinbase (Hot Wallet) ↗", "https://www.coinbase.com")
