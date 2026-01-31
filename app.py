@@ -84,55 +84,30 @@ with tab_learn:
         st.divider()
         st.write("**The Flavors:** ETH (Truck), SOL (Race Car), AVAX (Fleet), BASE (Express Lane).")
 
-    # --- EXPANDED LESSON 2 ---
     with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
         st.subheader("1. The Vending Machine Analogy (Deep Dive)")
         st.write("""
         The best way to understand a Smart Contract is to compare a **Barista** vs. a **Vending Machine**.
         """)
-        
         c_human, c_bot = st.columns(2)
-        
         with c_human:
-            st.error("☕ The Human Way (The Barista)")
-            st.write("""
-            * **Subjective:** They might be tired, grumpy, or mishear your order.
-            * **Bias:** They might serve their friend before you.
-            * **Trust Required:** You have to trust that they won't steal your change.
-            """)
-            
+            st.error("☕ The Human Way")
+            st.write("Subjective, biased, and requires trust.")
         with c_bot:
-            st.success("🤖 The Smart Contract (The Vending Machine)")
-            st.write("""
-            * **Deterministic:** If you put in $2.00, the soda drops. Every single time.
-            * **Unbiased:** It doesn't care who you are (rich, poor, famous).
-            * **Trustless:** You don't trust the machine; you trust the **mechanism**. If the money goes in, the product comes out.
-            """)
+            st.success("🤖 The Smart Contract")
+            st.write("Deterministic, unbiased, and trustless.")
             
-        st.write("""
-        **Why this matters for Crypto:** A Smart Contract locks the money inside the "machine." Nobody—not even the person who built the machine—can steal the funds once the code is running.
-        """)
-        
         st.divider()
-        
-        st.subheader("2. Try it Real Life (Live Apps)")
-        st.write("These are not websites run by companies. They are **Smart Contracts** that run themselves.")
-        
+        st.subheader("2. Try it Real Life")
         c_app1, c_app2 = st.columns(2)
-        
         with c_app1:
-            st.info("🏦 **Aave (on Ethereum)**")
-            st.write("Replaces the Bank. The code holds the money and pays interest automatically.")
-            st.link_button("Visit Aave Protocol ↗", "https://aave.com")
-            
+            st.info("🏦 **Aave (Lending)**")
+            st.link_button("Visit Aave ↗", "https://aave.com")
         with c_app2:
-            st.info("⚡ **Drift (on Solana)**")
-            st.write("Replaces the Stock Broker. The code executes trades instantly.")
-            st.link_button("Visit Drift Protocol ↗", "https://www.drift.trade")
+            st.info("⚡ **Drift (Trading)**")
+            st.link_button("Visit Drift ↗", "https://www.drift.trade")
 
         st.divider()
-        
-        st.subheader("3. Code Example")
         st.code("""
         function fund_project():
             if total_donations >= $10,000:
@@ -157,19 +132,42 @@ with tab_learn:
         st.subheader("💧 Liquid Staking (The 'Valet' Analogy)")
         st.warning("Regular staking locks your car. Liquid staking gives you a claim ticket you can still use.")
 
-    with st.expander("Lesson 4: What actually IS a Wallet?"):
-        st.subheader("1. The Big Misconception")
-        st.write("The wallet is the **Remote Control**, not the money vault.")
+    # --- EXPANDED LESSON 4 ---
+    with st.expander("Lesson 4: What actually IS a Wallet? (Keys explained)"):
+        st.subheader("1. The Big Misconception: 'The Bag vs. The Browser'")
+        st.write("""
+        Most people think a crypto wallet is like a leather bag with coins inside. 
+        **It is NOT.** * **The Blockchain:** Is the cloud where your money lives.
+        * **Your Wallet:** Is just a **Web Browser** (or Remote Control) that lets you view and move that money.
         
-        st.subheader("2. The Email Analogy")
-        c_mail_1, c_mail_2 = st.columns(2)
-        with c_mail_1:
-            st.success("🟢 Public Key (Email Address)")
-            st.write("Share this with anyone to receive money.")
-        with c_mail_2:
-            st.error("🔴 Private Key (Password)")
-            st.write("NEVER share this. It allows spending.")
+        If you lose your phone (the remote), your money is safe on the blockchain, as long as you have your **Key**.
+        """)
+        
+        st.divider()
+        
+        st.subheader("2. The Keys: Public vs. Private")
+        st.write("Every wallet is made of a Key Pair. You cannot have one without the other.")
+
+        c_key1, c_key2 = st.columns(2)
+        
+        with c_key1:
+            st.success("🟢 Public Key (The 'Account Number')")
+            st.write("""
+            * **Analogy:** Like your Bank Account Number or Email Address.
+            * **Action:** You GIVE this to people so they can send you money.
+            * **Safety:** Safe to share on Twitter/Instagram.
+            * **Looks like:** `0x71C...9A23`
+            """)
             
+        with c_key2:
+            st.error("🔴 Private Key (The 'PIN Code')")
+            st.write("""
+            * **Analogy:** Like your ATM PIN or Email Password.
+            * **Action:** You USE this to sign transactions (approve spending).
+            * **Safety:** NEVER share this. If someone sees it, they can empty your account.
+            * **Looks like:** A long string of random letters, or your **12-word Seed Phrase**.
+            """)
+
         st.divider()
         st.write("**Types of Wallets:**")
         st.write("* **Hot Wallet:** Online app (Coinbase). Good for spending.")
