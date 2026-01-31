@@ -209,49 +209,22 @@ else:
             st.subheader("💧 3. Liquid Staking")
             st.write("Regular staking locks your money. **Liquid Staking** gives you a 'Receipt Token' (stETH) that you can still use/sell.")
 
-        # --- EXPANDED LESSON 4 ---
         with st.expander("Lesson 4: What actually IS a Wallet? (Deep Dive)"):
             st.subheader("1. The Big Misconception: 'The Bag vs. The Browser'")
             st.write("Your wallet does **not** store your crypto. Your crypto lives on the Blockchain (the cloud). Your wallet is just the **Password Manager** or **Browser** that lets you access it.")
             
             st.divider()
-            
             st.subheader("2. Custodial vs. Non-Custodial (Crucial!)")
-            st.write("Who actually holds the keys to the safe?")
-            
             c_cust, c_noncust = st.columns(2)
-            
             with c_cust:
                 st.warning("🏨 **Custodial (The Bank)**")
-                st.write("""
-                * **Examples:** Coinbase, Binance, Kraken.
-                * **How it works:** They hold the keys. You have a login/password.
-                * **Risk:** If they go bankrupt (like FTX), your money is gone.
-                * **Pro:** If you lose your password, they can reset it.
-                """)
-                
+                st.write("**Example:** Coinbase. They hold the keys. If they go bankrupt, your money is gone.")
             with c_noncust:
                 st.success("🏰 **Non-Custodial (The Safe)**")
-                st.write("""
-                * **Examples:** Ledger, Tangem, MetaMask.
-                * **How it works:** YOU hold the keys (Seed Phrase). No company can touch it.
-                * **Risk:** If you lose your seed phrase, the money is gone forever.
-                * **Pro:** Total control. "Not your keys, not your crypto."
-                """)
+                st.write("**Example:** Ledger. YOU hold the keys. Total control.")
 
             st.divider()
-            
-            st.subheader("3. The Master Key (Seed Phrase)")
-            st.write("""
-            When you set up a wallet, you get **12-24 Words**. 
-            * This is the **Master Key**. 
-            * It generates the keys for your Bitcoin, Ethereum, Solana, and everything else.
-            * You can take these 12 words, buy a *new* Ledger, type them in, and all your money reappears.
-            """)
-            
-            st.divider()
             st.write("**Recommended Wallets:**")
-            
             btn1, btn2, btn3 = st.columns(3)
             with btn1:
                 st.link_button("Coinbase (App / Custodial) ↗", "https://www.coinbase.com")
@@ -260,24 +233,46 @@ else:
             with btn3:
                 st.link_button("Tangem (Card / Non-Custodial) ↗", "https://tangem.com")
 
-        with st.expander("Lesson 5: 🛡️ Security & Scams (HOW TO SURVIVE)"):
+        # --- EXPANDED LESSON 5 ---
+        with st.expander("Lesson 5: 🛡️ Security & Scams (THE SURVIVAL GUIDE)"):
             st.error("⚠️ THE GOLDEN RULE: Never, ever share your Seed Phrase with anyone. Support will NEVER ask for it.")
             
-            st.subheader("1. The 'Paper vs. Cloud' Rule")
+            st.subheader("1. Storage Security (Paper vs. Cloud)")
             st.write("""
-            * **✅ CORRECT:** Write seed phrase on paper. Store in safe.
-            * **❌ WRONG:** Do not screenshot. Do not save in Cloud.
+            The most common way people get hacked is by saving their 12 words in a password manager, email, or photo album.
+            * **✅ CORRECT:** Write it on paper (or steel). Store it in a physical safe.
+            * **❌ WRONG:** Taking a screenshot, saving to Google Drive, emailing it to yourself.
             """)
             
             st.divider()
-            st.subheader("2. Common Attack Vectors")
+            
+            st.subheader("2. Advanced Threats (Know Your Enemy)")
+            
             c_scam_1, c_scam_2 = st.columns(2)
+            
             with c_scam_1:
-                st.warning("🎣 **Phishing Sites**")
-                st.write("Fake sites like `Coinbaze.com`. Bookmark the real one.")
+                st.warning("📋 **Clipboard Hijacking**")
+                st.write("""
+                **The Attack:** Malware on your computer watches for crypto addresses. When you copy an address and paste it, the virus **swaps** the address for the hacker's address.
+                
+                **The Fix:** Always read the **First 4** and **Last 4** characters of the address AFTER pasting.
+                """)
+                
             with c_scam_2:
-                st.warning("📱 **SIM Swapping (2FA)**")
-                st.write("Never use SMS for 2FA. Use Google Authenticator.")
+                st.warning("🔓 **The 'Unlimited Approval' Trap**")
+                st.write("""
+                **The Attack:** A scam website asks you to "Connect Wallet" and "Approve" access. You think you are signing a login, but you are actually giving them permission to **drain all your USDC**.
+                
+                **The Fix:** Read the popup carefully! If it says "Set Approval for All" or "Unlimited," REJECT it unless you trust the site 100%.
+                """)
+
+            st.divider()
+            st.subheader("3. Daily Habits for Survival")
+            st.write("""
+            1.  **The $1 Test:** Before sending $10,000, send $1.00 first. If it arrives, send the rest.
+            2.  **No SMS 2FA:** Hackers can steal your phone number (SIM Swap). Use an Authenticator App (Google/Authy) or a YubiKey.
+            3.  **Bookmark Everything:** Never search "Coinbase" on Google. You might click a fake ad. Bookmark the real URL and only use that.
+            """)
 
     # --- TAB 2: THE SANDBOX ---
     with tab_sim:
