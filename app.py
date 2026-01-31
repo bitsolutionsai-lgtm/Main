@@ -112,3 +112,85 @@ with tab_learn:
         st.subheader("1. The Vending Machine Analogy")
         st.write("""
         A Smart Contract is like a **Vending Machine**:
+        * **You put money in.**
+        * **The machine drops the snack.**
+        * **No middleman required.** The machine *cannot* cheat you.
+        """)
+        
+        st.subheader("2. Real World Example: Flight Insurance")
+        st.write("""
+        **Old Way:** Call insurance, wait on hold, fill forms, wait weeks.
+        **Smart Contract Way:** IF `Flight #902` is `Cancelled` -> THEN `Send $500` instantly.
+        """)
+        
+        st.code("""
+        function pay_insurance():
+            if flight_status == "CANCELLED":
+                send_money(customer, $500)
+        """, language="python")
+
+    with st.expander("Lesson 3: Proof of Work vs. Stake"):
+        c1, c2 = st.columns(2)
+        with c1:
+            st.markdown("#### ⛏️ Proof of Work (Bitcoin)")
+            st.write("Miners use massive electricity to solve math puzzles.")
+        with c2:
+            st.markdown("#### 🥩 Proof of Stake (Ethereum)")
+            st.write("Validators 'lock up' their coins to secure the network.")
+            
+    with st.expander("Lesson 4: Digital Wallets (Your Bank Account)"):
+        st.write("""
+        * **🔥 Hot Wallet:** App on your phone (e.g., Coinbase). Good for spending.
+        * **❄️ Cold Wallet:** USB stick (e.g., Ledger). Good for saving.
+        """)
+        st.link_button("Download Coinbase App ↗", "https://www.coinbase.com")
+
+    with st.expander("Lesson 5: 🛡️ Security & Scams (CRITICAL)"):
+        st.error("⚠️ THE GOLDEN RULE: Never share your Seed Phrase.")
+        st.write("If you lose your 12-word phrase, you lose your money forever. No bank can help you.")
+
+# --- TAB 2: THE SANDBOX ---
+with tab_sim:
+    st.header("Interactive Sandbox")
+    st.write("Don't just read about it. **Try it.**")
+    
+    col_sim_1, col_sim_2 = st.columns(2)
+    
+    with col_sim_1:
+        st.subheader("Try a Token Swap")
+        sell = st.selectbox("Sell Asset", ["USDC", "ETH"])
+        amount = st.number_input("Amount", value=100)
+        
+        if st.button("Simulate Swap"):
+            with st.spinner("Finding Route..."):
+                time.sleep(1)
+            st.success(f"✅ Swapped {amount} {sell} successfully!")
+
+    with col_sim_2:
+        st.subheader("Staking Calculator")
+        st.write("Locking **10 ETH** for **1 Year** at **5% APY**...")
+        if st.button("Calculate Reward"):
+            st.balloons()
+            st.metric("You Earn", "+0.5 ETH")
+
+# --- TAB 3: REAL WORLD DATA ---
+with tab_data:
+    st.header("Live Market Data")
+    
+    def get_price(t):
+        try:
+            d = yf.Ticker(t).history(period="1d")
+            return d["Close"].iloc[-1]
+        except: return 0.0
+
+    btc = get_price("BTC-USD")
+    eth = get_price("ETH-USD")
+    sol = get_price("SOL-USD") # Added Solana Price
+    
+    m1, m2, m3 = st.columns(3)
+    m1.metric("Bitcoin", f"${btc:,.0f}")
+    m2.metric("Ethereum", f"${eth:,.0f}")
+    m3.metric("Solana", f"${sol:.2f}")
+    
+    st.line_chart(yf.Ticker("BTC-USD").history(period="1mo")["Close"])
+    st.caption("Bitcoin Price Trend")
