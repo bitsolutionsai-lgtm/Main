@@ -176,67 +176,34 @@ else:
                 st.info("🎟️ **Concert Tickets (Ticketmaster)**")
                 st.write("Blockchain tickets cannot be photocopied. You can check on your phone if the ticket is real instantly.")
 
-        # --- EXPANDED LESSON 2 (Smart Contracts) ---
         with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
-            
             st.subheader("1. What makes it 'Smart'?")
-            st.write("A Smart Contract is NOT Artificial Intelligence. It is just **Programmable Money**.")
-            st.info("💡 **Think of it as 'If-This-Then-That' logic for money.**")
-            st.write("It is a piece of code that lives on the blockchain. It holds funds and releases them **automatically** when a specific condition is met.")
-
+            st.write("A Smart Contract is just **Programmable Money**. It's code that holds money and releases it only when a condition is met.")
+            st.info("💡 **Think:** 'If This Happens, Then Pay That.'")
             st.divider()
-
-            st.subheader("2. The Vending Machine Analogy (Perfect Example)")
-            st.write("The best way to explain this to a client is the **Vending Machine**.")
-            
+            st.subheader("2. The Vending Machine Analogy")
+            st.write("The best way to understand it is to compare a **Human Barista** vs. a **Vending Machine**.")
             c_human, c_bot = st.columns(2)
             with c_human:
-                st.error("☕ The Old Way (The Barista)")
-                st.write("""
-                * You order a coffee.
-                * You hand them cash.
-                * You **TRUST** they will give you the coffee and not steal your money.
-                * **Problem:** Humans can lie, steal, or make mistakes.
-                """)
+                st.error("☕ The Old Way (Human Contract)")
+                st.write("Slow, Expensive, Trust-Based.")
             with c_bot:
                 st.success("🤖 The New Way (Smart Contract)")
-                st.write("""
-                * You put $2 into the machine.
-                * You press 'B4'.
-                * The machine **MUST** drop the soda. It has no choice. It is programmed to do exactly that.
-                * **Benefit:** You don't need to 'trust' the machine.
-                """)
-            
+                st.write("Instant, Cheap, Trustless.")
             st.divider()
-
-            st.subheader("3. Real World Examples (Beyond Coffee)")
-            
-            c_ex1, c_ex2 = st.columns(2)
-            
-            with c_ex1:
-                st.warning("🏠 **Buying a House (Escrow)**")
-                st.write("**The Problem:** You need a lawyer to hold the money until the deed is signed. The lawyer charges 3%.")
-                st.write("**The Smart Contract:** The code holds the money. Once the digital deed is transferred, the code instantly sends the money to the seller. **Cost: $5.**")
-                
-            with c_ex2:
-                st.info("✈️ **Flight Insurance**")
-                st.write("**The Problem:** Your flight is cancelled. You have to fill out forms and wait 3 months for a refund.")
-                st.write("**The Smart Contract:** The code checks flight data. If Flight #902 is >3 hours late, it **automatically** sends money to your wallet before you even leave the airport.")
-            
+            st.subheader("3. A Simple Example: The Sports Bet")
+            st.write("Two friends bet on the Super Bowl. The code holds the money and automatically pays the winner based on the official score. No fighting.")
             st.divider()
-            
-            st.subheader("4. Try it Yourself")
-            st.write("Imagine writing a contract for your kid's allowance:")
-            st.code("""
-            # Simple Smart Contract Logic
-            IF (Chores_Done == TRUE) AND (Date == Friday):
-                Send $20 to Kid_Wallet
-            ELSE:
-                Keep money in Dad_Wallet
-            """, language="python")
-            st.caption("This code runs on the blockchain forever. You can't 'forget' to pay them!")
+            st.subheader("4. Real World Apps")
+            c_app1, c_app2 = st.columns(2)
+            with c_app1:
+                st.info("🏦 **Aave (Lending)**")
+                st.link_button("Visit Aave ↗", "https://aave.com")
+            with c_app2:
+                st.info("⚡ **Drift (Trading)**")
+                st.link_button("Visit Drift ↗", "https://www.drift.trade")
 
-        with st.expander("Lesson 3: The 3 Types of Staking (Expanded Liquid Staking)"):
+        with st.expander("Lesson 3: The 3 Types of Staking (Detailed Breakdown)"):
             st.write("In crypto, there is no CEO. The network runs itself. But how do we stop people from cheating? We use **Consensus Mechanisms**.")
             c_pow, c_pos = st.columns(2)
             with c_pow:
@@ -247,73 +214,79 @@ else:
                 st.subheader("🥩 2. Proof of Stake (Ethereum)")
                 st.info("**The 'Financial Bond'**")
                 st.write("Validators lock up money. If they cheat, they lose the money.")
-            
             st.divider()
-            
-            st.subheader("💧 3. Liquid Staking (The Smart Solution)")
-            st.write("This is the most popular form of staking today. It solves the biggest problem with normal staking: **Locking your money.**")
+            st.subheader("💧 3. Liquid Staking")
+            st.write("Regular staking locks your money. **Liquid Staking** gives you a 'Receipt Token' (stETH) that you can still use/sell.")
 
-            st.markdown("#### The Analogy: The Coat Check Ticket")
-            c_liq1, c_liq2 = st.columns(2)
+        # --- EXPANDED LESSON 4 (Wallets - New Version) ---
+        with st.expander("Lesson 4: What actually IS a Wallet? (Deep Dive)"):
             
-            with c_liq1:
-                st.warning("🚫 Normal Staking (Coat Check)")
-                st.write("""
-                * You give your coat (ETH) to the attendant.
-                * It is locked in the room. 
-                * You **cannot** wear it or trade it until you leave the party.
-                """)
-                
-            with c_liq2:
-                st.success("✅ Liquid Staking (The Ticket)")
-                st.write("""
-                * You give your coat (ETH) to the attendant.
-                * They give you a **Paper Ticket** (stETH).
-                * **The Magic:** This ticket is worth exactly 1 Coat. You can sell the ticket, lend the ticket, or use the ticket while the coat stays safe.
-                """)
+            st.subheader("1. The 'Glass Box' Analogy")
+            st.write("Crypto is confusing because you can't 'see' the money. Here is the best way to visualize it:")
             
-            st.divider()
-            st.write("**Why is this better?**")
-            st.write("If the market crashes, normal stakers are stuck waiting days to 'unlock' their money. Liquid stakers can just sell the ticket (stETH) instantly on an app like Uniswap.")
-            
-            st.info("**Real World Examples:** Lido (stETH), Rocket Pool (rETH), Jito (JitoSOL).")
-
-        with st.expander("Lesson 4: What actually IS a Wallet? (A Beginner's Guide)"):
-            st.subheader("1. The Big Misconception")
+            st.info("Imagine the Blockchain is a giant wall of **Glass Lockboxes**.")
             st.write("""
-            **Stop thinking of it as a 'Leather Wallet'.**
-            Your crypto is **NOT** inside the app. It is **NOT** inside the USB stick.
-            * **The Blockchain:** Is the cloud (like Google Drive) where the money lives.
-            * **Your Wallet:** Is just the **Password (Key)** that lets you move that money.
+            * **Anyone** can see inside Box #402. They can see it has 5 BTC.
+            * **Only the person with the Key** can open Box #402 to move the money.
+            * Your 'Wallet' is just a **Keychain** that holds the key to your box. It doesn't hold the money itself.
             """)
+            
             st.divider()
-            st.subheader("2. The Email Analogy (Public vs. Private Keys)")
-            st.write("Every wallet comes with a Key Pair. It works exactly like Email.")
+
+            st.subheader("2. How does it work? (Email Analogy)")
+            st.write("When you create a wallet, you generate two things:")
+            
             c_key1, c_key2 = st.columns(2)
             with c_key1:
                 st.success("🟢 Public Key (The Address)")
-                st.write("Like your Email Address. Safe to share.")
+                st.write("**Think: Email Address**")
+                st.write("You give this to people so they can send you money. It is perfectly safe to share.")
+                st.code("0x71C...9A23")
             with c_key2:
                 st.error("🔴 Private Key (The Seed Phrase)")
-                st.write("Like your Password. NEVER SHARE THIS.")
+                st.write("**Think: Email Password**")
+                st.write("This allows you to 'Login' and spend the money. If you give this away, you lose everything.")
+                st.code("apple river galaxy...")
+
             st.divider()
-            st.subheader("3. Hot vs. Cold Wallets (Which do I need?)")
+
+            st.subheader("3. Hot vs. Cold (The Pocket vs. The Vault)")
+            st.write("Not all wallets are the same. You need to choose the right one for your goals.")
+            
             c_hot, c_cold = st.columns(2)
             with c_hot:
-                st.warning("🔥 Hot Wallet (Software)")
-                st.write("App on phone. Convenient but less secure.")
+                st.warning("🔥 Hot Wallet (The Pocket)")
+                st.write("""
+                * **What:** An app on your phone (Metamask, Coinbase Wallet).
+                * **Pros:** Fast, easy, connects to websites.
+                * **Cons:** Connected to the internet (hackable).
+                * **Use for:** Buying coffee, trading, carrying $100-$500.
+                """)
             with c_cold:
-                st.info("❄️ Cold Wallet (Hardware)")
-                st.write("USB stick. Offline and very secure.")
+                st.info("❄️ Cold Wallet (The Home Safe)")
+                st.write("""
+                * **What:** A physical USB stick (Ledger, Trezor).
+                * **Pros:** Impossible to hack (offline).
+                * **Cons:** Annoying to use (must plug in).
+                * **Use for:** Your life savings, retirement, holding >$1,000.
+                """)
+
             st.divider()
-            st.write("**Top Recommendations:**")
-            btn1, btn2, btn3 = st.columns(3)
-            with btn1:
-                st.link_button("Coinbase (Hot Wallet) ↗", "https://www.coinbase.com")
-            with btn2:
-                st.link_button("Ledger (Cold Wallet) ↗", "https://www.ledger.com")
-            with btn3:
-                st.link_button("Tangem (Card Wallet) ↗", "https://tangem.com")
+            st.write("**Which one should you get?**")
+            
+            col_rec1, col_rec2, col_rec3 = st.columns(3)
+            with col_rec1:
+                st.write("**Total Beginner**")
+                st.link_button("Coinbase App ↗", "https://www.coinbase.com")
+                st.caption("Custodial (They hold the keys). Easiest to start.")
+            with col_rec2:
+                st.write("**Explorer**")
+                st.link_button("Phantom Wallet ↗", "https://phantom.app")
+                st.caption("Hot Wallet (Self-Custody). Best for Solana/DeFi.")
+            with col_rec3:
+                st.write("**Investor**")
+                st.link_button("Ledger Nano ↗", "https://www.ledger.com")
+                st.caption("Cold Wallet. Best for long-term security.")
 
         with st.expander("Lesson 5: 🛡️ Security (How Not To Lose Money)"):
             st.subheader("1. The Golden Rule: The '12 Words'")
