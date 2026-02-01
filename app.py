@@ -325,12 +325,12 @@ else:
             st.write("When you use a DeFi app (like Uniswap), you give it permission to spend your coins. If that app gets hacked later, your wallet is at risk.")
             st.info("🛠️ **The Fix:** Once a month, use a tool like **Revoke.cash** to disconnect your wallet from old apps.")
 
-    # --- TAB 2: LAB (ENHANCED) ---
+    # --- TAB 2: LAB (NEW & IMPROVED) ---
     with tab_sim:
         st.header("🧪 Interactive Lab")
         st.write("Experiment with the mechanics of DeFi in a safe, simulated environment.")
 
-        # --- LAB 1: GAS STATION ---
+        # --- LAB 1: GAS STATION (KEPT) ---
         st.markdown("---")
         st.subheader("⛽ 1. Gas Fee Visualizer")
         st.write("See how network congestion affects the cost of moving money.")
@@ -356,7 +356,7 @@ else:
             })
             st.bar_chart(fee_df, x="Network", y="Fee ($)", color="#00BFA5")
 
-        # --- LAB 2: COMPOUND STAKING ---
+        # --- LAB 2: COMPOUND STAKING (KEPT) ---
         st.markdown("---")
         st.subheader("📈 2. Compound Interest Calculator")
         st.write("Visualize the power of **DCA (Dollar Cost Averaging)** + **Staking Yield**.")
@@ -370,7 +370,6 @@ else:
         
         with c_calc2:
             # Calculation: Future Value of a Series
-            # Formula: FV = P * (1+r)^t + PMT * [ ((1+r)^t - 1) / r ]
             months = years * 12
             monthly_rate = (apy / 100) / 12
             
@@ -399,60 +398,69 @@ else:
             st.success(f"💰 **Final Balance:** ${balance[-1]:,.2f}")
             st.caption(f"You contributed: ${contributions[-1]:,.2f} | **Interest Earned: ${profit:,.2f}**")
 
-        # --- LAB 3: IMPERMANENT LOSS ---
+        # --- LAB 3: PROFIT/ROI CALCULATOR (NEW REPLACEMENT) ---
         st.markdown("---")
-        st.subheader("⚖️ 3. Impermanent Loss Visualizer")
-        st.write("What happens if you provide liquidity (Uniswap) and one coin price crashes (or pumps)?")
-        st.info("💡 **Concept:** When prices diverge, LPs lose money compared to just HODLing.")
+        st.subheader("💰 3. Trade Profit (ROI) Calculator")
+        st.write("Calculate your exact Net Profit after exchange fees.")
         
-        il_col1, il_col2 = st.columns(2)
-        with il_col1:
-            price_change = st.slider("Price Change of Token A (%)", -90, 500, 0, format="%d%%")
-        
-        with il_col2:
-            # IL Formula: 2 * sqrt(ratio) / (1 + ratio) - 1
-            ratio = (1 + price_change / 100)
-            if ratio < 0.01: ratio = 0.01 # Prevent zero division error
+        roi_c1, roi_c2 = st.columns(2)
+        with roi_c1:
+            buy_price = st.number_input("Buy Price per Coin ($)", value=50000.0)
+            sell_price = st.number_input("Sell Price per Coin ($)", value=65000.0)
+            amount_coin = st.number_input("Amount of Coins", value=0.1)
+            fee_pct = st.number_input("Exchange Fee (%)", value=0.1)
             
-            il_pct = (2 * np.sqrt(ratio) / (1 + ratio)) - 1
-            il_pct = abs(il_pct) * 100 # Make positive for display
+        with roi_c2:
+            cost_basis = buy_price * amount_coin
+            gross_sale = sell_price * amount_coin
             
-            st.metric("Impermanent Loss", f"-{il_pct:.2f}%", delta_color="inverse")
+            # Calculate Fees (Buy + Sell side)
+            buy_fee = cost_basis * (fee_pct/100)
+            sell_fee = gross_sale * (fee_pct/100)
+            total_fees = buy_fee + sell_fee
             
-            if price_change == 0:
-                st.write("✅ No loss. Prices are stable.")
-            elif il_pct < 5:
-                st.warning("⚠️ Small loss. Trading fees might cover this.")
+            net_profit = gross_sale - cost_basis - total_fees
+            roi_pct = (net_profit / cost_basis) * 100
+            
+            st.write("### 📊 Results")
+            if net_profit >= 0:
+                st.success(f"**Net Profit:** ${net_profit:,.2f}")
+                st.metric("ROI", f"{roi_pct:.2f}%", delta="Profit")
             else:
-                st.error("🚨 **High Risk!** You are losing significant value compared to holding.")
-
-        # --- LAB 4: DEX SIMULATOR ---
-        st.markdown("---")
-        st.subheader("🔄 4. DEX Swap Simulator")
-        st.write("Try a simulated swap.")
-        
-        dex_c1, dex_c2 = st.columns(2)
-        with dex_c1:
-            swap_from = st.selectbox("From", ["ETH", "USDC", "SOL"])
-            swap_amt = st.number_input("Amount", value=1.0)
-        with dex_c2:
-            swap_to = st.selectbox("To", ["USDC", "ETH", "SOL"], index=1)
-            
-            # Simulated Prices
-            prices = {"ETH": 3200, "USDC": 1, "SOL": 145}
-            
-            if swap_from == swap_to:
-                st.warning("Select different tokens.")
-            else:
-                rate = prices[swap_from] / prices[swap_to]
-                receive_amt = swap_amt * rate
-                st.metric("You Receive (Estimated)", f"{receive_amt:,.4f} {swap_to}")
+                st.error(f"**Net Loss:** ${net_profit:,.2f}")
+                st.metric("ROI", f"{roi_pct:.2f}%", delta="Loss")
                 
-                if st.button("Confirm Swap"):
-                    with st.spinner("Broadcasting to network..."):
-                        time.sleep(1.5)
-                    st.success(f"✅ Swapped {swap_amt} {swap_from} for {receive_amt:.4f} {swap_to}!")
-                    st.caption("Gas Fee Paid: $4.50 (Simulated)")
+            st.caption(f"Total Fees Paid: ${total_fees:.2f}")
+
+        # --- LAB 4: RISK/REWARD CALCULATOR (NEW REPLACEMENT) ---
+        st.markdown("---")
+        st.subheader("⚖️ 4. Risk/Reward Ratio Calculator")
+        st.write("Strategy Tool: Should you take this trade? (Target Ratio: 1:3 or higher)")
+        
+        risk_c1, risk_c2 = st.columns(2)
+        with risk_c1:
+            entry_p = st.number_input("Entry Price ($)", value=100.0)
+            stop_loss = st.number_input("Stop Loss ($)", value=90.0)
+            take_profit = st.number_input("Take Profit Target ($)", value=130.0)
+            
+        with risk_c2:
+            risk_amt = entry_p - stop_loss
+            reward_amt = take_profit - entry_p
+            
+            if risk_amt <= 0 or reward_amt <= 0:
+                st.warning("Check your inputs. Stop Loss must be lower than Entry (for Longs).")
+            else:
+                ratio = reward_amt / risk_amt
+                
+                st.metric("Risk / Reward Ratio", f"1 : {ratio:.1f}")
+                st.write(f"Risking **${risk_amt:.2f}** to make **${reward_amt:.2f}**")
+                
+                if ratio >= 3:
+                    st.success("✅ **Excellent Trade.** (Ratio > 1:3)")
+                elif ratio >= 2:
+                    st.info("🆗 **Good Trade.** (Ratio > 1:2)")
+                else:
+                    st.error("❌ **Bad Trade.** Risk is too high for the reward.")
 
     # --- TAB 3: LIVE MARKET (UNCHANGED) ---
     with tab_data:
