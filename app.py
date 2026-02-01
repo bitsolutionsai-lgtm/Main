@@ -192,42 +192,58 @@ else:
     # --- TAB 1: LEARN ---
     with tab_learn:
         st.header("Blockchain Fundamentals")
-        with st.expander("Lesson 1: What is a Blockchain? (The Foundation)"):
-            st.subheader("1. The Problem with 'Normal' Money")
-            st.write("Right now, if I send you $50, we both trust the **Bank** to update the ledger. The Bank has the 'Master Book'.")
-            st.error("❌ **The Risk:** What if the Bank makes a mistake? What if they freeze your account? You don't own your data.")
+        
+        # --- LESSON 1: EXPANDED (NEW) ---
+        with st.expander("Lesson 1: What is a Blockchain? (The Deep Dive)"):
+            st.subheader("1. The History: Origins of Bitcoin")
+            st.write("To understand Blockchain, you must understand why it was built.")
+            st.write("In **2008**, the global financial system collapsed. Banks gambled with user money, and governments printed trillions to bail them out. People lost trust in centralization.")
+            st.info("👤 **Satoshi Nakamoto:** On Oct 31, 2008, an anonymous cryptographer published the **Bitcoin Whitepaper**. It proposed a system of money that required no banks, no governments, and no trust.")
+            st.link_button("📜 Read the Bitcoin Whitepaper", "https://bitcoin.org/bitcoin.pdf")
+            
             st.divider()
-            st.subheader("2. The Solution: The 'Stone Tablet' Analogy")
-            st.write("Imagine a giant **Stone Tablet** in the middle of the Town Square.")
-            c_concept1, c_concept2 = st.columns(2)
-            with c_concept1:
-                st.info("📢 **Public & Transparent**")
-                st.write("""
-                * Everyone in town can see the tablet.
-                * If Alice sends Bob $5, a 'Miner' carves it into the stone.
-                * **Everyone sees it happen.** No secrets.
-                """)
-            with c_concept2:
-                st.success("🔒 **Immutable (Permanent)**")
-                st.write("""
-                * Once carved, it is there **forever**.
-                * You cannot use an eraser.
-                * You cannot tear out the page.
-                * This creates **Total Trust** without a middleman.
-                """)
+            
+            st.subheader("2. What is it? (The Digital Ledger)")
+            st.write("A blockchain is a **Distributed Digital Ledger**.")
+            st.markdown("""
+            * **Distributed:** No single computer runs it. It runs on thousands of computers (Nodes) globally.
+            * **Ledger:** It is a list of transactions (Alice sent Bob 5 BTC).
+            * **Blocks:** Transactions are bundled into groups called 'Blocks'.
+            * **Chain:** Each block is cryptographically tied to the one before it.
+            """)
+            
             st.divider()
-            st.subheader("3. How does it actually work?")
-            st.write("It's not just one tablet. It is **Distributed**. Imagine if **10,000 people** took a photo of that stone tablet instantly.")
-            st.caption("If a hacker tries to change ONE photo, the other 9,999 people will say: 'Hey! That's fake!'")
+
+            st.subheader("3. Security: Why is it Unhackable?")
+            st.write("Blockchain security relies on **Hashing (SHA-256)** and **Consensus**.")
+            c_sec1, c_sec2 = st.columns(2)
+            with c_sec1:
+                st.warning("🔗 The Chain Effect")
+                st.write("If a hacker tries to change a transaction in Block 50, it changes the 'Hash' (ID) of that block. Because Block 51 is connected to Block 50's ID, Block 51 also changes. This creates a domino effect where **every subsequent block breaks**.")
+            with c_sec2:
+                st.error("🛡️ The 51% Rule")
+                st.write("To successfully hack Bitcoin, you would need to control **51% of all computing power in the world** simultaneously. This would cost billions of dollars per hour, making it economically impossible.")
+
             st.divider()
-            st.subheader("4. Real World Use Cases")
-            c_use1, c_use2 = st.columns(2)
-            with c_use1:
-                st.warning("☕ **Supply Chain**")
-                st.write("You scan a coffee bag and see the *exact date* the farmer picked the beans. It cannot be faked.")
-            with c_use2:
-                st.info("🏡 **Real Estate**")
-                st.write("The 'Title' is a token. You send money, the house token hits your wallet. Deal done in 10 seconds.")
+
+            st.subheader("4. Types of Blockchains")
+            st.write("Not all blockchains are Bitcoin. There are three main types:")
+            st.markdown("""
+            1.  **Public (Permissionless):** Bitcoin, Ethereum, Solana. Anyone can join, read, or write. Total transparency.
+            2.  **Private (Permissioned):** Hyperledger, Ripple (historically). Used by banks/enterprises. You need an invite to join.
+            3.  **Hybrid:** A mix of both. Used for medical records or identity verification.
+            """)
+
+            st.divider()
+
+            st.subheader("5. The Future of Crypto")
+            st.write("Where are we going from here?")
+            st.success("🚀 **The Phase of Utility**")
+            st.write("We are moving from 'Speculation' (gambling) to 'Utility' (using).")
+            st.write("**Key Trends:**")
+            st.write("* **Tokenization of Assets:** Stocks, Real Estate, and Bonds moving onto the blockchain (BlackRock is doing this now).")
+            st.write("* **Layer 2 Scaling:** Networks like Optimism and Base making crypto fast and cheap for daily coffee purchases.")
+            st.write("* **DePIN:** Decentralized Physical Infrastructure (using crypto to build wifi networks and energy grids).")
 
         with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
             st.subheader("1. What makes it 'Smart'?")
@@ -296,7 +312,6 @@ else:
             with col_aave2:
                 st.link_button("Explore Aave ↗", "https://aave.com/")
 
-        # --- LESSON 4: EXPANDED ---
         with st.expander("Lesson 4: What actually IS a Wallet? (The Ultimate Guide)"):
             st.subheader("1. The 'Glass Box' Analogy")
             st.write("Crypto is confusing because you can't 'see' the money. Here is the best way to visualize it:")
@@ -505,7 +520,7 @@ else:
                 else:
                     st.error("❌ **Bad Trade.** Risk is too high for the reward.")
 
-    # --- TAB 3: LIVE MARKET ---
+    # --- TAB 3: LIVE MARKET (UNCHANGED) ---
     with tab_data:
         st.header("📊 Market Dashboard")
         
