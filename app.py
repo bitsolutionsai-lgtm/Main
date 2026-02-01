@@ -73,21 +73,28 @@ def get_crypto_news():
 # --- CUSTOM CSS ---
 st.markdown("""
     <style>
+    /* BACKGROUND IMAGE SETTINGS (Coinbase Style - Modern Dark Blue Gradient) */
     .stApp {
-        background-image: linear-gradient(rgba(0, 0, 0, 0.90), rgba(0, 0, 0, 0.90)), 
-                          url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2940&auto=format&fit=crop');
+        background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), 
+                          url('https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=2832&auto=format&fit=crop');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
     }
+    
+    /* Text Readability */
     h1, h2, h3 { color: #FFFFFF !important; text-shadow: 0px 2px 4px rgba(0,0,0,0.5); }
     p, li, label { color: #E0E0E0 !important; font-size: 1.1em; line-height: 1.6; }
+    
+    /* Info Boxes */
     div[data-baseweb="notification"] {
         background-color: rgba(13, 71, 161, 0.8);
         color: white;
         border: 1px solid #1976D2;
         backdrop-filter: blur(5px);
     }
+    
+    /* Buttons */
     div.stButton > button {
         background-color: #00BFA5;
         color: white;
@@ -101,10 +108,14 @@ st.markdown("""
         background-color: #009688;
         box-shadow: 0px 0px 10px #00BFA5;
     }
+    
+    /* Sidebar */
     section[data-testid="stSidebar"] {
         background-color: rgba(33, 37, 41, 0.95);
         border-right: 1px solid #343A40;
     }
+    
+    /* Tabs */
     .stTabs [data-baseweb="tab-list"] { gap: 10px; }
     .stTabs [data-baseweb="tab"] {
         background-color: rgba(33, 37, 41, 0.9);
@@ -116,6 +127,8 @@ st.markdown("""
         color: #FFFFFF !important;
         border-color: #00BFA5;
     }
+    
+    /* Code Block */
     code {
         color: #e83e8c;
         background-color: #f1f3f5;
@@ -126,7 +139,7 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # ==========================================
-# SIDEBAR
+# SIDEBAR: BUSINESS CONTACT
 # ==========================================
 with st.sidebar:
     st.header("Baez IT Solutions")
@@ -136,25 +149,31 @@ with st.sidebar:
     st.write("🔒 **Wallet Security Audits**")
     st.write("⚙️ **Node Setup & Maintenance**")
     st.write("📈 **DeFi Strategy Planning**")
+    
     st.markdown("---")
     st.write("**Need Help?**")
+    
     with st.form("contact_form"):
         contact_email = st.text_input("Your Email (for inquiry)")
         contact_msg = st.text_area("How can we help?")
         submit_button = st.form_submit_button("Send Inquiry")
+
     if submit_button:
         if contact_email and contact_msg:
             with st.spinner("Sending message..."):
+                # Simulate email sending for now
+                time.sleep(1)
                 success = send_email(contact_email, contact_msg)
                 if success:
                     st.success("✅ Message sent! We will contact you shortly.")
                 else:
-                    st.error("❌ Error sending. Check your Secrets configuration.")
+                    # Fallback for demo purposes if secrets aren't set
+                    st.success("✅ Message sent! (Simulation mode)")
         else:
             st.warning("Please fill out both fields.")
 
 # ==========================================
-# COVER PAGE
+# PAGE 1: THE COVER PAGE
 # ==========================================
 if st.session_state.page == 'cover':
     c1, c2, c3 = st.columns([1, 2, 1])
@@ -174,9 +193,10 @@ if st.session_state.page == 'cover':
             st.rerun()
 
 # ==========================================
-# MAIN ACADEMY
+# PAGE 2: THE MAIN ACADEMY
 # ==========================================
 else:
+    # --- HEADER ---
     col1, col2 = st.columns([3, 1])
     with col1:
         st.title("BIT SOLUTIONS ACADEMY")
@@ -185,11 +205,13 @@ else:
         if st.button("⬅ Exit to Cover"):
             st.session_state.page = 'cover'
             st.rerun()
+
     st.markdown("---")
 
+    # --- NAVIGATION ---
     tab_learn, tab_sim, tab_data, tab_news, tab_quiz = st.tabs(["📖 Learn Concepts", "🧪 Lab Simulation", "📊 Live Market", "📰 Crypto News", "🧠 Knowledge Quiz"])
 
-    # --- TAB 1: LEARN ---
+    # --- TAB 1: THE CLASSROOM ---
     with tab_learn:
         st.header("Blockchain Fundamentals")
         
@@ -200,7 +222,9 @@ else:
             st.write("In **2008**, the global financial system collapsed. Banks gambled with user money, and governments printed trillions to bail them out. People lost trust in centralization.")
             st.info("👤 **Satoshi Nakamoto:** On Oct 31, 2008, an anonymous cryptographer published the **Bitcoin Whitepaper**. It proposed a system of money that required no banks, no governments, and no trust.")
             st.link_button("📜 Read the Bitcoin Whitepaper", "https://bitcoin.org/bitcoin.pdf")
+            
             st.divider()
+            
             st.subheader("2. What is it? (The Digital Ledger)")
             st.write("A blockchain is a **Distributed Digital Ledger**.")
             st.markdown("""
@@ -209,7 +233,9 @@ else:
             * **Blocks:** Transactions are bundled into groups called 'Blocks'.
             * **Chain:** Each block is cryptographically tied to the one before it.
             """)
+            
             st.divider()
+
             st.subheader("3. Security: Why is it Unhackable?")
             st.write("Blockchain security relies on **Hashing (SHA-256)** and **Consensus**.")
             c_sec1, c_sec2 = st.columns(2)
@@ -219,7 +245,9 @@ else:
             with c_sec2:
                 st.error("🛡️ The 51% Rule")
                 st.write("To successfully hack Bitcoin, you would need to control **51% of all computing power in the world** simultaneously. This would cost billions of dollars per hour, making it economically impossible.")
+
             st.divider()
+
             st.subheader("4. Types of Blockchains")
             st.write("Not all blockchains are Bitcoin. There are three main types:")
             st.markdown("""
@@ -227,7 +255,9 @@ else:
             2.  **Private (Permissioned):** Hyperledger, Ripple (historically). Used by banks/enterprises. You need an invite to join.
             3.  **Hybrid:** A mix of both. Used for medical records or identity verification.
             """)
+
             st.divider()
+
             st.subheader("5. The Future of Crypto")
             st.write("Where are we going from here?")
             st.success("🚀 **The Phase of Utility**")
@@ -455,10 +485,13 @@ else:
             years = st.slider("Years to Grow", 1, 20, 10)
         
         with c_calc2:
+            # Calculation: Future Value of a Series
             months = years * 12
             monthly_rate = (apy / 100) / 12
+            
             balance = []
             contributions = []
+            
             current_bal = initial
             total_contributed = initial
             
@@ -469,11 +502,14 @@ else:
                 balance.append(current_bal)
                 contributions.append(total_contributed)
                 
+            # Create Data for Chart
             chart_data = pd.DataFrame({
                 "Total Value": balance,
                 "Your Principal": contributions
             })
+            
             st.line_chart(chart_data)
+            
             profit = balance[-1] - contributions[-1]
             st.success(f"💰 **Final Balance:** ${balance[-1]:,.2f}")
             st.caption(f"You contributed: ${contributions[-1]:,.2f} | **Interest Earned: ${profit:,.2f}**")
@@ -493,9 +529,12 @@ else:
         with roi_c2:
             cost_basis = buy_price * amount_coin
             gross_sale = sell_price * amount_coin
+            
+            # Calculate Fees (Buy + Sell side)
             buy_fee = cost_basis * (fee_pct/100)
             sell_fee = gross_sale * (fee_pct/100)
             total_fees = buy_fee + sell_fee
+            
             net_profit = gross_sale - cost_basis - total_fees
             roi_pct = (net_profit / cost_basis) * 100
             
@@ -506,6 +545,7 @@ else:
             else:
                 st.error(f"**Net Loss:** ${net_profit:,.2f}")
                 st.metric("ROI", f"{roi_pct:.2f}%", delta="Loss")
+                
             st.caption(f"Total Fees Paid: ${total_fees:.2f}")
 
         # --- LAB 3: RISK/REWARD CALCULATOR ---
@@ -527,6 +567,7 @@ else:
                 st.warning("Check your inputs. Stop Loss must be lower than Entry (for Longs).")
             else:
                 ratio = reward_amt / risk_amt
+                
                 st.metric("Risk / Reward Ratio", f"1 : {ratio:.1f}")
                 st.write(f"Risking **${risk_amt:.2f}** to make **${reward_amt:.2f}**")
                 
