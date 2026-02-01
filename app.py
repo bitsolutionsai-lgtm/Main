@@ -73,10 +73,10 @@ def get_crypto_news():
 # --- CUSTOM CSS ---
 st.markdown("""
     <style>
-    /* BACKGROUND IMAGE SETTINGS (Coinbase Style - Modern Dark Blue Gradient) */
+    /* BACKGROUND IMAGE SETTINGS (New: Abstract Digital Network) */
     .stApp {
-        background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), 
-                          url('https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=2832&auto=format&fit=crop');
+        background-image: linear-gradient(rgba(0, 0, 0, 0.80), rgba(0, 0, 0, 0.80)), 
+                          url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=2832&auto=format&fit=crop');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
