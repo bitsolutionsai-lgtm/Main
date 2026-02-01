@@ -193,16 +193,14 @@ else:
     with tab_learn:
         st.header("Blockchain Fundamentals")
         
-        # --- LESSON 1: EXPANDED (NEW) ---
+        # --- LESSON 1: EXPANDED ---
         with st.expander("Lesson 1: What is a Blockchain? (The Deep Dive)"):
             st.subheader("1. The History: Origins of Bitcoin")
             st.write("To understand Blockchain, you must understand why it was built.")
             st.write("In **2008**, the global financial system collapsed. Banks gambled with user money, and governments printed trillions to bail them out. People lost trust in centralization.")
             st.info("👤 **Satoshi Nakamoto:** On Oct 31, 2008, an anonymous cryptographer published the **Bitcoin Whitepaper**. It proposed a system of money that required no banks, no governments, and no trust.")
             st.link_button("📜 Read the Bitcoin Whitepaper", "https://bitcoin.org/bitcoin.pdf")
-            
             st.divider()
-            
             st.subheader("2. What is it? (The Digital Ledger)")
             st.write("A blockchain is a **Distributed Digital Ledger**.")
             st.markdown("""
@@ -211,9 +209,7 @@ else:
             * **Blocks:** Transactions are bundled into groups called 'Blocks'.
             * **Chain:** Each block is cryptographically tied to the one before it.
             """)
-            
             st.divider()
-
             st.subheader("3. Security: Why is it Unhackable?")
             st.write("Blockchain security relies on **Hashing (SHA-256)** and **Consensus**.")
             c_sec1, c_sec2 = st.columns(2)
@@ -223,9 +219,7 @@ else:
             with c_sec2:
                 st.error("🛡️ The 51% Rule")
                 st.write("To successfully hack Bitcoin, you would need to control **51% of all computing power in the world** simultaneously. This would cost billions of dollars per hour, making it economically impossible.")
-
             st.divider()
-
             st.subheader("4. Types of Blockchains")
             st.write("Not all blockchains are Bitcoin. There are three main types:")
             st.markdown("""
@@ -233,9 +227,7 @@ else:
             2.  **Private (Permissioned):** Hyperledger, Ripple (historically). Used by banks/enterprises. You need an invite to join.
             3.  **Hybrid:** A mix of both. Used for medical records or identity verification.
             """)
-
             st.divider()
-
             st.subheader("5. The Future of Crypto")
             st.write("Where are we going from here?")
             st.success("🚀 **The Phase of Utility**")
@@ -245,25 +237,68 @@ else:
             st.write("* **Layer 2 Scaling:** Networks like Optimism and Base making crypto fast and cheap for daily coffee purchases.")
             st.write("* **DePIN:** Decentralized Physical Infrastructure (using crypto to build wifi networks and energy grids).")
 
+        # --- LESSON 2: EXPANDED (SMART CONTRACTS) ---
         with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
-            st.subheader("1. What makes it 'Smart'?")
-            st.write("A Smart Contract is just **Programmable Money**. It's code that holds money and releases it only when a condition is met.")
-            st.info("💡 **Think:** 'If This Happens, Then Pay That.'")
+            st.subheader("1. What exactly is a Smart Contract?")
+            st.write("A Smart Contract is **self-executing code** stored on a blockchain. It acts like a digital agreement that runs exactly as programmed, with no possibility of downtime, censorship, or fraud.")
+            st.info("💡 **The Concept:** 'If This, Then That' (IFTTT). It replaces the middleman with mathematics.")
+            st.write("Unlike a paper contract, which requires a lawyer to enforce, a smart contract enforces itself. Once the conditions are met, the transaction happens instantly.")
+            
             st.divider()
-            st.subheader("2. The Vending Machine Analogy")
-            st.write("The best way to understand it is to compare a **Human Barista** vs. a **Vending Machine**.")
+            
+            st.subheader("2. The Vending Machine Analogy (The Perfect Example)")
+            st.write("Nick Szabo, who invented the concept, compared it to a Vending Machine:")
             c_human, c_bot = st.columns(2)
             with c_human:
-                st.error("☕ The Old Way")
-                st.write("Slow, Expensive, Trust-Based.")
+                st.error("👨‍⚖️ The Old Way (The Lawyer)")
+                st.write("**Process:** You pay a lawyer. The lawyer writes a paper. You wait weeks. You trust the lawyer not to lose the paper.")
+                st.write("**Cost:** High Fees + Time.")
             with c_bot:
-                st.success("🤖 The New Way")
-                st.write("Instant, Cheap, Trustless.")
-            st.divider()
-            st.subheader("3. A Simple Example: The Sports Bet")
-            st.write("Two friends bet on the Super Bowl. The code holds the money and automatically pays the winner based on the official score.")
+                st.success("🤖 The New Way (The Vending Machine)")
+                st.write("**Process:** You insert a coin ($2.00). You press 'A1'. The machine drops the soda. No clerk needed. No trust needed.")
+                st.write("**Cost:** Low Fees + Instant.")
 
-        # --- LESSON 3: EXPANDED (STAKING & YIELD) ---
+            st.divider()
+            
+            st.subheader("3. Real World Use Cases (It's not just money)")
+            st.write("Smart contracts are disrupting massive industries right now:")
+            
+            st.markdown("##### 🏦 Decentralized Finance (DeFi)")
+            st.write("Apps like **Uniswap** allow you to trade stocks/crypto without a broker. The 'Smart Contract' acts as the Market Maker. It holds the funds and swaps them automatically based on the current price.")
+            
+            st.markdown("##### 🎨 NFT Royalties")
+            st.write("In the old art world, an artist sold a painting for $100. If it resold for $1M later, they got $0. With Smart Contracts, the code can say: *'Every time this token is sold, send 5% of the price to the Original Artist.'* This happens automatically forever.")
+            
+            st.markdown("##### ✈️ Parametric Insurance")
+            st.write("Companies like **Etherisc** are building flight insurance. If your flight is delayed by >45 minutes (verified by flight data oracle), the smart contract **instantly** pays your refund. No claims form. No waiting on hold.")
+
+            st.divider()
+            
+            st.subheader("4. The Future: A Tokenized World")
+            st.write("Where is this technology going in the next 10 years?")
+            st.success("🏠 **Real Estate:**")
+            st.write("House deeds will be NFTs. You will buy a house by sending USDC to a smart contract, and the 'House Token' will be sent to your wallet. No Title Company needed. Settlement time: 10 seconds.")
+            
+            st.success("🗳️ **DAOs (Decentralized Autonomous Organizations):**")
+            st.write("Companies managed by code, not CEOs. Token holders vote on decisions (like treasury spending), and the smart contract automatically executes the result of the vote.")
+
+            st.code("""
+            // Pseudo-code of a simple Smart Contract
+            contract SimplePayment {
+                address owner = 0x123...;
+                
+                function sendMoney() public payable {
+                    if (msg.value >= 10 ETH) {
+                        transferOwnership(msg.sender);
+                    } else {
+                        revert("Not enough money!");
+                    }
+                }
+            }
+            """, language="solidity")
+            st.caption("A simplified example of how logic is written in Solidity (the language of Ethereum).")
+
+        # --- LESSON 3: EXPANDED (STAKING) ---
         with st.expander("Lesson 3: Staking, Liquid Staking & Yield (How to Earn)"):
             st.subheader("1. The Two Ways to Earn in DeFi")
             st.write("Just holding crypto is like stuffing cash under your mattress. In DeFi, you can make your assets work for you.")
@@ -312,6 +347,7 @@ else:
             with col_aave2:
                 st.link_button("Explore Aave ↗", "https://aave.com/")
 
+        # --- LESSON 4: EXPANDED (WALLETS) ---
         with st.expander("Lesson 4: What actually IS a Wallet? (The Ultimate Guide)"):
             st.subheader("1. The 'Glass Box' Analogy")
             st.write("Crypto is confusing because you can't 'see' the money. Here is the best way to visualize it:")
@@ -321,9 +357,7 @@ else:
             * **Only the person with the Key** can open Box #402 to move the money.
             * Your 'Wallet' is just a **Keychain** that holds the key to your box. It doesn't hold the money itself.
             """)
-            
             st.divider()
-            
             st.subheader("2. The Keys to the Kingdom")
             st.write("When you create a wallet, you aren't creating an account with a company. You are generating cryptography.")
             c_key1, c_key2 = st.columns(2)
@@ -337,12 +371,9 @@ else:
                 st.write("**Think: The Master Password.**")
                 st.write("This is a list of 12-24 words. If anyone sees this, they can steal ALL your money from ANY device. Never type this into a website.")
                 st.code("apple river galaxy...")
-
             st.divider()
-
             st.subheader("3. Hot vs. Cold Wallets (Which do you need?)")
             st.write("The difference comes down to one thing: **Is it connected to the internet?**")
-
             # Hot Wallets Section
             st.markdown("#### 🔥 Hot Wallets (Software)")
             st.write("**Best for:** Daily spending, trading on Uniswap, holding small amounts (< $1,000).")
@@ -355,7 +386,6 @@ else:
                 """)
             with c_hot2:
                 st.link_button("Download Phantom ↗", "https://phantom.app")
-
             # Cold Wallets Section
             st.markdown("#### ❄️ Cold Wallets (Hardware)")
             st.write("**Best for:** Long-term savings, retirement, holding large amounts (> $1,000).")
@@ -368,9 +398,7 @@ else:
                 """)
             with c_cold2:
                 st.link_button("Get a Ledger ↗", "https://shop.ledger.com")
-            
             st.divider()
-            
             st.subheader("4. Custodial vs. Self-Custody")
             st.warning("⚠️ **Important Distinction:**")
             st.write("""
@@ -410,7 +438,7 @@ else:
             st.write("When you use a DeFi app (like Uniswap), you give it permission to spend your coins. If that app gets hacked later, your wallet is at risk.")
             st.info("🛠️ **The Fix:** Once a month, use a tool like **Revoke.cash** to disconnect your wallet from old apps.")
 
-    # --- TAB 2: LAB ---
+    # --- TAB 2: LAB (FINAL) ---
     with tab_sim:
         st.header("🧪 Interactive Lab")
         st.write("Experiment with the mechanics of DeFi in a safe, simulated environment.")
@@ -427,13 +455,10 @@ else:
             years = st.slider("Years to Grow", 1, 20, 10)
         
         with c_calc2:
-            # Calculation: Future Value of a Series
             months = years * 12
             monthly_rate = (apy / 100) / 12
-            
             balance = []
             contributions = []
-            
             current_bal = initial
             total_contributed = initial
             
@@ -444,14 +469,11 @@ else:
                 balance.append(current_bal)
                 contributions.append(total_contributed)
                 
-            # Create Data for Chart
             chart_data = pd.DataFrame({
                 "Total Value": balance,
                 "Your Principal": contributions
             })
-            
             st.line_chart(chart_data)
-            
             profit = balance[-1] - contributions[-1]
             st.success(f"💰 **Final Balance:** ${balance[-1]:,.2f}")
             st.caption(f"You contributed: ${contributions[-1]:,.2f} | **Interest Earned: ${profit:,.2f}**")
@@ -471,12 +493,9 @@ else:
         with roi_c2:
             cost_basis = buy_price * amount_coin
             gross_sale = sell_price * amount_coin
-            
-            # Calculate Fees (Buy + Sell side)
             buy_fee = cost_basis * (fee_pct/100)
             sell_fee = gross_sale * (fee_pct/100)
             total_fees = buy_fee + sell_fee
-            
             net_profit = gross_sale - cost_basis - total_fees
             roi_pct = (net_profit / cost_basis) * 100
             
@@ -487,7 +506,6 @@ else:
             else:
                 st.error(f"**Net Loss:** ${net_profit:,.2f}")
                 st.metric("ROI", f"{roi_pct:.2f}%", delta="Loss")
-                
             st.caption(f"Total Fees Paid: ${total_fees:.2f}")
 
         # --- LAB 3: RISK/REWARD CALCULATOR ---
@@ -509,7 +527,6 @@ else:
                 st.warning("Check your inputs. Stop Loss must be lower than Entry (for Longs).")
             else:
                 ratio = reward_amt / risk_amt
-                
                 st.metric("Risk / Reward Ratio", f"1 : {ratio:.1f}")
                 st.write(f"Risking **${risk_amt:.2f}** to make **${reward_amt:.2f}**")
                 
@@ -520,7 +537,7 @@ else:
                 else:
                     st.error("❌ **Bad Trade.** Risk is too high for the reward.")
 
-    # --- TAB 3: LIVE MARKET (UNCHANGED) ---
+    # --- TAB 3: LIVE MARKET ---
     with tab_data:
         st.header("📊 Market Dashboard")
         
