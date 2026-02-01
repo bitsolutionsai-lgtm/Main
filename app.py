@@ -26,7 +26,6 @@ def enter_site():
 # --- EMAIL FUNCTION ---
 def send_email(user_email, user_message):
     try:
-        # Load credentials from secrets
         sender_email = st.secrets["email"]["sender_email"]
         sender_password = st.secrets["email"]["sender_password"]
         receiver_email = st.secrets["email"]["receiver_email"]
@@ -132,7 +131,6 @@ with st.sidebar:
     st.markdown("---")
     st.write("**Need Help?**")
     
-    # --- EMAIL FORM ---
     with st.form("contact_form"):
         contact_email = st.text_input("Your Email (for inquiry)")
         contact_msg = st.text_area("How can we help?")
@@ -192,7 +190,6 @@ else:
     with tab_learn:
         st.header("Blockchain Fundamentals")
         
-        # --- LESSON 1 ---
         with st.expander("Lesson 1: What is a Blockchain? (The Foundation)"):
             st.subheader("1. The Problem with 'Normal' Money")
             st.write("Right now, if I send you $50, we both trust the **Bank** to update the ledger. The Bank has the 'Master Book'.")
@@ -233,7 +230,6 @@ else:
                 st.write("**The Problem:** Buying a house takes 30 days because lawyers have to verify the paper title history.")
                 st.write("**Blockchain:** The 'Title' is a token. You send the money, the house token hits your wallet. Deal done in 10 seconds.")
 
-        # --- LESSON 2 ---
         with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
             st.subheader("1. What makes it 'Smart'?")
             st.write("A Smart Contract is just **Programmable Money**. It's code that holds money and releases it only when a condition is met.")
@@ -252,7 +248,6 @@ else:
             st.subheader("3. A Simple Example: The Sports Bet")
             st.write("Two friends bet on the Super Bowl. The code holds the money and automatically pays the winner based on the official score. No fighting.")
 
-        # --- LESSON 3 ---
         with st.expander("Lesson 3: Staking & Liquid Staking (How to Earn Interest)"):
             st.subheader("1. What is Staking?")
             st.write("Staking is basically a **High-Yield Savings Account** for the internet. You lock up your crypto to help secure the network, and the network pays you interest (usually 4-7%).")
@@ -287,7 +282,6 @@ else:
             """)
             st.write("**Top Examples:** Lido (stETH), Coinbase (cbETH), Rocket Pool (rETH).")
 
-        # --- LESSON 4 ---
         with st.expander("Lesson 4: What actually IS a Wallet? (Deep Dive)"):
             st.subheader("1. The 'Glass Box' Analogy")
             st.write("Crypto is confusing because you can't 'see' the money. Here is the best way to visualize it:")
@@ -344,7 +338,6 @@ else:
                 st.write("**Investor**")
                 st.link_button("Ledger Nano ↗", "https://www.ledger.com")
 
-        # --- LESSON 5 ---
         with st.expander("Lesson 5: 🛡️ Security Masterclass (The Survival Guide)"):
             st.subheader("1. The Core Concept: 'Self-Custody'")
             st.write("In crypto, YOU are the bank. There is no customer support hotline. If you lose your keys, the money is gone. This responsibility requires new habits.")
@@ -430,7 +423,6 @@ else:
         
         def get_data(t):
             try:
-                # Get 2 days of data to calculate change
                 d = yf.Ticker(t).history(period="5d") 
                 current = d["Close"].iloc[-1]
                 prev = d["Close"].iloc[-2]
@@ -450,7 +442,7 @@ else:
         st.area_chart(btc_h)
         st.caption("Bitcoin Price Trend (Last 5 Days)")
 
-    # --- TAB 4: CRYPTO NEWS (LIVE & MULTI-COIN) ---
+    # --- TAB 4: CRYPTO NEWS (LIVE & SAFE) ---
     with tab_news:
         st.header("📰 Global Crypto News (Curated)")
         st.write("Real-time headlines for Bitcoin, Ethereum, and Solana. **Tip:** Always verify news from multiple sources.")
@@ -460,47 +452,42 @@ else:
         with col_news1:
             st.subheader("Latest Headlines (Live Feed)")
             
-            # 1. DEFINE TICKERS TO FETCH NEWS FOR
+            # 1. DEFINE TICKERS
             tickers = ["BTC-USD", "ETH-USD", "SOL-USD"]
             all_news = []
 
-            # 2. FETCH NEWS FROM YFINANCE (With Safety Check)
+            # 2. FETCH NEWS (WITH ERROR HANDLING)
             for t in tickers:
                 try:
                     tick = yf.Ticker(t)
                     if tick.news:
                         for item in tick.news:
-                            # CRITICAL FIX: Only add item if it has a title
+                            # CRITICAL FIX: Ensure 'title' exists before adding
                             if 'title' in item and 'link' in item:
                                 item['coin'] = t.split("-")[0] 
                                 all_news.append(item)
                 except:
                     pass
 
-            # 3. SORT BY TIME (NEWEST FIRST)
+            # 3. SORT BY TIME
             try:
                 all_news = sorted(all_news, key=lambda x: x.get('providerPublishTime', 0), reverse=True)
             except:
                 pass
 
-            # 4. DISPLAY TOP 10 STORIES
+            # 4. DISPLAY TOP 10
             if all_news:
                 for item in all_news[:10]:
                     with st.container():
-                        # Safe Access for Time
+                        # Safe Data Access
                         publish_time = pd.to_datetime(item.get('providerPublishTime', 0), unit='s').strftime('%Y-%m-%d %H:%M')
-                        
-                        # Safe Access for Title/Link (Defensive Coding)
-                        title = item.get('title', 'No Title Available')
+                        title = item.get('title', 'No Title')
                         link = item.get('link', '#')
-                        publisher = item.get('publisher', 'Unknown Source')
+                        publisher = item.get('publisher', 'Unknown')
+                        coin = item.get('coin', 'CRYPTO')
                         
-                        # Display Headline with Link
                         st.markdown(f"#### [{title}]({link})")
-                        
-                        # Display Metadata
-                        st.caption(f"**{item.get('coin', 'CRYPTO')}** | {publisher} | 🕒 {publish_time}")
-                        
+                        st.caption(f"**{coin}** | {publisher} | 🕒 {publish_time}")
                         st.markdown("---")
             else:
                 st.info("No live news available at the moment. Please check your internet connection.")
