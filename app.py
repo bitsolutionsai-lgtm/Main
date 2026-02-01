@@ -247,23 +247,56 @@ else:
             st.subheader("3. A Simple Example: The Sports Bet")
             st.write("Two friends bet on the Super Bowl. The code holds the money and automatically pays the winner based on the official score.")
 
-        with st.expander("Lesson 3: Staking & Liquid Staking (How to Earn Interest)"):
-            st.subheader("1. What is Staking?")
-            st.write("Staking is basically a **High-Yield Savings Account** for the internet.")
+        # --- LESSON 3: EXPANDED (STAKING & YIELD) ---
+        with st.expander("Lesson 3: Staking, Liquid Staking & Yield (How to Earn)"):
+            st.subheader("1. The Two Ways to Earn in DeFi")
+            st.write("Just holding crypto is like stuffing cash under your mattress. In DeFi, you can make your assets work for you.")
+            
+            c_earn1, c_earn2 = st.columns(2)
+            with c_earn1:
+                st.success("🛡️ Protocol Staking")
+                st.write("**What is it?** You lock your coins to help secure the blockchain network (like Ethereum or Solana).")
+                st.write("**Risk:** Low.")
+                st.write("**Reward:** ~3-7% APY (Paid in more coins).")
+            with c_earn2:
+                st.info("🏦 DeFi Lending")
+                st.write("**What is it?** You lend your coins to other users (borrowers) through a smart contract.")
+                st.write("**Risk:** Medium (Smart Contract Risk).")
+                st.write("**Reward:** Variable (Based on demand).")
+            
             st.divider()
-            st.subheader("2. The Problem: 'The Locked Vault'")
-            c_lock1, c_lock2 = st.columns(2)
-            with c_lock1:
-                st.error("🚫 Standard Staking")
-                st.write("Your money is locked in a vault. You cannot touch it for days.")
-            with c_lock2:
-                st.success("💧 Liquid Staking")
-                st.write("You get a 'Receipt Token' (stETH) that represents your deposit. You can trade this receipt instantly.")
-            st.divider()
-            st.subheader("3. The 'Casino Chip' Analogy")
-            st.write("You trade $100 Cash for a $100 Chip. The chip earns value while you hold it. You can cash out the chip anytime.")
+            
+            st.subheader("2. Deep Dive: Liquid Staking (Jito & Lido)")
+            st.write("Standard staking has a flaw: your money is **locked**. You can't sell it if the market crashes.")
+            st.write("**The Solution: Liquid Staking Tokens (LSTs).**")
+            st.write("When you stake your SOL or ETH, the protocol gives you a 'Receipt Token' (like JitoSOL). This receipt creates three benefits:")
+            st.write("1. **Liquidity:** You can swap JitoSOL back to SOL instantly (no waiting period).")
+            st.write("2. **Yield:** The token value grows automatically.")
+            st.write("3. **MEV Rewards:** (Specific to Jito) You earn extra money from 'Maximal Extractable Value'—basically tips paid by traders for speed.")
+            
+            col_jito1, col_jito2 = st.columns([3,1])
+            with col_jito1:
+                st.write("**Example:** You deposit **10 SOL** into Jito. You get **9.x JitoSOL**. A year later, that 9.x JitoSOL is worth **10.7 SOL**.")
+            with col_jito2:
+                st.link_button("Explore Jito ↗", "https://www.jito.network/")
 
-        # --- LESSON 4: EXPANDED (NEW) ---
+            st.divider()
+
+            st.subheader("3. Deep Dive: Decentralized Lending (Aave)")
+            st.write("**Aave** is the biggest 'Bank' in DeFi, but it has no employees. It is run entirely by code.")
+            st.markdown("""
+            * **Depositors (You):** Deposit USDC or ETH to earn interest.
+            * **Borrowers:** Deposit collateral (like BTC) to borrow USDC.
+            """)
+            st.warning("⚠️ **Safety Feature:** Aave is 'Over-Collateralized'. To borrow $100, you must deposit ~$120 worth of collateral. If the value drops, the robot liquidates the collateral to pay YOU (the depositor) back. This protects your deposit.")
+            
+            col_aave1, col_aave2 = st.columns([3,1])
+            with col_aave1:
+                st.write("**Strategy:** Many people deposit ETH into Aave to earn a small yield, while keeping the flexibility to withdraw instantly.")
+            with col_aave2:
+                st.link_button("Explore Aave ↗", "https://aave.com/")
+
+        # --- LESSON 4: EXPANDED ---
         with st.expander("Lesson 4: What actually IS a Wallet? (The Ultimate Guide)"):
             st.subheader("1. The 'Glass Box' Analogy")
             st.write("Crypto is confusing because you can't 'see' the money. Here is the best way to visualize it:")
