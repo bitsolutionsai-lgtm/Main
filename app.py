@@ -189,7 +189,7 @@ else:
 
     tab_learn, tab_sim, tab_data, tab_news, tab_quiz = st.tabs(["📖 Learn Concepts", "🧪 Lab Simulation", "📊 Live Market", "📰 Crypto News", "🧠 Knowledge Quiz"])
 
-    # --- TAB 1: LEARN (UNCHANGED) ---
+    # --- TAB 1: LEARN ---
     with tab_learn:
         st.header("Blockchain Fundamentals")
         with st.expander("Lesson 1: What is a Blockchain? (The Foundation)"):
@@ -263,7 +263,8 @@ else:
             st.subheader("3. The 'Casino Chip' Analogy")
             st.write("You trade $100 Cash for a $100 Chip. The chip earns value while you hold it. You can cash out the chip anytime.")
 
-        with st.expander("Lesson 4: What actually IS a Wallet? (Deep Dive)"):
+        # --- LESSON 4: EXPANDED (NEW) ---
+        with st.expander("Lesson 4: What actually IS a Wallet? (The Ultimate Guide)"):
             st.subheader("1. The 'Glass Box' Analogy")
             st.write("Crypto is confusing because you can't 'see' the money. Here is the best way to visualize it:")
             st.info("Imagine the Blockchain is a giant wall of **Glass Lockboxes**.")
@@ -272,26 +273,62 @@ else:
             * **Only the person with the Key** can open Box #402 to move the money.
             * Your 'Wallet' is just a **Keychain** that holds the key to your box. It doesn't hold the money itself.
             """)
+            
             st.divider()
-            st.subheader("2. How does it work? (Email Analogy)")
+            
+            st.subheader("2. The Keys to the Kingdom")
+            st.write("When you create a wallet, you aren't creating an account with a company. You are generating cryptography.")
             c_key1, c_key2 = st.columns(2)
             with c_key1:
-                st.success("🟢 Public Key (Address)")
-                st.write("**Think: Email Address.** Safe to share.")
+                st.success("🟢 Public Key (The Address)")
+                st.write("**Think: Email Address.**")
+                st.write("This is what you give people so they can send you money. It is perfectly safe to share on social media.")
                 st.code("0x71C...9A23")
             with c_key2:
                 st.error("🔴 Private Key (Seed Phrase)")
-                st.write("**Think: Email Password.** NEVER SHARE THIS.")
+                st.write("**Think: The Master Password.**")
+                st.write("This is a list of 12-24 words. If anyone sees this, they can steal ALL your money from ANY device. Never type this into a website.")
                 st.code("apple river galaxy...")
+
             st.divider()
-            st.subheader("3. Hot vs. Cold")
-            c_hot, c_cold = st.columns(2)
-            with c_hot:
-                st.warning("🔥 Hot Wallet (App)")
-                st.write("Convenient but online. Good for spending ($100-$500).")
-            with c_cold:
-                st.info("❄️ Cold Wallet (USB)")
-                st.write("Offline and secure. Good for savings (>$1000).")
+
+            st.subheader("3. Hot vs. Cold Wallets (Which do you need?)")
+            st.write("The difference comes down to one thing: **Is it connected to the internet?**")
+
+            # Hot Wallets Section
+            st.markdown("#### 🔥 Hot Wallets (Software)")
+            st.write("**Best for:** Daily spending, trading on Uniswap, holding small amounts (< $1,000).")
+            c_hot1, c_hot2 = st.columns([3, 1])
+            with c_hot1:
+                st.write("""
+                * **Pros:** Free, easy to use, connects to websites instantly.
+                * **Cons:** Vulnerable to malware and hacks because keys exist on your phone/laptop.
+                * **Recommendation:** **Phantom** (Best UX) or **MetaMask** (Standard).
+                """)
+            with c_hot2:
+                st.link_button("Download Phantom ↗", "https://phantom.app")
+
+            # Cold Wallets Section
+            st.markdown("#### ❄️ Cold Wallets (Hardware)")
+            st.write("**Best for:** Long-term savings, retirement, holding large amounts (> $1,000).")
+            c_cold1, c_cold2 = st.columns([3, 1])
+            with c_cold1:
+                st.write("""
+                * **Pros:** Unhackable by online viruses. Keys NEVER leave the physical device.
+                * **Cons:** Costs money ($70-$150), requires physical button pressing to sign transactions.
+                * **Recommendation:** **Ledger Nano S Plus** or **Trezor Safe 3**.
+                """)
+            with c_cold2:
+                st.link_button("Get a Ledger ↗", "https://shop.ledger.com")
+            
+            st.divider()
+            
+            st.subheader("4. Custodial vs. Self-Custody")
+            st.warning("⚠️ **Important Distinction:**")
+            st.write("""
+            * **Custodial (Coinbase/Binance):** The exchange holds the keys. If they go bankrupt (like FTX), you lose your money.
+            * **Self-Custody (Ledger/Phantom):** YOU hold the keys. You are the bank. No one can freeze your funds, but no one can reset your password.
+            """)
 
         with st.expander("Lesson 5: 🛡️ Security Masterclass (The Survival Guide)"):
             st.subheader("1. The Core Concept: 'Self-Custody'")
@@ -325,7 +362,7 @@ else:
             st.write("When you use a DeFi app (like Uniswap), you give it permission to spend your coins. If that app gets hacked later, your wallet is at risk.")
             st.info("🛠️ **The Fix:** Once a month, use a tool like **Revoke.cash** to disconnect your wallet from old apps.")
 
-    # --- TAB 2: LAB (FINAL) ---
+    # --- TAB 2: LAB ---
     with tab_sim:
         st.header("🧪 Interactive Lab")
         st.write("Experiment with the mechanics of DeFi in a safe, simulated environment.")
@@ -435,7 +472,7 @@ else:
                 else:
                     st.error("❌ **Bad Trade.** Risk is too high for the reward.")
 
-    # --- TAB 3: LIVE MARKET (UNCHANGED) ---
+    # --- TAB 3: LIVE MARKET ---
     with tab_data:
         st.header("📊 Market Dashboard")
         
@@ -514,7 +551,7 @@ else:
             except:
                 st.write("Loading price...")
 
-    # --- TAB 4: NEWS (UNCHANGED) ---
+    # --- TAB 4: NEWS ---
     with tab_news:
         st.header("📰 Global Crypto News")
         st.write("Live feed from **Cointelegraph**. Always verify news from multiple sources.")
