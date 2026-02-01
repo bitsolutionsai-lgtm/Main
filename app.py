@@ -22,7 +22,7 @@ if 'page' not in st.session_state:
 def enter_site():
     st.session_state.page = 'main'
 
-# --- EMAIL FUNCTION (NEW) ---
+# --- EMAIL FUNCTION ---
 def send_email(user_email, user_message):
     try:
         # Load credentials from secrets
@@ -117,7 +117,7 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # ==========================================
-# SIDEBAR: BUSINESS CONTACT (UPDATED)
+# SIDEBAR: BUSINESS CONTACT
 # ==========================================
 with st.sidebar:
     st.header("Baez IT Solutions")
@@ -131,7 +131,7 @@ with st.sidebar:
     st.markdown("---")
     st.write("**Need Help?**")
     
-    # --- NEW EMAIL FORM ---
+    # --- EMAIL FORM ---
     with st.form("contact_form"):
         contact_email = st.text_input("Your Email (for inquiry)")
         contact_msg = st.text_area("How can we help?")
@@ -184,27 +184,22 @@ else:
 
     st.markdown("---")
 
-    # --- NAVIGATION ---
-    tab_learn, tab_sim, tab_data, tab_quiz = st.tabs(["📖 Learn Concepts", "🧪 Lab Simulation", "📊 Live Market", "🧠 Knowledge Quiz"])
+    # --- NAVIGATION (UPDATED WITH NEWS) ---
+    tab_learn, tab_sim, tab_data, tab_news, tab_quiz = st.tabs(["📖 Learn Concepts", "🧪 Lab Simulation", "📊 Live Market", "📰 Crypto News", "🧠 Knowledge Quiz"])
 
     # --- TAB 1: THE CLASSROOM ---
     with tab_learn:
         st.header("Blockchain Fundamentals")
         
-        # --- EXPANDED LESSON 1 (Blockchain Deep Dive) ---
+        # --- LESSON 1 ---
         with st.expander("Lesson 1: What is a Blockchain? (The Foundation)"):
-            
             st.subheader("1. The Problem with 'Normal' Money")
             st.write("Right now, if I send you $50, we both trust the **Bank** to update the ledger. The Bank has the 'Master Book'.")
             st.error("❌ **The Risk:** What if the Bank makes a mistake? What if they freeze your account? You don't own your data.")
-
             st.divider()
-
             st.subheader("2. The Solution: The 'Stone Tablet' Analogy")
             st.write("Imagine a giant **Stone Tablet** in the middle of the Town Square.")
-            
             c_concept1, c_concept2 = st.columns(2)
-            
             with c_concept1:
                 st.info("📢 **Public & Transparent**")
                 st.write("""
@@ -212,7 +207,6 @@ else:
                 * If Alice sends Bob $5, a 'Miner' carves it into the stone.
                 * **Everyone sees it happen.** No secrets.
                 """)
-            
             with c_concept2:
                 st.success("🔒 **Immutable (Permanent)**")
                 st.write("""
@@ -221,29 +215,24 @@ else:
                 * You cannot tear out the page.
                 * This creates **Total Trust** without a middleman.
                 """)
-            
             st.divider()
-            
             st.subheader("3. How does it actually work?")
             st.write("It's not just one tablet. It is **Distributed**.")
             st.write("Imagine if **10,000 people** took a photo of that stone tablet instantly.")
             st.caption("If a hacker tries to change ONE photo, the other 9,999 people will say: 'Hey! That's fake!' and reject it. That is why Bitcoin has never been hacked.")
-
             st.divider()
-
             st.subheader("4. Real World Use Cases (Beyond Bitcoin)")
-            
             c_use1, c_use2 = st.columns(2)
             with c_use1:
                 st.warning("☕ **Supply Chain (Starbucks)**")
                 st.write("**The Problem:** Is this coffee actually Fair Trade? Or did they just slap a sticker on it?")
                 st.write("**Blockchain:** You scan the bag. You see the *exact date* the farmer picked the beans, recorded on the blockchain. It cannot be faked.")
-            
             with c_use2:
                 st.info("🏡 **Real Estate (The Deed)**")
                 st.write("**The Problem:** Buying a house takes 30 days because lawyers have to verify the paper title history.")
                 st.write("**Blockchain:** The 'Title' is a token. You send the money, the house token hits your wallet. Deal done in 10 seconds.")
 
+        # --- LESSON 2 ---
         with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
             st.subheader("1. What makes it 'Smart'?")
             st.write("A Smart Contract is just **Programmable Money**. It's code that holds money and releases it only when a condition is met.")
@@ -262,7 +251,7 @@ else:
             st.subheader("3. A Simple Example: The Sports Bet")
             st.write("Two friends bet on the Super Bowl. The code holds the money and automatically pays the winner based on the official score. No fighting.")
 
-        # --- UPDATED LESSON 3: Staking & Liquid Staking (The Casino Chip Analogy) ---
+        # --- LESSON 3 ---
         with st.expander("Lesson 3: Staking & Liquid Staking (How to Earn Interest)"):
             st.subheader("1. What is Staking?")
             st.write("Staking is basically a **High-Yield Savings Account** for the internet. You lock up your crypto to help secure the network, and the network pays you interest (usually 4-7%).")
@@ -297,7 +286,7 @@ else:
             """)
             st.write("**Top Examples:** Lido (stETH), Coinbase (cbETH), Rocket Pool (rETH).")
 
-        # --- EXPANDED LESSON 4 (Wallets - Kept from previous) ---
+        # --- LESSON 4 ---
         with st.expander("Lesson 4: What actually IS a Wallet? (Deep Dive)"):
             st.subheader("1. The 'Glass Box' Analogy")
             st.write("Crypto is confusing because you can't 'see' the money. Here is the best way to visualize it:")
@@ -354,22 +343,40 @@ else:
                 st.write("**Investor**")
                 st.link_button("Ledger Nano ↗", "https://www.ledger.com")
 
-        with st.expander("Lesson 5: 🛡️ Security & Scams (THE SURVIVAL GUIDE)"):
-            st.error("⚠️ THE GOLDEN RULE: Never, ever share your Seed Phrase with anyone. Support will NEVER ask for it.")
-            st.subheader("1. Storage Security")
-            st.write("* **✅ CORRECT:** Write it on paper. Store in physical safe.\n* **❌ WRONG:** Screenshot, Google Drive, Email.")
+        # --- LESSON 5 ---
+        with st.expander("Lesson 5: 🛡️ Security Masterclass (The Survival Guide)"):
+            st.subheader("1. The Core Concept: 'Self-Custody'")
+            st.write("In crypto, YOU are the bank. There is no customer support hotline. If you lose your keys, the money is gone. This responsibility requires new habits.")
             st.divider()
-            st.subheader("2. Advanced Threats")
-            c_scam_1, c_scam_2 = st.columns(2)
-            with c_scam_1:
-                st.warning("📋 **Clipboard Hijacking**")
-                st.write("Malware that swaps copied addresses. Always check the first 4 and last 4 digits.")
-            with c_scam_2:
-                st.warning("🔓 **The 'Unlimited Approval' Trap**")
-                st.write("Fake sites ask for unlimited permission. Read the popup before clicking Approve.")
+            st.subheader("2. The Official 'Dos and Don'ts' Checklist")
+            st.write("Memorize this list before you move a single dollar.")
+            c_do, c_dont = st.columns(2)
+            with c_do:
+                st.success("✅ THE DOS (Safe Habits)")
+                st.write("""
+                * **DO** write your 12-word seed phrase on paper or steel.
+                * **DO** store that paper in a fireproof safe.
+                * **DO** use a 'burner wallet' for risky new websites.
+                * **DO** double-check the first 4 and last 4 characters of every address you paste.
+                """)
+            with c_dont:
+                st.error("❌ THE DON'TS (Ways to get Rekt)")
+                st.write("""
+                * **DON'T** take a screenshot of your seed phrase.
+                * **DON'T** save your seed phrase in Google Drive, Notes, or Email.
+                * **DON'T** click links sent to you in Discord or Twitter DMs.
+                * **DON'T** type your seed phrase into ANY website, ever.
+                """)
             st.divider()
-            st.subheader("3. Daily Habits")
-            st.write("1. **The $1 Test**\n2. **No SMS 2FA**\n3. **Bookmark Everything**")
+            st.subheader("3. Understanding 'Social Engineering'")
+            st.warning("⚠️ **Fact:** Most people don't get 'hacked' by code. They get 'tricked' by people.")
+            st.write("**The 'Fake Support' Scam:**")
+            st.write("You ask a question on Twitter/Discord. Someone named 'MetaMask Support' DMs you. They are very helpful. They send you a link to 'sync your wallet'.")
+            st.error("🚨 **REALITY:** Support will NEVER DM you first. That link steals your money.")
+            st.divider()
+            st.subheader("4. Advanced: Revoking Allowances")
+            st.write("When you use a DeFi app (like Uniswap), you give it permission to spend your coins. If that app gets hacked later, your wallet is at risk.")
+            st.info("🛠️ **The Fix:** Once a month, use a tool like **Revoke.cash** to disconnect your wallet from old apps you don't use anymore.")
 
     # --- TAB 2: THE SANDBOX ---
     with tab_sim:
@@ -442,7 +449,44 @@ else:
         st.area_chart(btc_h)
         st.caption("Bitcoin Price Trend (Last 5 Days)")
 
-    # --- TAB 4: QUIZ (NEW) ---
+    # --- TAB 4: CRYPTO NEWS (NEW!) ---
+    with tab_news:
+        st.header("📰 Global Crypto News (Curated)")
+        st.write("Stay updated with the most important headlines. **Tip:** Always verify news from multiple sources before trading.")
+        
+        col_news1, col_news2 = st.columns([2, 1])
+        
+        with col_news1:
+            st.subheader("Latest Headlines")
+            # This fetches REAL news from Yahoo Finance for Bitcoin
+            try:
+                btc_ticker = yf.Ticker("BTC-USD")
+                news_list = btc_ticker.news
+                
+                if news_list:
+                    for item in news_list[:5]: # Show top 5 stories
+                        with st.container():
+                            st.markdown(f"#### [{item['title']}]({item['link']})")
+                            st.caption(f"Source: {item['publisher']} | 🕒 {pd.to_datetime(item['providerPublishTime'], unit='s').strftime('%Y-%m-%d %H:%M')}")
+                            st.markdown("---")
+                else:
+                    st.info("No live news available right now. Check back later.")
+            except:
+                st.warning("Could not fetch live news. Please check your internet connection.")
+
+        with col_news2:
+            st.subheader("Educational: How to Read News")
+            with st.expander("🟢 Bullish vs 🔴 Bearish"):
+                st.write("**Bullish:** Good news (Adoption, New Tech). Price often goes UP.")
+                st.write("**Bearish:** Bad news (Hacks, Bans). Price often goes DOWN.")
+            
+            with st.expander("⚠️ FUD vs. FOMO"):
+                st.write("**FUD (Fear, Uncertainty, Doubt):** Fake or exaggerated bad news to scare you into selling.")
+                st.write("**FOMO (Fear Of Missing Out):** Exaggerated hype to make you buy at the top.")
+            
+            st.info("💡 **Pro Tip:** Never trade immediately on a headline. Wait 15 minutes for confirmation.")
+
+    # --- TAB 5: QUIZ ---
     with tab_quiz:
         st.header("🧠 Knowledge Check")
         st.write("Test your understanding of the Academy lessons.")
