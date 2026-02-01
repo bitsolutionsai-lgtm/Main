@@ -6,6 +6,7 @@ import time
 import smtplib
 import requests
 import xml.etree.ElementTree as ET
+import streamlit.components.v1 as components  # Required for TradingView
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
@@ -364,67 +365,94 @@ else:
                     time.sleep(1)
                 st.success(f"✅ Received ${(sell_amt * (1 - slippage/100)):,.2f} ETH")
 
-    # --- TAB 3: LIVE MARKET (UPGRADED) ---
+    # --- TAB 3: LIVE MARKET (TRADINGVIEW UPGRADE) ---
     with tab_data:
         st.header("📊 Market Dashboard")
         
         # 1. COIN SELECTOR
-        c_sel1, c_sel2 = st.columns([3, 1])
-        with c_sel1:
-            coin_opt = st.selectbox("Select Asset:", 
+        col_sel, col_empty = st.columns([3, 1])
+        with col_sel:
+            coin_opt = st.selectbox("Select Asset to Analyze:", 
                                     ["Bitcoin (BTC)", "Ethereum (ETH)", "Solana (SOL)", "Cardano (ADA)", "Ripple (XRP)", "Dogecoin (DOGE)"])
             
-            # Map friendly name to YFinance Ticker
-            ticker_map = {
-                "Bitcoin (BTC)": "BTC-USD",
-                "Ethereum (ETH)": "ETH-USD",
-                "Solana (SOL)": "SOL-USD",
-                "Cardano (ADA)": "ADA-USD",
-                "Ripple (XRP)": "XRP-USD",
-                "Dogecoin (DOGE)": "DOGE-USD"
+            # MAPPING: Friendly Name -> (Yahoo Ticker, TradingView Symbol)
+            # We need two different codes: one for Python data, one for the JS Widget
+            asset_map = {
+                "Bitcoin (BTC)": {"yf": "BTC-USD", "tv": "COINBASE:BTCUSD"},
+                "Ethereum (ETH)": {"yf": "ETH-USD", "tv": "COINBASE:ETHUSD"},
+                "Solana (SOL)": {"yf": "SOL-USD", "tv": "COINBASE:SOLUSD"},
+                "Cardano (ADA)": {"yf": "ADA-USD", "tv": "BINANCE:ADAUSDT"},
+                "Ripple (XRP)": {"yf": "XRP-USD", "tv": "BINANCE:XRPUSDT"},
+                "Dogecoin (DOGE)": {"yf": "DOGE-USD", "tv": "BINANCE:DOGEUSDT"}
             }
-            selected_ticker = ticker_map[coin_opt]
+            
+            yf_symbol = asset_map[coin_opt]["yf"]
+            tv_symbol = asset_map[coin_opt]["tv"]
 
-        with c_sel2:
-            period = st.select_slider("Chart Timeframe", options=["5d", "1mo", "3mo", "6mo", "1y"])
-
-        # 2. FETCH DATA
+        # 2. TOP METRICS (Powered by Yahoo Finance for Speed)
         try:
-            coin_data = yf.Ticker(selected_ticker)
-            hist = coin_data.history(period=period)
+            coin_data = yf.Ticker(yf_symbol)
+            hist = coin_data.history(period="2d") # Get 2 days to compare
             
-            # Latest Metrics
-            current_price = hist["Close"].iloc[-1]
-            prev_price = hist["Close"].iloc[-2]
-            delta = ((current_price - prev_price) / prev_price) * 100
-            
-            day_high = hist["High"].iloc[-1]
-            day_low = hist["Low"].iloc[-1]
-            volume = hist["Volume"].iloc[-1]
+            if not hist.empty:
+                current_price = hist["Close"].iloc[-1]
+                prev_price = hist["Close"].iloc[0]
+                delta = ((current_price - prev_price) / prev_price) * 100
+                volume = hist["Volume"].iloc[-1]
+                
+                m1, m2, m3 = st.columns(3)
+                m1.metric("Current Price", f"${current_price:,.2f}", f"{delta:.2f}%")
+                m2.metric("24h Volume", f"${volume:,.0f}")
+                m3.metric("Asset", coin_opt.split('(')[1][:-1]) # Just the symbol
+            else:
+                st.warning("Data loading...")
+        except:
+            st.error("Metric data unavailable. Chart below is live.")
 
-            # 3. DISPLAY METRICS
-            m1, m2, m3, m4 = st.columns(4)
-            m1.metric("Price", f"${current_price:,.2f}", f"{delta:.2f}%")
-            m2.metric("24h High", f"${day_high:,.2f}")
-            m3.metric("24h Low", f"${day_low:,.2f}")
-            m4.metric("Volume", f"${volume:,.0f}") # Simple volume display
+        st.markdown("---")
 
-            # 4. CHART
-            st.area_chart(hist["Close"], color="#00BFA5")
-            
-            # 5. MINI CONVERTER
-            st.markdown("---")
-            st.subheader("🧮 Quick Converter")
-            col_conv1, col_conv2 = st.columns(2)
-            with col_conv1:
-                amount = st.number_input(f"Amount of {coin_opt.split('(')[1][:-1]}", value=1.0)
-            with col_conv2:
+        # 3. TRADINGVIEW WIDGET (Professional Chart)
+        # This inserts the HTML/JS for the TradingView Widget
+        tv_widget_code = f"""
+        <div class="tradingview-widget-container">
+          <div id="tradingview_chart"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+          <script type="text/javascript">
+          new TradingView.widget(
+          {{
+          "width": "100%",
+          "height": 500,
+          "symbol": "{tv_symbol}",
+          "interval": "D",
+          "timezone": "Etc/UTC",
+          "theme": "dark",
+          "style": "1",
+          "locale": "en",
+          "toolbar_bg": "#f1f3f6",
+          "enable_publishing": false,
+          "allow_symbol_change": true,
+          "container_id": "tradingview_chart"
+          }}
+          );
+          </script>
+        </div>
+        """
+        components.html(tv_widget_code, height=510)
+
+        # 4. MINI CONVERTER
+        st.markdown("---")
+        st.subheader("🧮 Quick Converter")
+        col_conv1, col_conv2 = st.columns(2)
+        with col_conv1:
+            amount = st.number_input(f"Amount of {coin_opt.split('(')[1][:-1]}", value=1.0)
+        with col_conv2:
+            # Re-use the price we fetched earlier
+            try:
                 st.metric("Value in USD", f"${(amount * current_price):,.2f}")
+            except:
+                st.write("Loading price...")
 
-        except Exception as e:
-            st.error("Error loading market data. Please try again later.")
-
-    # --- TAB 4: NEWS (UNCHANGED - RSS) ---
+    # --- TAB 4: NEWS (UNCHANGED) ---
     with tab_news:
         st.header("📰 Global Crypto News")
         st.write("Live feed from **Cointelegraph**. Always verify news from multiple sources.")
