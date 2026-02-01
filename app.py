@@ -6,6 +6,7 @@ import time
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from datetime import datetime
 
 # --- PAGE CONFIGURATION ---
 st.set_page_config(
@@ -25,7 +26,6 @@ def enter_site():
 # --- EMAIL FUNCTION ---
 def send_email(user_email, user_message):
     try:
-        # Load credentials from secrets
         sender_email = st.secrets["email"]["sender_email"]
         sender_password = st.secrets["email"]["sender_password"]
         receiver_email = st.secrets["email"]["receiver_email"]
@@ -131,7 +131,6 @@ with st.sidebar:
     st.markdown("---")
     st.write("**Need Help?**")
     
-    # --- EMAIL FORM ---
     with st.form("contact_form"):
         contact_email = st.text_input("Your Email (for inquiry)")
         contact_msg = st.text_area("How can we help?")
@@ -184,7 +183,7 @@ else:
 
     st.markdown("---")
 
-    # --- NAVIGATION (UPDATED WITH NEWS) ---
+    # --- NAVIGATION ---
     tab_learn, tab_sim, tab_data, tab_news, tab_quiz = st.tabs(["📖 Learn Concepts", "🧪 Lab Simulation", "📊 Live Market", "📰 Crypto News", "🧠 Knowledge Quiz"])
 
     # --- TAB 1: THE CLASSROOM ---
@@ -423,7 +422,7 @@ else:
                     time.sleep(1)
                 st.success(f"✅ Received ${(sell_amt * (1 - slippage/100)):,.2f} ETH")
 
-    # --- TAB 3: REAL WORLD DATA (ENHANCED) ---
+    # --- TAB 3: REAL WORLD DATA ---
     with tab_data:
         st.header("Live Market Data (24h Change)")
         
@@ -449,30 +448,55 @@ else:
         st.area_chart(btc_h)
         st.caption("Bitcoin Price Trend (Last 5 Days)")
 
-    # --- TAB 4: CRYPTO NEWS (NEW!) ---
+    # --- TAB 4: CRYPTO NEWS (LIVE & MULTI-COIN) ---
     with tab_news:
         st.header("📰 Global Crypto News (Curated)")
-        st.write("Stay updated with the most important headlines. **Tip:** Always verify news from multiple sources before trading.")
+        st.write("Real-time headlines for Bitcoin, Ethereum, and Solana. **Tip:** Always verify news from multiple sources.")
         
         col_news1, col_news2 = st.columns([2, 1])
         
         with col_news1:
-            st.subheader("Latest Headlines")
-            # This fetches REAL news from Yahoo Finance for Bitcoin
+            st.subheader("Latest Headlines (Live Feed)")
+            
+            # 1. DEFINE TICKERS TO FETCH NEWS FOR
+            tickers = ["BTC-USD", "ETH-USD", "SOL-USD"]
+            all_news = []
+
+            # 2. FETCH NEWS FROM YFINANCE
+            for t in tickers:
+                try:
+                    tick = yf.Ticker(t)
+                    if tick.news:
+                        for item in tick.news:
+                            # Add a "Coin" tag so we know which coin the news is about
+                            item['coin'] = t.split("-")[0] 
+                            all_news.append(item)
+                except:
+                    pass
+
+            # 3. SORT BY TIME (NEWEST FIRST)
+            # We use a lambda function to sort the list of dictionaries by 'providerPublishTime'
             try:
-                btc_ticker = yf.Ticker("BTC-USD")
-                news_list = btc_ticker.news
-                
-                if news_list:
-                    for item in news_list[:5]: # Show top 5 stories
-                        with st.container():
-                            st.markdown(f"#### [{item['title']}]({item['link']})")
-                            st.caption(f"Source: {item['publisher']} | 🕒 {pd.to_datetime(item['providerPublishTime'], unit='s').strftime('%Y-%m-%d %H:%M')}")
-                            st.markdown("---")
-                else:
-                    st.info("No live news available right now. Check back later.")
+                all_news = sorted(all_news, key=lambda x: x.get('providerPublishTime', 0), reverse=True)
             except:
-                st.warning("Could not fetch live news. Please check your internet connection.")
+                pass
+
+            # 4. DISPLAY TOP 10 STORIES
+            if all_news:
+                for item in all_news[:10]:
+                    with st.container():
+                        # Format the time nicely
+                        publish_time = pd.to_datetime(item.get('providerPublishTime', 0), unit='s').strftime('%Y-%m-%d %H:%M')
+                        
+                        # Display Headline with Link
+                        st.markdown(f"#### [{item['title']}]({item['link']})")
+                        
+                        # Display Metadata (Coin Name | Publisher | Time)
+                        st.caption(f"**{item['coin']}** | {item['publisher']} | 🕒 {publish_time}")
+                        
+                        st.markdown("---")
+            else:
+                st.info("No live news available at the moment. Please check your internet connection.")
 
         with col_news2:
             st.subheader("Educational: How to Read News")
