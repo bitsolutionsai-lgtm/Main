@@ -325,51 +325,139 @@ else:
             st.write("When you use a DeFi app (like Uniswap), you give it permission to spend your coins. If that app gets hacked later, your wallet is at risk.")
             st.info("🛠️ **The Fix:** Once a month, use a tool like **Revoke.cash** to disconnect your wallet from old apps.")
 
-    # --- TAB 2: LAB (UNCHANGED) ---
+    # --- TAB 2: LAB (ENHANCED) ---
     with tab_sim:
         st.header("🧪 Interactive Lab")
-        st.subheader("1. Gas Fee Simulator")
-        traffic = st.select_slider("Select Network Traffic Level:", options=["Low", "Medium", "High", "Extreme"])
-        if traffic == "Low": eth_fee, l2_fee, sol_fee = 2.50, 0.05, 0.0001
-        elif traffic == "Medium": eth_fee, l2_fee, sol_fee = 8.00, 0.12, 0.0001
-        elif traffic == "High": eth_fee, l2_fee, sol_fee = 25.00, 0.40, 0.0005
-        else: eth_fee, l2_fee, sol_fee = 120.00, 1.50, 0.002
-        c_gas1, c_gas2, c_gas3 = st.columns(3)
-        with c_gas1: st.metric("Ethereum (L1)", f"${eth_fee:.2f}")
-        with c_gas2: st.metric("Base (L2)", f"${l2_fee:.2f}", delta="-98%")
-        with c_gas3: st.metric("Solana", f"${sol_fee:.4f}", delta="Cheap")
-        st.markdown("---")
+        st.write("Experiment with the mechanics of DeFi in a safe, simulated environment.")
 
-        st.subheader("2. Staking Calculator")
+        # --- LAB 1: GAS STATION ---
+        st.markdown("---")
+        st.subheader("⛽ 1. Gas Fee Visualizer")
+        st.write("See how network congestion affects the cost of moving money.")
+        
+        col_traffic, col_chart = st.columns([1, 2])
+        with col_traffic:
+            traffic = st.select_slider("Select Network Traffic Level:", options=["Low", "Medium", "High", "Extreme"])
+            if traffic == "Low": fees = [2.50, 0.05, 0.001]
+            elif traffic == "Medium": fees = [8.00, 0.15, 0.002]
+            elif traffic == "High": fees = [25.00, 0.60, 0.005]
+            else: fees = [120.00, 2.50, 0.01] # Extreme
+            
+            st.caption("**Estimated Cost to Send $100:**")
+            st.metric("Ethereum (L1)", f"${fees[0]:.2f}")
+            st.metric("Base (L2)", f"${fees[1]:.2f}")
+            st.metric("Solana", f"${fees[2]:.4f}")
+            
+        with col_chart:
+            # Bar Chart Comparison
+            fee_df = pd.DataFrame({
+                "Network": ["Ethereum", "Base (L2)", "Solana"],
+                "Fee ($)": fees
+            })
+            st.bar_chart(fee_df, x="Network", y="Fee ($)", color="#00BFA5")
+
+        # --- LAB 2: COMPOUND STAKING ---
+        st.markdown("---")
+        st.subheader("📈 2. Compound Interest Calculator")
+        st.write("Visualize the power of **DCA (Dollar Cost Averaging)** + **Staking Yield**.")
+        
         c_calc1, c_calc2 = st.columns([1, 2])
         with c_calc1:
-            initial = st.number_input("Initial Investment ($)", value=1000)
-            apy = st.slider("APY (%)", 1, 100, 8)
-            years = st.slider("Years to Hold", 1, 20, 5)
+            initial = st.number_input("Starting Balance ($)", value=1000)
+            monthly = st.number_input("Monthly Contribution ($)", value=100)
+            apy = st.slider("APY (%)", 1, 50, 8)
+            years = st.slider("Years to Grow", 1, 20, 10)
+        
         with c_calc2:
-            data = [initial * ((1 + (apy/100)) ** i) for i in range(years + 1)]
-            chart_data = pd.DataFrame(data, columns=["Portfolio Value"])
+            # Calculation: Future Value of a Series
+            # Formula: FV = P * (1+r)^t + PMT * [ ((1+r)^t - 1) / r ]
+            months = years * 12
+            monthly_rate = (apy / 100) / 12
+            
+            balance = []
+            contributions = []
+            
+            current_bal = initial
+            total_contributed = initial
+            
+            for i in range(months + 1):
+                if i > 0:
+                    current_bal = current_bal * (1 + monthly_rate) + monthly
+                    total_contributed += monthly
+                balance.append(current_bal)
+                contributions.append(total_contributed)
+                
+            # Create Data for Chart
+            chart_data = pd.DataFrame({
+                "Total Value": balance,
+                "Your Principal": contributions
+            })
+            
             st.line_chart(chart_data)
-            st.success(f"💰 In {years} years: **${data[-1]:,.2f}**")
-        st.markdown("---")
+            
+            profit = balance[-1] - contributions[-1]
+            st.success(f"💰 **Final Balance:** ${balance[-1]:,.2f}")
+            st.caption(f"You contributed: ${contributions[-1]:,.2f} | **Interest Earned: ${profit:,.2f}**")
 
-        st.subheader("3. DEX Simulator (Swap)")
-        c_dex1, c_dex2 = st.columns(2)
-        with c_dex1:
-            sell_amt = st.number_input("Amount to Swap (USDC)", value=1000)
-            slippage = 5.0 if sell_amt > 100000 else (1.0 if sell_amt > 10000 else 0)
-            if slippage > 0: st.warning(f"⚠️ High Volume: {slippage}% Slippage")
-        with c_dex2:
-            if st.button("Execute Swap"):
-                with st.spinner("Routing..."):
-                    time.sleep(1)
-                st.success(f"✅ Received ${(sell_amt * (1 - slippage/100)):,.2f} ETH")
+        # --- LAB 3: IMPERMANENT LOSS ---
+        st.markdown("---")
+        st.subheader("⚖️ 3. Impermanent Loss Visualizer")
+        st.write("What happens if you provide liquidity (Uniswap) and one coin price crashes (or pumps)?")
+        st.info("💡 **Concept:** When prices diverge, LPs lose money compared to just HODLing.")
+        
+        il_col1, il_col2 = st.columns(2)
+        with il_col1:
+            price_change = st.slider("Price Change of Token A (%)", -90, 500, 0, format="%d%%")
+        
+        with il_col2:
+            # IL Formula: 2 * sqrt(ratio) / (1 + ratio) - 1
+            ratio = (1 + price_change / 100)
+            if ratio < 0.01: ratio = 0.01 # Prevent zero division error
+            
+            il_pct = (2 * np.sqrt(ratio) / (1 + ratio)) - 1
+            il_pct = abs(il_pct) * 100 # Make positive for display
+            
+            st.metric("Impermanent Loss", f"-{il_pct:.2f}%", delta_color="inverse")
+            
+            if price_change == 0:
+                st.write("✅ No loss. Prices are stable.")
+            elif il_pct < 5:
+                st.warning("⚠️ Small loss. Trading fees might cover this.")
+            else:
+                st.error("🚨 **High Risk!** You are losing significant value compared to holding.")
+
+        # --- LAB 4: DEX SIMULATOR ---
+        st.markdown("---")
+        st.subheader("🔄 4. DEX Swap Simulator")
+        st.write("Try a simulated swap.")
+        
+        dex_c1, dex_c2 = st.columns(2)
+        with dex_c1:
+            swap_from = st.selectbox("From", ["ETH", "USDC", "SOL"])
+            swap_amt = st.number_input("Amount", value=1.0)
+        with dex_c2:
+            swap_to = st.selectbox("To", ["USDC", "ETH", "SOL"], index=1)
+            
+            # Simulated Prices
+            prices = {"ETH": 3200, "USDC": 1, "SOL": 145}
+            
+            if swap_from == swap_to:
+                st.warning("Select different tokens.")
+            else:
+                rate = prices[swap_from] / prices[swap_to]
+                receive_amt = swap_amt * rate
+                st.metric("You Receive (Estimated)", f"{receive_amt:,.4f} {swap_to}")
+                
+                if st.button("Confirm Swap"):
+                    with st.spinner("Broadcasting to network..."):
+                        time.sleep(1.5)
+                    st.success(f"✅ Swapped {swap_amt} {swap_from} for {receive_amt:.4f} {swap_to}!")
+                    st.caption("Gas Fee Paid: $4.50 (Simulated)")
 
     # --- TAB 3: LIVE MARKET (UNCHANGED) ---
     with tab_data:
         st.header("📊 Market Dashboard")
         
-        # 1. COIN SELECTOR
         col_sel, col_empty = st.columns([3, 1])
         with col_sel:
             coin_opt = st.selectbox("Select Asset to Analyze:", 
@@ -387,7 +475,6 @@ else:
             yf_symbol = asset_map[coin_opt]["yf"]
             tv_symbol = asset_map[coin_opt]["tv"]
 
-        # 2. TOP METRICS
         try:
             coin_data = yf.Ticker(yf_symbol)
             hist = coin_data.history(period="2d")
@@ -409,7 +496,6 @@ else:
 
         st.markdown("---")
 
-        # 3. TRADINGVIEW WIDGET
         tv_widget_code = f"""
         <div class="tradingview-widget-container">
           <div id="tradingview_chart"></div>
@@ -436,7 +522,6 @@ else:
         """
         components.html(tv_widget_code, height=510)
 
-        # 4. MINI CONVERTER
         st.markdown("---")
         st.subheader("🧮 Quick Converter")
         col_conv1, col_conv2 = st.columns(2)
@@ -474,7 +559,7 @@ else:
                 st.write("**FOMO:** Fake hype to make you buy.")
             st.info("💡 **Pro Tip:** Never trade immediately on a headline. Wait 15 minutes.")
 
-    # --- TAB 5: QUIZ (EXPANDED TO 10 QUESTIONS) ---
+    # --- TAB 5: QUIZ (UNCHANGED) ---
     with tab_quiz:
         st.header("🧠 Knowledge Check")
         st.write("Test your mastery of the Academy material. Can you get a perfect 10/10?")
