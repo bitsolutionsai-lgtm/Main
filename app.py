@@ -10,6 +10,7 @@ import streamlit.components.v1 as components
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
+from openai import OpenAI # NEW IMPORT FOR AI
 
 # --- PAGE CONFIGURATION ---
 st.set_page_config(
@@ -73,7 +74,7 @@ def get_crypto_news():
 # --- CUSTOM CSS ---
 st.markdown("""
     <style>
-    /* BACKGROUND IMAGE SETTINGS (New: Abstract Digital Network) */
+    /* BACKGROUND IMAGE SETTINGS (Abstract Digital Network) */
     .stApp {
         background-image: linear-gradient(rgba(0, 0, 0, 0.80), rgba(0, 0, 0, 0.80)), 
                           url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=2832&auto=format&fit=crop');
@@ -161,13 +162,11 @@ with st.sidebar:
     if submit_button:
         if contact_email and contact_msg:
             with st.spinner("Sending message..."):
-                # Simulate email sending for now
-                time.sleep(1)
+                time.sleep(1) # Simulation
                 success = send_email(contact_email, contact_msg)
                 if success:
                     st.success("✅ Message sent! We will contact you shortly.")
                 else:
-                    # Fallback for demo purposes if secrets aren't set
                     st.success("✅ Message sent! (Simulation mode)")
         else:
             st.warning("Please fill out both fields.")
@@ -208,23 +207,20 @@ else:
 
     st.markdown("---")
 
-    # --- NAVIGATION ---
-    tab_learn, tab_sim, tab_data, tab_news, tab_quiz = st.tabs(["📖 Learn Concepts", "🧪 Lab Simulation", "📊 Live Market", "📰 Crypto News", "🧠 Knowledge Quiz"])
+    # --- NAVIGATION (ADDED AI TUTOR TAB) ---
+    tab_learn, tab_sim, tab_data, tab_news, tab_ai, tab_quiz = st.tabs(["📖 Learn Concepts", "🧪 Lab Simulation", "📊 Live Market", "📰 Crypto News", "🤖 AI Tutor", "🧠 Knowledge Quiz"])
 
-    # --- TAB 1: THE CLASSROOM ---
+    # --- TAB 1: LEARN ---
     with tab_learn:
         st.header("Blockchain Fundamentals")
         
-        # --- LESSON 1: EXPANDED ---
         with st.expander("Lesson 1: What is a Blockchain? (The Deep Dive)"):
             st.subheader("1. The History: Origins of Bitcoin")
             st.write("To understand Blockchain, you must understand why it was built.")
             st.write("In **2008**, the global financial system collapsed. Banks gambled with user money, and governments printed trillions to bail them out. People lost trust in centralization.")
             st.info("👤 **Satoshi Nakamoto:** On Oct 31, 2008, an anonymous cryptographer published the **Bitcoin Whitepaper**. It proposed a system of money that required no banks, no governments, and no trust.")
             st.link_button("📜 Read the Bitcoin Whitepaper", "https://bitcoin.org/bitcoin.pdf")
-            
             st.divider()
-            
             st.subheader("2. What is it? (The Digital Ledger)")
             st.write("A blockchain is a **Distributed Digital Ledger**.")
             st.markdown("""
@@ -233,9 +229,7 @@ else:
             * **Blocks:** Transactions are bundled into groups called 'Blocks'.
             * **Chain:** Each block is cryptographically tied to the one before it.
             """)
-            
             st.divider()
-
             st.subheader("3. Security: Why is it Unhackable?")
             st.write("Blockchain security relies on **Hashing (SHA-256)** and **Consensus**.")
             c_sec1, c_sec2 = st.columns(2)
@@ -245,9 +239,7 @@ else:
             with c_sec2:
                 st.error("🛡️ The 51% Rule")
                 st.write("To successfully hack Bitcoin, you would need to control **51% of all computing power in the world** simultaneously. This would cost billions of dollars per hour, making it economically impossible.")
-
             st.divider()
-
             st.subheader("4. Types of Blockchains")
             st.write("Not all blockchains are Bitcoin. There are three main types:")
             st.markdown("""
@@ -255,9 +247,7 @@ else:
             2.  **Private (Permissioned):** Hyperledger, Ripple (historically). Used by banks/enterprises. You need an invite to join.
             3.  **Hybrid:** A mix of both. Used for medical records or identity verification.
             """)
-
             st.divider()
-
             st.subheader("5. The Future of Crypto")
             st.write("Where are we going from here?")
             st.success("🚀 **The Phase of Utility**")
@@ -267,15 +257,12 @@ else:
             st.write("* **Layer 2 Scaling:** Networks like Optimism and Base making crypto fast and cheap for daily coffee purchases.")
             st.write("* **DePIN:** Decentralized Physical Infrastructure (using crypto to build wifi networks and energy grids).")
 
-        # --- LESSON 2: EXPANDED (SMART CONTRACTS) ---
         with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
             st.subheader("1. What exactly is a Smart Contract?")
             st.write("A Smart Contract is **self-executing code** stored on a blockchain. It acts like a digital agreement that runs exactly as programmed, with no possibility of downtime, censorship, or fraud.")
             st.info("💡 **The Concept:** 'If This, Then That' (IFTTT). It replaces the middleman with mathematics.")
             st.write("Unlike a paper contract, which requires a lawyer to enforce, a smart contract enforces itself. Once the conditions are met, the transaction happens instantly.")
-            
             st.divider()
-            
             st.subheader("2. The Vending Machine Analogy (The Perfect Example)")
             st.write("Nick Szabo, who invented the concept, compared it to a Vending Machine:")
             c_human, c_bot = st.columns(2)
@@ -287,31 +274,22 @@ else:
                 st.success("🤖 The New Way (The Vending Machine)")
                 st.write("**Process:** You insert a coin ($2.00). You press 'A1'. The machine drops the soda. No clerk needed. No trust needed.")
                 st.write("**Cost:** Low Fees + Instant.")
-
             st.divider()
-            
             st.subheader("3. Real World Use Cases (It's not just money)")
             st.write("Smart contracts are disrupting massive industries right now:")
-            
             st.markdown("##### 🏦 Decentralized Finance (DeFi)")
             st.write("Apps like **Uniswap** allow you to trade stocks/crypto without a broker. The 'Smart Contract' acts as the Market Maker. It holds the funds and swaps them automatically based on the current price.")
-            
             st.markdown("##### 🎨 NFT Royalties")
             st.write("In the old art world, an artist sold a painting for $100. If it resold for $1M later, they got $0. With Smart Contracts, the code can say: *'Every time this token is sold, send 5% of the price to the Original Artist.'* This happens automatically forever.")
-            
             st.markdown("##### ✈️ Parametric Insurance")
             st.write("Companies like **Etherisc** are building flight insurance. If your flight is delayed by >45 minutes (verified by flight data oracle), the smart contract **instantly** pays your refund. No claims form. No waiting on hold.")
-
             st.divider()
-            
             st.subheader("4. The Future: A Tokenized World")
             st.write("Where is this technology going in the next 10 years?")
             st.success("🏠 **Real Estate:**")
             st.write("House deeds will be NFTs. You will buy a house by sending USDC to a smart contract, and the 'House Token' will be sent to your wallet. No Title Company needed. Settlement time: 10 seconds.")
-            
             st.success("🗳️ **DAOs (Decentralized Autonomous Organizations):**")
             st.write("Companies managed by code, not CEOs. Token holders vote on decisions (like treasury spending), and the smart contract automatically executes the result of the vote.")
-
             st.code("""
             // Pseudo-code of a simple Smart Contract
             contract SimplePayment {
@@ -328,11 +306,9 @@ else:
             """, language="solidity")
             st.caption("A simplified example of how logic is written in Solidity (the language of Ethereum).")
 
-        # --- LESSON 3: EXPANDED (STAKING) ---
         with st.expander("Lesson 3: Staking, Liquid Staking & Yield (How to Earn)"):
             st.subheader("1. The Two Ways to Earn in DeFi")
             st.write("Just holding crypto is like stuffing cash under your mattress. In DeFi, you can make your assets work for you.")
-            
             c_earn1, c_earn2 = st.columns(2)
             with c_earn1:
                 st.success("🛡️ Protocol Staking")
@@ -344,9 +320,7 @@ else:
                 st.write("**What is it?** You lend your coins to other users (borrowers) through a smart contract.")
                 st.write("**Risk:** Medium (Smart Contract Risk).")
                 st.write("**Reward:** Variable (Based on demand).")
-            
             st.divider()
-            
             st.subheader("2. Deep Dive: Liquid Staking (Jito & Lido)")
             st.write("Standard staking has a flaw: your money is **locked**. You can't sell it if the market crashes.")
             st.write("**The Solution: Liquid Staking Tokens (LSTs).**")
@@ -354,15 +328,12 @@ else:
             st.write("1. **Liquidity:** You can swap JitoSOL back to SOL instantly (no waiting period).")
             st.write("2. **Yield:** The token value grows automatically.")
             st.write("3. **MEV Rewards:** (Specific to Jito) You earn extra money from 'Maximal Extractable Value'—basically tips paid by traders for speed.")
-            
             col_jito1, col_jito2 = st.columns([3,1])
             with col_jito1:
                 st.write("**Example:** You deposit **10 SOL** into Jito. You get **9.x JitoSOL**. A year later, that 9.x JitoSOL is worth **10.7 SOL**.")
             with col_jito2:
                 st.link_button("Explore Jito ↗", "https://www.jito.network/")
-
             st.divider()
-
             st.subheader("3. Deep Dive: Decentralized Lending (Aave)")
             st.write("**Aave** is the biggest 'Bank' in DeFi, but it has no employees. It is run entirely by code.")
             st.markdown("""
@@ -370,14 +341,12 @@ else:
             * **Borrowers:** Deposit collateral (like BTC) to borrow USDC.
             """)
             st.warning("⚠️ **Safety Feature:** Aave is 'Over-Collateralized'. To borrow $100, you must deposit ~$120 worth of collateral. If the value drops, the robot liquidates the collateral to pay YOU (the depositor) back. This protects your deposit.")
-            
             col_aave1, col_aave2 = st.columns([3,1])
             with col_aave1:
                 st.write("**Strategy:** Many people deposit ETH into Aave to earn a small yield, while keeping the flexibility to withdraw instantly.")
             with col_aave2:
                 st.link_button("Explore Aave ↗", "https://aave.com/")
 
-        # --- LESSON 4: EXPANDED (WALLETS) ---
         with st.expander("Lesson 4: What actually IS a Wallet? (The Ultimate Guide)"):
             st.subheader("1. The 'Glass Box' Analogy")
             st.write("Crypto is confusing because you can't 'see' the money. Here is the best way to visualize it:")
@@ -468,7 +437,7 @@ else:
             st.write("When you use a DeFi app (like Uniswap), you give it permission to spend your coins. If that app gets hacked later, your wallet is at risk.")
             st.info("🛠️ **The Fix:** Once a month, use a tool like **Revoke.cash** to disconnect your wallet from old apps.")
 
-    # --- TAB 2: LAB (FINAL) ---
+    # --- TAB 2: LAB ---
     with tab_sim:
         st.header("🧪 Interactive Lab")
         st.write("Experiment with the mechanics of DeFi in a safe, simulated environment.")
@@ -476,40 +445,30 @@ else:
         # --- LAB 1: COMPOUND STAKING ---
         st.subheader("📈 1. Compound Interest Calculator")
         st.write("Visualize the power of **DCA (Dollar Cost Averaging)** + **Staking Yield**.")
-        
         c_calc1, c_calc2 = st.columns([1, 2])
         with c_calc1:
             initial = st.number_input("Starting Balance ($)", value=1000)
             monthly = st.number_input("Monthly Contribution ($)", value=100)
             apy = st.slider("APY (%)", 1, 50, 8)
             years = st.slider("Years to Grow", 1, 20, 10)
-        
         with c_calc2:
-            # Calculation: Future Value of a Series
             months = years * 12
             monthly_rate = (apy / 100) / 12
-            
             balance = []
             contributions = []
-            
             current_bal = initial
             total_contributed = initial
-            
             for i in range(months + 1):
                 if i > 0:
                     current_bal = current_bal * (1 + monthly_rate) + monthly
                     total_contributed += monthly
                 balance.append(current_bal)
                 contributions.append(total_contributed)
-                
-            # Create Data for Chart
             chart_data = pd.DataFrame({
                 "Total Value": balance,
                 "Your Principal": contributions
             })
-            
             st.line_chart(chart_data)
-            
             profit = balance[-1] - contributions[-1]
             st.success(f"💰 **Final Balance:** ${balance[-1]:,.2f}")
             st.caption(f"You contributed: ${contributions[-1]:,.2f} | **Interest Earned: ${profit:,.2f}**")
@@ -518,26 +477,20 @@ else:
         st.markdown("---")
         st.subheader("💰 2. Trade Profit (ROI) Calculator")
         st.write("Calculate your exact Net Profit after exchange fees.")
-        
         roi_c1, roi_c2 = st.columns(2)
         with roi_c1:
             buy_price = st.number_input("Buy Price per Coin ($)", value=50000.0)
             sell_price = st.number_input("Sell Price per Coin ($)", value=65000.0)
             amount_coin = st.number_input("Amount of Coins", value=0.1)
             fee_pct = st.number_input("Exchange Fee (%)", value=0.1)
-            
         with roi_c2:
             cost_basis = buy_price * amount_coin
             gross_sale = sell_price * amount_coin
-            
-            # Calculate Fees (Buy + Sell side)
             buy_fee = cost_basis * (fee_pct/100)
             sell_fee = gross_sale * (fee_pct/100)
             total_fees = buy_fee + sell_fee
-            
             net_profit = gross_sale - cost_basis - total_fees
             roi_pct = (net_profit / cost_basis) * 100
-            
             st.write("### 📊 Results")
             if net_profit >= 0:
                 st.success(f"**Net Profit:** ${net_profit:,.2f}")
@@ -545,32 +498,26 @@ else:
             else:
                 st.error(f"**Net Loss:** ${net_profit:,.2f}")
                 st.metric("ROI", f"{roi_pct:.2f}%", delta="Loss")
-                
             st.caption(f"Total Fees Paid: ${total_fees:.2f}")
 
         # --- LAB 3: RISK/REWARD CALCULATOR ---
         st.markdown("---")
         st.subheader("⚖️ 3. Risk/Reward Ratio Calculator")
         st.write("Strategy Tool: Should you take this trade? (Target Ratio: 1:3 or higher)")
-        
         risk_c1, risk_c2 = st.columns(2)
         with risk_c1:
             entry_p = st.number_input("Entry Price ($)", value=100.0)
             stop_loss = st.number_input("Stop Loss ($)", value=90.0)
             take_profit = st.number_input("Take Profit Target ($)", value=130.0)
-            
         with risk_c2:
             risk_amt = entry_p - stop_loss
             reward_amt = take_profit - entry_p
-            
             if risk_amt <= 0 or reward_amt <= 0:
                 st.warning("Check your inputs. Stop Loss must be lower than Entry (for Longs).")
             else:
                 ratio = reward_amt / risk_amt
-                
                 st.metric("Risk / Reward Ratio", f"1 : {ratio:.1f}")
                 st.write(f"Risking **${risk_amt:.2f}** to make **${reward_amt:.2f}**")
-                
                 if ratio >= 3:
                     st.success("✅ **Excellent Trade.** (Ratio > 1:3)")
                 elif ratio >= 2:
@@ -581,12 +528,10 @@ else:
     # --- TAB 3: LIVE MARKET ---
     with tab_data:
         st.header("📊 Market Dashboard")
-        
         col_sel, col_empty = st.columns([3, 1])
         with col_sel:
             coin_opt = st.selectbox("Select Asset to Analyze:", 
                                     ["Bitcoin (BTC)", "Ethereum (ETH)", "Solana (SOL)", "Cardano (ADA)", "Ripple (XRP)", "Dogecoin (DOGE)"])
-            
             asset_map = {
                 "Bitcoin (BTC)": {"yf": "BTC-USD", "tv": "COINBASE:BTCUSD"},
                 "Ethereum (ETH)": {"yf": "ETH-USD", "tv": "COINBASE:ETHUSD"},
@@ -595,20 +540,16 @@ else:
                 "Ripple (XRP)": {"yf": "XRP-USD", "tv": "BINANCE:XRPUSDT"},
                 "Dogecoin (DOGE)": {"yf": "DOGE-USD", "tv": "BINANCE:DOGEUSDT"}
             }
-            
             yf_symbol = asset_map[coin_opt]["yf"]
             tv_symbol = asset_map[coin_opt]["tv"]
-
         try:
             coin_data = yf.Ticker(yf_symbol)
             hist = coin_data.history(period="2d")
-            
             if not hist.empty:
                 current_price = hist["Close"].iloc[-1]
                 prev_price = hist["Close"].iloc[0]
                 delta = ((current_price - prev_price) / prev_price) * 100
                 volume = hist["Volume"].iloc[-1]
-                
                 m1, m2, m3 = st.columns(3)
                 m1.metric("Current Price", f"${current_price:,.2f}", f"{delta:.2f}%")
                 m2.metric("24h Volume", f"${volume:,.0f}")
@@ -617,9 +558,7 @@ else:
                 st.warning("Data loading...")
         except:
             st.error("Metric data unavailable. Chart below is live.")
-
         st.markdown("---")
-
         tv_widget_code = f"""
         <div class="tradingview-widget-container">
           <div id="tradingview_chart"></div>
@@ -645,7 +584,6 @@ else:
         </div>
         """
         components.html(tv_widget_code, height=510)
-
         st.markdown("---")
         st.subheader("🧮 Quick Converter")
         col_conv1, col_conv2 = st.columns(2)
@@ -683,7 +621,54 @@ else:
                 st.write("**FOMO:** Fake hype to make you buy.")
             st.info("💡 **Pro Tip:** Never trade immediately on a headline. Wait 15 minutes.")
 
-    # --- TAB 5: QUIZ (UNCHANGED) ---
+    # --- TAB 5: AI TUTOR (NEW) ---
+    with tab_ai:
+        st.header("🤖 AI Crypto Tutor")
+        st.write("Ask any question about Blockchain, DeFi, or Trading strategies.")
+        
+        # Check for API Key in Secrets
+        if "OPENAI_API_KEY" not in st.secrets:
+            st.error("⚠️ OpenAI API Key is missing! Please add it to your Streamlit Secrets.")
+            st.info("Go to 'Settings' > 'Secrets' and add: OPENAI_API_KEY = 'sk-...'")
+        else:
+            # Initialize OpenAI Client
+            client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+
+            # Initialize Chat History
+            if "messages" not in st.session_state:
+                st.session_state.messages = [
+                    {"role": "system", "content": "You are a helpful and knowledgeable crypto expert for Bit Solutions Academy. You answer questions about blockchain, DeFi, and trading cleanly and concisely."}
+                ]
+
+            # Display Chat History (Excluding System Prompt)
+            for message in st.session_state.messages:
+                if message["role"] != "system":
+                    with st.chat_message(message["role"]):
+                        st.markdown(message["content"])
+
+            # User Input
+            if prompt := st.chat_input("Ask me anything about crypto..."):
+                # Display User Message
+                st.session_state.messages.append({"role": "user", "content": prompt})
+                with st.chat_message("user"):
+                    st.markdown(prompt)
+
+                # Generate AI Response
+                with st.chat_message("assistant"):
+                    stream = client.chat.completions.create(
+                        model="gpt-4o-mini", # Cost effective model
+                        messages=[
+                            {"role": m["role"], "content": m["content"]}
+                            for m in st.session_state.messages
+                        ],
+                        stream=True,
+                    )
+                    response = st.write_stream(stream)
+                
+                # Save Assistant Response
+                st.session_state.messages.append({"role": "assistant", "content": response})
+
+    # --- TAB 6: QUIZ (UNCHANGED) ---
     with tab_quiz:
         st.header("🧠 Knowledge Check")
         st.write("Test your mastery of the Academy material. Can you get a perfect 10/10?")
