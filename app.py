@@ -50,17 +50,14 @@ def send_email(user_email, user_message):
     except Exception as e:
         return False
 
-# --- NEWS FETCHING FUNCTION (NEW & ROBUST) ---
+# --- NEWS FETCHING FUNCTION (RSS) ---
 def get_crypto_news():
-    # We use Cointelegraph's RSS feed which is more reliable than yfinance
     url = "https://cointelegraph.com/rss"
     news_items = []
     try:
         response = requests.get(url, timeout=5)
-        # Parse XML
         root = ET.fromstring(response.content)
-        # Find all items
-        for item in root.findall('./channel/item')[:10]: # Get top 10
+        for item in root.findall('./channel/item')[:10]:
             news = {
                 'title': item.find('title').text,
                 'link': item.find('link').text,
@@ -69,7 +66,6 @@ def get_crypto_news():
             }
             news_items.append(news)
     except Exception as e:
-        # Fallback if RSS fails
         return []
     return news_items
 
@@ -192,36 +188,52 @@ else:
 
     tab_learn, tab_sim, tab_data, tab_news, tab_quiz = st.tabs(["📖 Learn Concepts", "🧪 Lab Simulation", "📊 Live Market", "📰 Crypto News", "🧠 Knowledge Quiz"])
 
+    # --- TAB 1: THE CLASSROOM (RESTORED TO EXPANDED VERSIONS) ---
     with tab_learn:
         st.header("Blockchain Fundamentals")
+        
+        # --- LESSON 1: EXPANDED ---
         with st.expander("Lesson 1: What is a Blockchain? (The Foundation)"):
             st.subheader("1. The Problem with 'Normal' Money")
-            st.write("Right now, if I send you $50, we both trust the **Bank** to update the ledger.")
-            st.error("❌ **The Risk:** What if the Bank makes a mistake? What if they freeze your account?")
+            st.write("Right now, if I send you $50, we both trust the **Bank** to update the ledger. The Bank has the 'Master Book'.")
+            st.error("❌ **The Risk:** What if the Bank makes a mistake? What if they freeze your account? You don't own your data.")
             st.divider()
             st.subheader("2. The Solution: The 'Stone Tablet' Analogy")
             st.write("Imagine a giant **Stone Tablet** in the middle of the Town Square.")
             c_concept1, c_concept2 = st.columns(2)
             with c_concept1:
                 st.info("📢 **Public & Transparent**")
-                st.write("Everyone in town can see the tablet. If Alice sends Bob $5, everyone sees it happen.")
+                st.write("""
+                * Everyone in town can see the tablet.
+                * If Alice sends Bob $5, a 'Miner' carves it into the stone.
+                * **Everyone sees it happen.** No secrets.
+                """)
             with c_concept2:
                 st.success("🔒 **Immutable (Permanent)**")
-                st.write("Once carved, it is there **forever**. You cannot use an eraser. This creates **Total Trust** without a middleman.")
+                st.write("""
+                * Once carved, it is there **forever**.
+                * You cannot use an eraser.
+                * You cannot tear out the page.
+                * This creates **Total Trust** without a middleman.
+                """)
             st.divider()
             st.subheader("3. How does it actually work?")
-            st.write("It's not just one tablet. It is **Distributed**. Imagine if **10,000 people** took a photo of that stone tablet instantly.")
-            st.caption("If a hacker tries to change ONE photo, the other 9,999 people will say: 'Hey! That's fake!'")
+            st.write("It's not just one tablet. It is **Distributed**.")
+            st.write("Imagine if **10,000 people** took a photo of that stone tablet instantly.")
+            st.caption("If a hacker tries to change ONE photo, the other 9,999 people will say: 'Hey! That's fake!' and reject it. That is why Bitcoin has never been hacked.")
             st.divider()
-            st.subheader("4. Real World Use Cases")
+            st.subheader("4. Real World Use Cases (Beyond Bitcoin)")
             c_use1, c_use2 = st.columns(2)
             with c_use1:
-                st.warning("☕ **Supply Chain**")
-                st.write("You scan a coffee bag and see the *exact date* the farmer picked the beans. It cannot be faked.")
+                st.warning("☕ **Supply Chain (Starbucks)**")
+                st.write("**The Problem:** Is this coffee actually Fair Trade? Or did they just slap a sticker on it?")
+                st.write("**Blockchain:** You scan the bag. You see the *exact date* the farmer picked the beans, recorded on the blockchain. It cannot be faked.")
             with c_use2:
-                st.info("🏡 **Real Estate**")
-                st.write("The 'Title' is a token. You send money, the house token hits your wallet. Deal done in 10 seconds.")
+                st.info("🏡 **Real Estate (The Deed)**")
+                st.write("**The Problem:** Buying a house takes 30 days because lawyers have to verify the paper title history.")
+                st.write("**Blockchain:** The 'Title' is a token. You send the money, the house token hits your wallet. Deal done in 10 seconds.")
 
+        # --- LESSON 2: EXPANDED ---
         with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
             st.subheader("1. What makes it 'Smart'?")
             st.write("A Smart Contract is just **Programmable Money**. It's code that holds money and releases it only when a condition is met.")
@@ -231,31 +243,51 @@ else:
             st.write("The best way to understand it is to compare a **Human Barista** vs. a **Vending Machine**.")
             c_human, c_bot = st.columns(2)
             with c_human:
-                st.error("☕ The Old Way")
+                st.error("☕ The Old Way (Human Contract)")
                 st.write("Slow, Expensive, Trust-Based.")
             with c_bot:
-                st.success("🤖 The New Way")
+                st.success("🤖 The New Way (Smart Contract)")
                 st.write("Instant, Cheap, Trustless.")
             st.divider()
             st.subheader("3. A Simple Example: The Sports Bet")
-            st.write("Two friends bet on the Super Bowl. The code holds the money and automatically pays the winner based on the official score.")
+            st.write("Two friends bet on the Super Bowl. The code holds the money and automatically pays the winner based on the official score. No fighting.")
 
+        # --- LESSON 3: EXPANDED ---
         with st.expander("Lesson 3: Staking & Liquid Staking (How to Earn Interest)"):
             st.subheader("1. What is Staking?")
-            st.write("Staking is basically a **High-Yield Savings Account** for the internet.")
+            st.write("Staking is basically a **High-Yield Savings Account** for the internet. You lock up your crypto to help secure the network, and the network pays you interest (usually 4-7%).")
             st.divider()
             st.subheader("2. The Problem: 'The Locked Vault'")
+            st.write("In standard staking, your money is **LOCKED**. You cannot touch it. If an emergency happens, you have to wait days to get it out.")
             c_lock1, c_lock2 = st.columns(2)
             with c_lock1:
-                st.error("🚫 Standard Staking")
-                st.write("Your money is locked in a vault. You cannot touch it for days.")
+                st.error("🚫 Standard Staking (Bank CD)")
+                st.write("""
+                * **You give:** 1 ETH.
+                * **Status:** Locked in a vault.
+                * **Use:** None. It sits there.
+                * **Exit:** Wait 5-7 days to withdraw.
+                """)
             with c_lock2:
-                st.success("💧 Liquid Staking")
-                st.write("You get a 'Receipt Token' (stETH) that represents your deposit. You can trade this receipt instantly.")
+                st.success("💧 Liquid Staking (The Solution)")
+                st.write("""
+                * **You give:** 1 ETH.
+                * **You get:** 1 'Receipt Token' (stETH).
+                * **Status:** You hold the receipt in your wallet.
+                * **Use:** You can sell the receipt instantly if you need cash.
+                """)
             st.divider()
-            st.subheader("3. The 'Casino Chip' Analogy")
-            st.write("You trade $100 Cash for a $100 Chip. The chip earns value while you hold it. You can cash out the chip anytime.")
+            st.subheader("3. The 'Casino Chip' Analogy (Best for Beginners)")
+            st.info("Think of Liquid Staking like walking into a Casino.")
+            st.write("""
+            1.  You give the cashier **$100 Cash** (Your Crypto).
+            2.  They give you a **$100 Chip** (The Liquid Token).
+            3.  **The Magic:** While you hold that chip, it automatically grows in value. When you leave, you might cash out **$105**.
+            4.  **The Freedom:** If you don't want to wait at the cashier, you can just give the chip to a friend (trade it) for cash instantly. You aren't stuck.
+            """)
+            st.write("**Top Examples:** Lido (stETH), Coinbase (cbETH), Rocket Pool (rETH).")
 
+        # --- LESSON 4: EXPANDED ---
         with st.expander("Lesson 4: What actually IS a Wallet? (Deep Dive)"):
             st.subheader("1. The 'Glass Box' Analogy")
             st.write("Crypto is confusing because you can't 'see' the money. Here is the best way to visualize it:")
@@ -267,28 +299,55 @@ else:
             """)
             st.divider()
             st.subheader("2. How does it work? (Email Analogy)")
+            st.write("When you create a wallet, you generate two things:")
             c_key1, c_key2 = st.columns(2)
             with c_key1:
-                st.success("🟢 Public Key (Address)")
-                st.write("**Think: Email Address.** Safe to share.")
+                st.success("🟢 Public Key (The Address)")
+                st.write("**Think: Email Address**")
+                st.write("You give this to people so they can send you money. It is perfectly safe to share.")
                 st.code("0x71C...9A23")
             with c_key2:
-                st.error("🔴 Private Key (Seed Phrase)")
-                st.write("**Think: Email Password.** NEVER SHARE THIS.")
+                st.error("🔴 Private Key (The Seed Phrase)")
+                st.write("**Think: Email Password**")
+                st.write("This allows you to 'Login' and spend the money. If you give this away, you lose everything.")
                 st.code("apple river galaxy...")
             st.divider()
-            st.subheader("3. Hot vs. Cold")
+            st.subheader("3. Hot vs. Cold (The Pocket vs. The Vault)")
+            st.write("Not all wallets are the same. You need to choose the right one for your goals.")
             c_hot, c_cold = st.columns(2)
             with c_hot:
-                st.warning("🔥 Hot Wallet (App)")
-                st.write("Convenient but online. Good for spending ($100-$500).")
+                st.warning("🔥 Hot Wallet (The Pocket)")
+                st.write("""
+                * **What:** An app on your phone (Metamask, Coinbase Wallet).
+                * **Pros:** Fast, easy, connects to websites.
+                * **Cons:** Connected to the internet (hackable).
+                * **Use for:** Buying coffee, trading, carrying $100-$500.
+                """)
             with c_cold:
-                st.info("❄️ Cold Wallet (USB)")
-                st.write("Offline and secure. Good for savings (>$1000).")
+                st.info("❄️ Cold Wallet (The Home Safe)")
+                st.write("""
+                * **What:** A physical USB stick (Ledger, Trezor).
+                * **Pros:** Impossible to hack (offline).
+                * **Cons:** Annoying to use (must plug in).
+                * **Use for:** Your life savings, retirement, holding >$1,000.
+                """)
+            st.divider()
+            st.write("**Which one should you get?**")
+            col_rec1, col_rec2, col_rec3 = st.columns(3)
+            with col_rec1:
+                st.write("**Total Beginner**")
+                st.link_button("Coinbase App ↗", "https://www.coinbase.com")
+            with col_rec2:
+                st.write("**Explorer**")
+                st.link_button("Phantom Wallet ↗", "https://phantom.app")
+            with col_rec3:
+                st.write("**Investor**")
+                st.link_button("Ledger Nano ↗", "https://www.ledger.com")
 
+        # --- LESSON 5: EXPANDED (DEEP DIVE) ---
         with st.expander("Lesson 5: 🛡️ Security Masterclass (The Survival Guide)"):
             st.subheader("1. The Core Concept: 'Self-Custody'")
-            st.write("In crypto, YOU are the bank. If you lose your keys, the money is gone. This responsibility requires new habits.")
+            st.write("In crypto, YOU are the bank. There is no customer support hotline. If you lose your keys, the money is gone. This responsibility requires new habits.")
             st.divider()
             st.subheader("2. The Official 'Dos and Don'ts' Checklist")
             st.write("Memorize this list before you move a single dollar.")
@@ -312,12 +371,15 @@ else:
             st.divider()
             st.subheader("3. Understanding 'Social Engineering'")
             st.warning("⚠️ **Fact:** Most people don't get 'hacked' by code. They get 'tricked' by people.")
-            st.write("**The 'Fake Support' Scam:** You ask a question on Twitter. Someone DMs you. They are very helpful. They send you a link to 'sync your wallet'. **It is a scam.**")
+            st.write("**The 'Fake Support' Scam:**")
+            st.write("You ask a question on Twitter/Discord. Someone named 'MetaMask Support' DMs you. They are very helpful. They send you a link to 'sync your wallet'.")
+            st.error("🚨 **REALITY:** Support will NEVER DM you first. That link steals your money.")
             st.divider()
             st.subheader("4. Advanced: Revoking Allowances")
             st.write("When you use a DeFi app (like Uniswap), you give it permission to spend your coins. If that app gets hacked later, your wallet is at risk.")
-            st.info("🛠️ **The Fix:** Once a month, use a tool like **Revoke.cash** to disconnect your wallet from old apps.")
+            st.info("🛠️ **The Fix:** Once a month, use a tool like **Revoke.cash** to disconnect your wallet from old apps you don't use anymore.")
 
+    # --- TAB 2: THE SANDBOX ---
     with tab_sim:
         st.header("🧪 Interactive Lab")
         st.subheader("1. Gas Fee Simulator")
@@ -357,6 +419,7 @@ else:
                     time.sleep(1)
                 st.success(f"✅ Received ${(sell_amt * (1 - slippage/100)):,.2f} ETH")
 
+    # --- TAB 3: REAL WORLD DATA ---
     with tab_data:
         st.header("Live Market Data (24h Change)")
         def get_data(t):
@@ -377,7 +440,7 @@ else:
         st.area_chart(btc_h)
         st.caption("Bitcoin Price Trend (Last 5 Days)")
 
-    # --- NEW & IMPROVED NEWS TAB ---
+    # --- TAB 4: CRYPTO NEWS (RSS FEED) ---
     with tab_news:
         st.header("📰 Global Crypto News")
         st.write("Live feed from **Cointelegraph**. Always verify news from multiple sources.")
@@ -387,7 +450,6 @@ else:
             st.subheader("Latest Headlines")
             # Get news from the robust RSS fetcher
             news_list = get_crypto_news()
-            
             if news_list:
                 for item in news_list:
                     with st.container():
@@ -407,6 +469,7 @@ else:
                 st.write("**FOMO:** Fake hype to make you buy.")
             st.info("💡 **Pro Tip:** Never trade immediately on a headline. Wait 15 minutes.")
 
+    # --- TAB 5: QUIZ ---
     with tab_quiz:
         st.header("🧠 Knowledge Check")
         score = 0
