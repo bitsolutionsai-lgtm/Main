@@ -26,6 +26,7 @@ def enter_site():
 # --- EMAIL FUNCTION ---
 def send_email(user_email, user_message):
     try:
+        # Load credentials from secrets
         sender_email = st.secrets["email"]["sender_email"]
         sender_password = st.secrets["email"]["sender_password"]
         receiver_email = st.secrets["email"]["receiver_email"]
@@ -131,6 +132,7 @@ with st.sidebar:
     st.markdown("---")
     st.write("**Need Help?**")
     
+    # --- EMAIL FORM ---
     with st.form("contact_form"):
         contact_email = st.text_input("Your Email (for inquiry)")
         contact_msg = st.text_area("How can we help?")
@@ -462,20 +464,20 @@ else:
             tickers = ["BTC-USD", "ETH-USD", "SOL-USD"]
             all_news = []
 
-            # 2. FETCH NEWS FROM YFINANCE
+            # 2. FETCH NEWS FROM YFINANCE (With Safety Check)
             for t in tickers:
                 try:
                     tick = yf.Ticker(t)
                     if tick.news:
                         for item in tick.news:
-                            # Add a "Coin" tag so we know which coin the news is about
-                            item['coin'] = t.split("-")[0] 
-                            all_news.append(item)
+                            # CRITICAL FIX: Only add item if it has a title
+                            if 'title' in item and 'link' in item:
+                                item['coin'] = t.split("-")[0] 
+                                all_news.append(item)
                 except:
                     pass
 
             # 3. SORT BY TIME (NEWEST FIRST)
-            # We use a lambda function to sort the list of dictionaries by 'providerPublishTime'
             try:
                 all_news = sorted(all_news, key=lambda x: x.get('providerPublishTime', 0), reverse=True)
             except:
@@ -485,14 +487,19 @@ else:
             if all_news:
                 for item in all_news[:10]:
                     with st.container():
-                        # Format the time nicely
+                        # Safe Access for Time
                         publish_time = pd.to_datetime(item.get('providerPublishTime', 0), unit='s').strftime('%Y-%m-%d %H:%M')
                         
-                        # Display Headline with Link
-                        st.markdown(f"#### [{item['title']}]({item['link']})")
+                        # Safe Access for Title/Link (Defensive Coding)
+                        title = item.get('title', 'No Title Available')
+                        link = item.get('link', '#')
+                        publisher = item.get('publisher', 'Unknown Source')
                         
-                        # Display Metadata (Coin Name | Publisher | Time)
-                        st.caption(f"**{item['coin']}** | {item['publisher']} | 🕒 {publish_time}")
+                        # Display Headline with Link
+                        st.markdown(f"#### [{title}]({link})")
+                        
+                        # Display Metadata
+                        st.caption(f"**{item.get('coin', 'CRYPTO')}** | {publisher} | 🕒 {publish_time}")
                         
                         st.markdown("---")
             else:
