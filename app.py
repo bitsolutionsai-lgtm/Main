@@ -6,7 +6,7 @@ import time
 import smtplib
 import requests
 import xml.etree.ElementTree as ET
-import streamlit.components.v1 as components  # Required for TradingView
+import streamlit.components.v1 as components
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
@@ -365,7 +365,7 @@ else:
                     time.sleep(1)
                 st.success(f"✅ Received ${(sell_amt * (1 - slippage/100)):,.2f} ETH")
 
-    # --- TAB 3: LIVE MARKET (TRADINGVIEW UPGRADE) ---
+    # --- TAB 3: LIVE MARKET (UNCHANGED) ---
     with tab_data:
         st.header("📊 Market Dashboard")
         
@@ -375,8 +375,6 @@ else:
             coin_opt = st.selectbox("Select Asset to Analyze:", 
                                     ["Bitcoin (BTC)", "Ethereum (ETH)", "Solana (SOL)", "Cardano (ADA)", "Ripple (XRP)", "Dogecoin (DOGE)"])
             
-            # MAPPING: Friendly Name -> (Yahoo Ticker, TradingView Symbol)
-            # We need two different codes: one for Python data, one for the JS Widget
             asset_map = {
                 "Bitcoin (BTC)": {"yf": "BTC-USD", "tv": "COINBASE:BTCUSD"},
                 "Ethereum (ETH)": {"yf": "ETH-USD", "tv": "COINBASE:ETHUSD"},
@@ -389,10 +387,10 @@ else:
             yf_symbol = asset_map[coin_opt]["yf"]
             tv_symbol = asset_map[coin_opt]["tv"]
 
-        # 2. TOP METRICS (Powered by Yahoo Finance for Speed)
+        # 2. TOP METRICS
         try:
             coin_data = yf.Ticker(yf_symbol)
-            hist = coin_data.history(period="2d") # Get 2 days to compare
+            hist = coin_data.history(period="2d")
             
             if not hist.empty:
                 current_price = hist["Close"].iloc[-1]
@@ -403,7 +401,7 @@ else:
                 m1, m2, m3 = st.columns(3)
                 m1.metric("Current Price", f"${current_price:,.2f}", f"{delta:.2f}%")
                 m2.metric("24h Volume", f"${volume:,.0f}")
-                m3.metric("Asset", coin_opt.split('(')[1][:-1]) # Just the symbol
+                m3.metric("Asset", coin_opt.split('(')[1][:-1]) 
             else:
                 st.warning("Data loading...")
         except:
@@ -411,8 +409,7 @@ else:
 
         st.markdown("---")
 
-        # 3. TRADINGVIEW WIDGET (Professional Chart)
-        # This inserts the HTML/JS for the TradingView Widget
+        # 3. TRADINGVIEW WIDGET
         tv_widget_code = f"""
         <div class="tradingview-widget-container">
           <div id="tradingview_chart"></div>
@@ -446,7 +443,6 @@ else:
         with col_conv1:
             amount = st.number_input(f"Amount of {coin_opt.split('(')[1][:-1]}", value=1.0)
         with col_conv2:
-            # Re-use the price we fetched earlier
             try:
                 st.metric("Value in USD", f"${(amount * current_price):,.2f}")
             except:
@@ -478,20 +474,72 @@ else:
                 st.write("**FOMO:** Fake hype to make you buy.")
             st.info("💡 **Pro Tip:** Never trade immediately on a headline. Wait 15 minutes.")
 
-    # --- TAB 5: QUIZ (UNCHANGED) ---
+    # --- TAB 5: QUIZ (EXPANDED TO 10 QUESTIONS) ---
     with tab_quiz:
         st.header("🧠 Knowledge Check")
-        score = 0
-        q1 = st.radio("1. Where is your crypto actually stored?", ["In my Ledger USB stick", "On the Blockchain", "In the Coinbase App"])
-        if q1 == "On the Blockchain": score += 1
-        q2 = st.radio("2. What happens if you lose your Seed Phrase?", ["I can reset it via email", "I lose my money forever", "Support can recover it"])
-        if q2 == "I lose my money forever": score += 1
-        q3 = st.radio("3. Which wallet type is safer for long-term storage?", ["Hot Wallet", "Cold Wallet", "Exchange Wallet"])
-        if q3 == "Cold Wallet": score += 1
-        st.markdown("---")
-        if st.button("Check Score"):
-            if score == 3:
-                st.balloons()
-                st.success(f"🎉 Perfect Score! 3/3. You are ready for DeFi.")
-            else:
-                st.warning(f"You got {score}/3. Review the lessons and try again!")
+        st.write("Test your mastery of the Academy material. Can you get a perfect 10/10?")
+        
+        with st.form("quiz_form"):
+            score = 0
+            
+            st.subheader("Part 1: The Basics")
+            q1 = st.radio("1. Where is your crypto actually stored?", 
+                          ["On the Blockchain", "In my hardware wallet", "In the Coinbase app"], index=None)
+            
+            q2 = st.radio("2. Who controls the Blockchain ledger?", 
+                          ["The Bank", "No one (Distributed Network)", "Google"], index=None)
+            
+            q3 = st.radio("3. What is a 'Smart Contract' best compared to?", 
+                          ["A Lawyer", "A Vending Machine", "A Handshake"], index=None)
+
+            st.markdown("---")
+            st.subheader("Part 2: Wallets & Security")
+            
+            q4 = st.radio("4. Which wallet type is safest for long-term storage?", 
+                          ["Hot Wallet", "Cold Wallet", "Exchange Account"], index=None)
+            
+            q5 = st.radio("5. What should you do with your Seed Phrase (Private Key)?", 
+                          ["Save it in Google Drive", "Screenshot it", "Write it on paper/metal & hide it"], index=None)
+            
+            q6 = st.radio("6. Will legitimate Crypto Support ever DM you first?", 
+                          ["Yes, to help me", "No, NEVER"], index=None)
+
+            st.markdown("---")
+            st.subheader("Part 3: Advanced Concepts")
+
+            q7 = st.radio("7. What is 'Staking'?", 
+                          ["Selling your coins", "Earning interest by securing the network", "Mining Bitcoin"], index=None)
+            
+            q8 = st.radio("8. What does 'Bullish' mean in market terms?", 
+                          ["Prices going DOWN", "Prices going UP", "Market is flat"], index=None)
+            
+            q9 = st.radio("9. What pays for a transaction on the network?", 
+                          ["Gas Fees", "Subscription Fees", "It is free"], index=None)
+            
+            q10 = st.radio("10. Can you reverse a blockchain transaction if you make a mistake?", 
+                           ["Yes, call support", "No, it is immutable (permanent)"], index=None)
+            
+            st.markdown("---")
+            submitted = st.form_submit_button("Submit Answers")
+            
+            if submitted:
+                # Calculate Score
+                if q1 == "On the Blockchain": score += 1
+                if q2 == "No one (Distributed Network)": score += 1
+                if q3 == "A Vending Machine": score += 1
+                if q4 == "Cold Wallet": score += 1
+                if q5 == "Write it on paper/metal & hide it": score += 1
+                if q6 == "No, NEVER": score += 1
+                if q7 == "Earning interest by securing the network": score += 1
+                if q8 == "Prices going UP": score += 1
+                if q9 == "Gas Fees": score += 1
+                if q10 == "No, it is immutable (permanent)": score += 1
+                
+                # Feedback
+                if score == 10:
+                    st.balloons()
+                    st.success(f"🏆 PERFECT SCORE! 10/10. You are a true Crypto Master.")
+                elif score >= 7:
+                    st.success(f"✅ Great Job! You got {score}/10. You are ready to start.")
+                else:
+                    st.error(f"⚠️ You got {score}/10. Please review the lessons and try again.")
