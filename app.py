@@ -325,40 +325,13 @@ else:
             st.write("When you use a DeFi app (like Uniswap), you give it permission to spend your coins. If that app gets hacked later, your wallet is at risk.")
             st.info("🛠️ **The Fix:** Once a month, use a tool like **Revoke.cash** to disconnect your wallet from old apps.")
 
-    # --- TAB 2: LAB (NEW & IMPROVED) ---
+    # --- TAB 2: LAB (FINAL) ---
     with tab_sim:
         st.header("🧪 Interactive Lab")
         st.write("Experiment with the mechanics of DeFi in a safe, simulated environment.")
 
-        # --- LAB 1: GAS STATION (KEPT) ---
-        st.markdown("---")
-        st.subheader("⛽ 1. Gas Fee Visualizer")
-        st.write("See how network congestion affects the cost of moving money.")
-        
-        col_traffic, col_chart = st.columns([1, 2])
-        with col_traffic:
-            traffic = st.select_slider("Select Network Traffic Level:", options=["Low", "Medium", "High", "Extreme"])
-            if traffic == "Low": fees = [2.50, 0.05, 0.001]
-            elif traffic == "Medium": fees = [8.00, 0.15, 0.002]
-            elif traffic == "High": fees = [25.00, 0.60, 0.005]
-            else: fees = [120.00, 2.50, 0.01] # Extreme
-            
-            st.caption("**Estimated Cost to Send $100:**")
-            st.metric("Ethereum (L1)", f"${fees[0]:.2f}")
-            st.metric("Base (L2)", f"${fees[1]:.2f}")
-            st.metric("Solana", f"${fees[2]:.4f}")
-            
-        with col_chart:
-            # Bar Chart Comparison
-            fee_df = pd.DataFrame({
-                "Network": ["Ethereum", "Base (L2)", "Solana"],
-                "Fee ($)": fees
-            })
-            st.bar_chart(fee_df, x="Network", y="Fee ($)", color="#00BFA5")
-
-        # --- LAB 2: COMPOUND STAKING (KEPT) ---
-        st.markdown("---")
-        st.subheader("📈 2. Compound Interest Calculator")
+        # --- LAB 1: COMPOUND STAKING ---
+        st.subheader("📈 1. Compound Interest Calculator")
         st.write("Visualize the power of **DCA (Dollar Cost Averaging)** + **Staking Yield**.")
         
         c_calc1, c_calc2 = st.columns([1, 2])
@@ -398,9 +371,9 @@ else:
             st.success(f"💰 **Final Balance:** ${balance[-1]:,.2f}")
             st.caption(f"You contributed: ${contributions[-1]:,.2f} | **Interest Earned: ${profit:,.2f}**")
 
-        # --- LAB 3: PROFIT/ROI CALCULATOR (NEW REPLACEMENT) ---
+        # --- LAB 2: PROFIT/ROI CALCULATOR ---
         st.markdown("---")
-        st.subheader("💰 3. Trade Profit (ROI) Calculator")
+        st.subheader("💰 2. Trade Profit (ROI) Calculator")
         st.write("Calculate your exact Net Profit after exchange fees.")
         
         roi_c1, roi_c2 = st.columns(2)
@@ -432,9 +405,9 @@ else:
                 
             st.caption(f"Total Fees Paid: ${total_fees:.2f}")
 
-        # --- LAB 4: RISK/REWARD CALCULATOR (NEW REPLACEMENT) ---
+        # --- LAB 3: RISK/REWARD CALCULATOR ---
         st.markdown("---")
-        st.subheader("⚖️ 4. Risk/Reward Ratio Calculator")
+        st.subheader("⚖️ 3. Risk/Reward Ratio Calculator")
         st.write("Strategy Tool: Should you take this trade? (Target Ratio: 1:3 or higher)")
         
         risk_c1, risk_c2 = st.columns(2)
