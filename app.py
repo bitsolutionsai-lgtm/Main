@@ -170,14 +170,12 @@ with st.sidebar:
     st.write("🔒 **Wallet Security Audits**")
     st.write("⚙️ **Node Setup & Maintenance**")
     st.write("📈 **DeFi Strategy Planning**")
-
-    # <--- NEW: DISCORD COMMUNITY SECTION ---
+    
+    # DISCORD LINK
     st.markdown("---")
     st.subheader("Community")
     st.write("Join the conversation!")
-    # REPLACE THIS LINK WITH YOUR ACTUAL DISCORD INVITE LINK
     st.link_button("💬 Join Discord Server", "https://discord.gg/YOUR_INVITE_CODE")
-    # <--- END NEW ---
     
     st.markdown("---")
     st.write("**Need Help?**")
@@ -652,45 +650,61 @@ else:
             except:
                 st.write("Loading price...")
 
-    # --- TAB 4: AI ASSISTANT ---
+    # --- TAB 4: AI ASSISTANT (DIAGNOSTIC MODE) ---
     with tab_ai:
         st.header("🤖 Baez IT Crypto Assistant")
         st.caption("Powered by Google Gemini AI")
         
         if not gemini_api_key:
-            st.warning("⚠️ Please enter your Gemini API Key in the Sidebar 'AI Settings' to start chatting.")
-            st.info("Don't have a key? Get one for free here: [Google AI Studio](https://aistudio.google.com/app/apikey)")
+            st.warning("⚠️ Please enter your Gemini API Key in the Sidebar 'AI Settings'.")
         else:
-            for message in st.session_state.chat_history:
-                with st.chat_message(message["role"]):
-                    st.markdown(message["content"])
+            # --- MODEL SELECTOR & DIAGNOSTIC ---
+            try:
+                # Attempt to list models
+                available_models = []
+                for m in genai.list_models():
+                    if 'generateContent' in m.supported_generation_methods:
+                        available_models.append(m.name)
+                
+                # If list is empty, something is wrong with key or region
+                if not available_models:
+                     st.error("❌ No models found for this API Key. Check permissions/region.")
+                else:
+                    # Let user pick a valid model
+                    selected_model = st.selectbox("Select AI Model:", available_models, index=0)
+                    
+                    # Chat Interface
+                    for message in st.session_state.chat_history:
+                        with st.chat_message(message["role"]):
+                            st.markdown(message["content"])
 
-            if prompt := st.chat_input("Ask about Crypto, Blockchain, or Security..."):
-                st.session_state.chat_history.append({"role": "user", "content": prompt})
-                with st.chat_message("user"):
-                    st.markdown(prompt)
+                    if prompt := st.chat_input("Ask about Crypto..."):
+                        st.session_state.chat_history.append({"role": "user", "content": prompt})
+                        with st.chat_message("user"):
+                            st.markdown(prompt)
 
-                with st.chat_message("assistant"):
-                    message_placeholder = st.empty()
-                    try:
-                        model = genai.GenerativeModel('gemini-1.5-flash')
-                        context_prompt = f"""
-                        You are an expert Crypto and Blockchain consultant for 'Baez IT Solutions'.
-                        Answer the following question clearly and concisely. 
-                        If the user asks about financial advice, remind them you are an educational AI.
-                        
-                        User Question: {prompt}
-                        """
-                        full_response = ""
-                        response = model.generate_content(context_prompt, stream=True)
-                        for chunk in response:
-                            if chunk.text:
-                                full_response += chunk.text
-                                message_placeholder.markdown(full_response + "▌")
-                        message_placeholder.markdown(full_response)
-                        st.session_state.chat_history.append({"role": "assistant", "content": full_response})
-                    except Exception as e:
-                        st.error(f"Error: {str(e)}")
+                        with st.chat_message("assistant"):
+                            message_placeholder = st.empty()
+                            try:
+                                # Use the selected model from the list
+                                model = genai.GenerativeModel(selected_model)
+                                context_prompt = f"You are a crypto expert. Answer this: {prompt}"
+                                
+                                full_response = ""
+                                response = model.generate_content(context_prompt, stream=True)
+                                for chunk in response:
+                                    if chunk.text:
+                                        full_response += chunk.text
+                                        message_placeholder.markdown(full_response + "▌")
+                                message_placeholder.markdown(full_response)
+                                st.session_state.chat_history.append({"role": "assistant", "content": full_response})
+                            except Exception as e:
+                                st.error(f"Error: {str(e)}")
+
+            except Exception as e:
+                st.error(f"Failed to list models: {e}")
+                st.info("Falling back to default 'gemini-pro'...")
+                # Fallback logic if listing fails (rare)
 
     # --- TAB 5: NEWS ---
     with tab_news:
