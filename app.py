@@ -1,18 +1,4 @@
-import sys
-import subprocess
-
-# --- HOTFIX: Force install google-generativeai ---
-try:
-    import google.generativeai
-except ImportError:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "google-generativeai"])
-    import google.generativeai
-# -------------------------------------------------
-
 import streamlit as st
-import pandas as pd
-import numpy as np
-# ... rest of your importsimport streamlit as st
 import pandas as pd
 import numpy as np
 import yfinance as yf
@@ -21,7 +7,7 @@ import smtplib
 import requests
 import xml.etree.ElementTree as ET
 import streamlit.components.v1 as components
-import google.generativeai as genai  # <--- NEW IMPORT
+import google.generativeai as genai 
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
@@ -38,7 +24,6 @@ st.set_page_config(
 if 'page' not in st.session_state:
     st.session_state.page = 'cover'
 
-# <--- NEW: Initialize Chat History ---
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
@@ -47,10 +32,8 @@ def enter_site():
 
 # --- EMAIL FUNCTION ---
 def send_email(user_email, user_message):
-    # Check if secrets are configured to prevent crash
     if "email" not in st.secrets:
         return False
-        
     try:
         sender_email = st.secrets["email"]["sender_email"]
         sender_password = st.secrets["email"]["sender_password"]
@@ -168,11 +151,10 @@ with st.sidebar:
     st.header("Baez IT Solutions")
     st.write("Expert Crypto & IT Consulting.")
 
-    # <--- NEW: Gemini API Setup in Sidebar ---
+    # GEMINI API SETTINGS
     st.markdown("---")
     with st.expander("🔑 AI Settings"):
         gemini_api_key = st.text_input("Gemini API Key", type="password", placeholder="Enter Google API Key")
-        # Try to load from secrets if not entered manually
         if not gemini_api_key and "gemini" in st.secrets:
              gemini_api_key = st.secrets["gemini"]["api_key"]
         
@@ -182,7 +164,6 @@ with st.sidebar:
         else:
             st.warning("Enter API Key to use Chat")
             st.markdown("[Get API Key](https://aistudio.google.com/app/apikey)")
-    # <--- END NEW ---
 
     st.markdown("---")
     st.subheader("Services")
@@ -201,14 +182,13 @@ with st.sidebar:
     if submit_button:
         if contact_email and contact_msg:
             with st.spinner("Sending message..."):
-                # Simulate email sending if secrets aren't set
                 time.sleep(1)
                 success = send_email(contact_email, contact_msg)
                 
                 if success:
                     st.success("✅ Message sent! We will contact you shortly.")
                 elif "email" not in st.secrets:
-                     st.success("✅ Message simulated! (Configure .streamlit/secrets.toml to enable real email)")
+                     st.success("✅ Message simulated! (Configure secrets to enable real email)")
                 else:
                     st.error("❌ Error sending email. Check server logs.")
         else:
@@ -251,14 +231,13 @@ else:
     st.markdown("---")
 
     # --- NAVIGATION ---
-    # <--- UPDATED: Added "🤖 AI Assistant" to tabs list ---
     tab_learn, tab_sim, tab_data, tab_ai, tab_news, tab_quiz = st.tabs(["📖 Learn Concepts", "🧪 Lab Simulation", "📊 Live Market", "🤖 AI Assistant", "📰 Crypto News", "🧠 Knowledge Quiz"])
 
     # --- TAB 1: THE CLASSROOM ---
     with tab_learn:
         st.header("Blockchain Fundamentals")
         
-        # --- LESSON 1: EXPANDED ---
+        # --- LESSON 1 ---
         with st.expander("Lesson 1: What is a Blockchain? (The Deep Dive)"):
             st.subheader("1. The History: Origins of Bitcoin")
             st.write("To understand Blockchain, you must understand why it was built.")
@@ -310,7 +289,7 @@ else:
             st.write("* **Layer 2 Scaling:** Networks like Optimism and Base making crypto fast and cheap for daily coffee purchases.")
             st.write("* **DePIN:** Decentralized Physical Infrastructure (using crypto to build wifi networks and energy grids).")
 
-        # --- LESSON 2: EXPANDED (SMART CONTRACTS) ---
+        # --- LESSON 2 ---
         with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
             st.subheader("1. What exactly is a Smart Contract?")
             st.write("A Smart Contract is **self-executing code** stored on a blockchain. It acts like a digital agreement that runs exactly as programmed, with no possibility of downtime, censorship, or fraud.")
@@ -371,7 +350,7 @@ else:
             """, language="solidity")
             st.caption("A simplified example of how logic is written in Solidity (the language of Ethereum).")
 
-        # --- LESSON 3: EXPANDED (STAKING) ---
+        # --- LESSON 3 ---
         with st.expander("Lesson 3: Staking, Liquid Staking & Yield (How to Earn)"):
             st.subheader("1. The Two Ways to Earn in DeFi")
             st.write("Just holding crypto is like stuffing cash under your mattress. In DeFi, you can make your assets work for you.")
@@ -420,7 +399,7 @@ else:
             with col_aave2:
                 st.link_button("Explore Aave ↗", "https://aave.com/")
 
-        # --- LESSON 4: EXPANDED (WALLETS) ---
+        # --- LESSON 4 ---
         with st.expander("Lesson 4: What actually IS a Wallet? (The Ultimate Guide)"):
             st.subheader("1. The 'Glass Box' Analogy")
             st.write("Crypto is confusing because you can't 'see' the money. Here is the best way to visualize it:")
@@ -511,12 +490,12 @@ else:
             st.write("When you use a DeFi app (like Uniswap), you give it permission to spend your coins. If that app gets hacked later, your wallet is at risk.")
             st.info("🛠️ **The Fix:** Once a month, use a tool like **Revoke.cash** to disconnect your wallet from old apps.")
 
-    # --- TAB 2: LAB (FINAL) ---
+    # --- TAB 2: LAB ---
     with tab_sim:
         st.header("🧪 Interactive Lab")
         st.write("Experiment with the mechanics of DeFi in a safe, simulated environment.")
 
-        # --- LAB 1: COMPOUND STAKING ---
+        # --- LAB 1 ---
         st.subheader("📈 1. Compound Interest Calculator")
         st.write("Visualize the power of **DCA (Dollar Cost Averaging)** + **Staking Yield**.")
         
@@ -528,13 +507,10 @@ else:
             years = st.slider("Years to Grow", 1, 20, 10)
         
         with c_calc2:
-            # Calculation: Future Value of a Series
             months = years * 12
             monthly_rate = (apy / 100) / 12
-            
             balance = []
             contributions = []
-            
             current_bal = initial
             total_contributed = initial
             
@@ -545,19 +521,13 @@ else:
                 balance.append(current_bal)
                 contributions.append(total_contributed)
                 
-            # Create Data for Chart
-            chart_data = pd.DataFrame({
-                "Total Value": balance,
-                "Your Principal": contributions
-            })
-            
+            chart_data = pd.DataFrame({"Total Value": balance, "Your Principal": contributions})
             st.line_chart(chart_data)
-            
             profit = balance[-1] - contributions[-1]
             st.success(f"💰 **Final Balance:** ${balance[-1]:,.2f}")
             st.caption(f"You contributed: ${contributions[-1]:,.2f} | **Interest Earned: ${profit:,.2f}**")
 
-        # --- LAB 2: PROFIT/ROI CALCULATOR ---
+        # --- LAB 2 ---
         st.markdown("---")
         st.subheader("💰 2. Trade Profit (ROI) Calculator")
         st.write("Calculate your exact Net Profit after exchange fees.")
@@ -572,12 +542,9 @@ else:
         with roi_c2:
             cost_basis = buy_price * amount_coin
             gross_sale = sell_price * amount_coin
-            
-            # Calculate Fees (Buy + Sell side)
             buy_fee = cost_basis * (fee_pct/100)
             sell_fee = gross_sale * (fee_pct/100)
             total_fees = buy_fee + sell_fee
-            
             net_profit = gross_sale - cost_basis - total_fees
             roi_pct = (net_profit / cost_basis) * 100
             
@@ -588,10 +555,9 @@ else:
             else:
                 st.error(f"**Net Loss:** ${net_profit:,.2f}")
                 st.metric("ROI", f"{roi_pct:.2f}%", delta="Loss")
-                
             st.caption(f"Total Fees Paid: ${total_fees:.2f}")
 
-        # --- LAB 3: RISK/REWARD CALCULATOR ---
+        # --- LAB 3 ---
         st.markdown("---")
         st.subheader("⚖️ 3. Risk/Reward Ratio Calculator")
         st.write("Strategy Tool: Should you take this trade? (Target Ratio: 1:3 or higher)")
@@ -610,21 +576,16 @@ else:
                 st.warning("Check your inputs. Stop Loss must be lower than Entry (for Longs).")
             else:
                 ratio = reward_amt / risk_amt
-                
                 st.metric("Risk / Reward Ratio", f"1 : {ratio:.1f}")
                 st.write(f"Risking **${risk_amt:.2f}** to make **${reward_amt:.2f}**")
                 
-                if ratio >= 3:
-                    st.success("✅ **Excellent Trade.** (Ratio > 1:3)")
-                elif ratio >= 2:
-                    st.info("🆗 **Good Trade.** (Ratio > 1:2)")
-                else:
-                    st.error("❌ **Bad Trade.** Risk is too high for the reward.")
+                if ratio >= 3: st.success("✅ **Excellent Trade.** (Ratio > 1:3)")
+                elif ratio >= 2: st.info("🆗 **Good Trade.** (Ratio > 1:2)")
+                else: st.error("❌ **Bad Trade.** Risk is too high for the reward.")
 
     # --- TAB 3: LIVE MARKET ---
     with tab_data:
         st.header("📊 Market Dashboard")
-        
         col_sel, col_empty = st.columns([3, 1])
         with col_sel:
             coin_opt = st.selectbox("Select Asset to Analyze:", 
@@ -638,20 +599,17 @@ else:
                 "Ripple (XRP)": {"yf": "XRP-USD", "tv": "BINANCE:XRPUSDT"},
                 "Dogecoin (DOGE)": {"yf": "DOGE-USD", "tv": "BINANCE:DOGEUSDT"}
             }
-            
             yf_symbol = asset_map[coin_opt]["yf"]
             tv_symbol = asset_map[coin_opt]["tv"]
 
         try:
             coin_data = yf.Ticker(yf_symbol)
             hist = coin_data.history(period="2d")
-            
             if not hist.empty:
                 current_price = hist["Close"].iloc[-1]
                 prev_price = hist["Close"].iloc[0]
                 delta = ((current_price - prev_price) / prev_price) * 100
                 volume = hist["Volume"].iloc[-1]
-                
                 m1, m2, m3 = st.columns(3)
                 m1.metric("Current Price", f"${current_price:,.2f}", f"{delta:.2f}%")
                 m2.metric("24h Volume", f"${volume:,.0f}")
@@ -662,27 +620,13 @@ else:
             st.error("Metric data unavailable. Chart below is live.")
 
         st.markdown("---")
-
         tv_widget_code = f"""
         <div class="tradingview-widget-container">
           <div id="tradingview_chart"></div>
           <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
           <script type="text/javascript">
           new TradingView.widget(
-          {{
-          "width": "100%",
-          "height": 500,
-          "symbol": "{tv_symbol}",
-          "interval": "D",
-          "timezone": "Etc/UTC",
-          "theme": "dark",
-          "style": "1",
-          "locale": "en",
-          "toolbar_bg": "#f1f3f6",
-          "enable_publishing": false,
-          "allow_symbol_change": true,
-          "container_id": "tradingview_chart"
-          }}
+          {{ "width": "100%", "height": 500, "symbol": "{tv_symbol}", "interval": "D", "timezone": "Etc/UTC", "theme": "dark", "style": "1", "locale": "en", "toolbar_bg": "#f1f3f6", "enable_publishing": false, "allow_symbol_change": true, "container_id": "tradingview_chart" }}
           );
           </script>
         </div>
@@ -700,37 +644,28 @@ else:
             except:
                 st.write("Loading price...")
 
-    # <--- NEW: AI ASSISTANT TAB CONTENT ---
+    # --- TAB 4: AI ASSISTANT ---
     with tab_ai:
         st.header("🤖 Baez IT Crypto Assistant")
         st.caption("Powered by Google Gemini AI")
         
-        # 1. API Key Check
         if not gemini_api_key:
             st.warning("⚠️ Please enter your Gemini API Key in the Sidebar 'AI Settings' to start chatting.")
             st.info("Don't have a key? Get one for free here: [Google AI Studio](https://aistudio.google.com/app/apikey)")
-        
         else:
-            # 2. Display Chat History
             for message in st.session_state.chat_history:
                 with st.chat_message(message["role"]):
                     st.markdown(message["content"])
 
-            # 3. Chat Input
             if prompt := st.chat_input("Ask about Crypto, Blockchain, or Security..."):
-                # Add user message to state
                 st.session_state.chat_history.append({"role": "user", "content": prompt})
                 with st.chat_message("user"):
                     st.markdown(prompt)
 
-                # 4. Generate AI Response
                 with st.chat_message("assistant"):
                     message_placeholder = st.empty()
                     try:
-                        # Configure Model
                         model = genai.GenerativeModel('gemini-1.5-flash')
-                        
-                        # Context prompt for better answers
                         context_prompt = f"""
                         You are an expert Crypto and Blockchain consultant for 'Baez IT Solutions'.
                         Answer the following question clearly and concisely. 
@@ -738,26 +673,18 @@ else:
                         
                         User Question: {prompt}
                         """
-                        
-                        # Stream response
                         full_response = ""
                         response = model.generate_content(context_prompt, stream=True)
-                        
                         for chunk in response:
                             if chunk.text:
                                 full_response += chunk.text
                                 message_placeholder.markdown(full_response + "▌")
-                        
                         message_placeholder.markdown(full_response)
-                        
-                        # Add assistant response to state
                         st.session_state.chat_history.append({"role": "assistant", "content": full_response})
-                        
                     except Exception as e:
                         st.error(f"Error: {str(e)}")
-    # <--- END NEW ---
 
-    # --- TAB 4: NEWS ---
+    # --- TAB 5: NEWS ---
     with tab_news:
         st.header("📰 Global Crypto News")
         st.write("Live feed from **Cointelegraph**. Always verify news from multiple sources.")
@@ -783,56 +710,33 @@ else:
                 st.write("**FOMO:** Fake hype to make you buy.")
             st.info("💡 **Pro Tip:** Never trade immediately on a headline. Wait 15 minutes.")
 
-    # --- TAB 5: QUIZ (UNCHANGED) ---
+    # --- TAB 6: QUIZ ---
     with tab_quiz:
         st.header("🧠 Knowledge Check")
         st.write("Test your mastery of the Academy material. Can you get a perfect 10/10?")
         
         with st.form("quiz_form"):
             score = 0
-            
             st.subheader("Part 1: The Basics")
-            q1 = st.radio("1. Where is your crypto actually stored?", 
-                          ["On the Blockchain", "In my hardware wallet", "In the Coinbase app"], index=None)
-            
-            q2 = st.radio("2. Who controls the Blockchain ledger?", 
-                          ["The Bank", "No one (Distributed Network)", "Google"], index=None)
-            
-            q3 = st.radio("3. What is a 'Smart Contract' best compared to?", 
-                          ["A Lawyer", "A Vending Machine", "A Handshake"], index=None)
-
+            q1 = st.radio("1. Where is your crypto actually stored?", ["On the Blockchain", "In my hardware wallet", "In the Coinbase app"], index=None)
+            q2 = st.radio("2. Who controls the Blockchain ledger?", ["The Bank", "No one (Distributed Network)", "Google"], index=None)
+            q3 = st.radio("3. What is a 'Smart Contract' best compared to?", ["A Lawyer", "A Vending Machine", "A Handshake"], index=None)
             st.markdown("---")
             st.subheader("Part 2: Wallets & Security")
-            
-            q4 = st.radio("4. Which wallet type is safest for long-term storage?", 
-                          ["Hot Wallet", "Cold Wallet", "Exchange Account"], index=None)
-            
-            q5 = st.radio("5. What should you do with your Seed Phrase (Private Key)?", 
-                          ["Save it in Google Drive", "Screenshot it", "Write it on paper/metal & hide it"], index=None)
-            
-            q6 = st.radio("6. Will legitimate Crypto Support ever DM you first?", 
-                          ["Yes, to help me", "No, NEVER"], index=None)
-
+            q4 = st.radio("4. Which wallet type is safest for long-term storage?", ["Hot Wallet", "Cold Wallet", "Exchange Account"], index=None)
+            q5 = st.radio("5. What should you do with your Seed Phrase?", ["Save it in Google Drive", "Screenshot it", "Write it on paper/metal & hide it"], index=None)
+            q6 = st.radio("6. Will legitimate Crypto Support ever DM you first?", ["Yes, to help me", "No, NEVER"], index=None)
             st.markdown("---")
             st.subheader("Part 3: Advanced Concepts")
-
-            q7 = st.radio("7. What is 'Staking'?", 
-                          ["Selling your coins", "Earning interest by securing the network", "Mining Bitcoin"], index=None)
-            
-            q8 = st.radio("8. What does 'Bullish' mean in market terms?", 
-                          ["Prices going DOWN", "Prices going UP", "Market is flat"], index=None)
-            
-            q9 = st.radio("9. What pays for a transaction on the network?", 
-                          ["Gas Fees", "Subscription Fees", "It is free"], index=None)
-            
-            q10 = st.radio("10. Can you reverse a blockchain transaction if you make a mistake?", 
-                           ["Yes, call support", "No, it is immutable (permanent)"], index=None)
+            q7 = st.radio("7. What is 'Staking'?", ["Selling your coins", "Earning interest by securing the network", "Mining Bitcoin"], index=None)
+            q8 = st.radio("8. What does 'Bullish' mean in market terms?", ["Prices going DOWN", "Prices going UP", "Market is flat"], index=None)
+            q9 = st.radio("9. What pays for a transaction on the network?", ["Gas Fees", "Subscription Fees", "It is free"], index=None)
+            q10 = st.radio("10. Can you reverse a blockchain transaction?", ["Yes, call support", "No, it is immutable (permanent)"], index=None)
             
             st.markdown("---")
             submitted = st.form_submit_button("Submit Answers")
             
             if submitted:
-                # Calculate Score
                 if q1 == "On the Blockchain": score += 1
                 if q2 == "No one (Distributed Network)": score += 1
                 if q3 == "A Vending Machine": score += 1
@@ -844,7 +748,6 @@ else:
                 if q9 == "Gas Fees": score += 1
                 if q10 == "No, it is immutable (permanent)": score += 1
                 
-                # Feedback
                 if score == 10:
                     st.balloons()
                     st.success(f"🏆 PERFECT SCORE! 10/10. You are a true Crypto Master.")
