@@ -1,4 +1,18 @@
+import sys
+import subprocess
+
+# --- HOTFIX: Force install google-generativeai ---
+try:
+    import google.generativeai
+except ImportError:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "google-generativeai"])
+    import google.generativeai
+# -------------------------------------------------
+
 import streamlit as st
+import pandas as pd
+import numpy as np
+# ... rest of your importsimport streamlit as st
 import pandas as pd
 import numpy as np
 import yfinance as yf
