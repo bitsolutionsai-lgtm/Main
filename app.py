@@ -145,24 +145,28 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # ==========================================
-# SIDEBAR: BUSINESS CONTACT
+# SIDEBAR: BUSINESS CONTACT & SETTINGS
 # ==========================================
 with st.sidebar:
     st.header("Baez IT Solutions")
     st.write("Expert Crypto & IT Consulting.")
 
-    # GEMINI API SETTINGS
+    # GEMINI API SETTINGS (Auto-Detects from Secrets)
     st.markdown("---")
-    with st.expander("🔑 AI Settings"):
-        gemini_api_key = st.text_input("Gemini API Key", type="password", placeholder="Enter Google API Key")
-        if not gemini_api_key and "gemini" in st.secrets:
-             gemini_api_key = st.secrets["gemini"]["api_key"]
+    with st.expander("🔑 AI Settings", expanded=True):
+        # 1. Check for secret key
+        default_key = ""
+        if "gemini" in st.secrets and "api_key" in st.secrets["gemini"]:
+            default_key = st.secrets["gemini"]["api_key"]
+            
+        # 2. Input box (Pre-filled if secret exists)
+        gemini_api_key = st.text_input("Gemini API Key", value=default_key, type="password", placeholder="Enter Google API Key")
         
         if gemini_api_key:
-            st.success("API Key Detected")
+            st.success("✅ API Key Connected")
             genai.configure(api_key=gemini_api_key)
         else:
-            st.warning("Enter API Key to use Chat")
+            st.warning("⚠️ Enter API Key to use Chat")
             st.markdown("[Get API Key](https://aistudio.google.com/app/apikey)")
 
     st.markdown("---")
@@ -171,10 +175,11 @@ with st.sidebar:
     st.write("⚙️ **Node Setup & Maintenance**")
     st.write("📈 **DeFi Strategy Planning**")
     
-    # DISCORD LINK
+    # DISCORD COMMUNITY
     st.markdown("---")
     st.subheader("Community")
     st.write("Join the conversation!")
+    # Replace link below with your actual invite
     st.link_button("💬 Join Discord Server", "https://discord.gg/YOUR_INVITE_CODE")
     
     st.markdown("---")
@@ -650,7 +655,7 @@ else:
             except:
                 st.write("Loading price...")
 
-    # --- TAB 4: AI ASSISTANT (DIAGNOSTIC MODE) ---
+    # --- TAB 4: AI ASSISTANT (HARDCODED GEMINI-2.5-FLASH) ---
     with tab_ai:
         st.header("🤖 Baez IT Crypto Assistant")
         st.caption("Powered by Google Gemini AI")
@@ -658,53 +663,33 @@ else:
         if not gemini_api_key:
             st.warning("⚠️ Please enter your Gemini API Key in the Sidebar 'AI Settings'.")
         else:
-            # --- MODEL SELECTOR & DIAGNOSTIC ---
-            try:
-                # Attempt to list models
-                available_models = []
-                for m in genai.list_models():
-                    if 'generateContent' in m.supported_generation_methods:
-                        available_models.append(m.name)
-                
-                # If list is empty, something is wrong with key or region
-                if not available_models:
-                     st.error("❌ No models found for this API Key. Check permissions/region.")
-                else:
-                    # Let user pick a valid model
-                    selected_model = st.selectbox("Select AI Model:", available_models, index=0)
-                    
-                    # Chat Interface
-                    for message in st.session_state.chat_history:
-                        with st.chat_message(message["role"]):
-                            st.markdown(message["content"])
+            for message in st.session_state.chat_history:
+                with st.chat_message(message["role"]):
+                    st.markdown(message["content"])
 
-                    if prompt := st.chat_input("Ask about Crypto..."):
-                        st.session_state.chat_history.append({"role": "user", "content": prompt})
-                        with st.chat_message("user"):
-                            st.markdown(prompt)
+            if prompt := st.chat_input("Ask about Crypto..."):
+                st.session_state.chat_history.append({"role": "user", "content": prompt})
+                with st.chat_message("user"):
+                    st.markdown(prompt)
 
-                        with st.chat_message("assistant"):
-                            message_placeholder = st.empty()
-                            try:
-                                # Use the selected model from the list
-                                model = genai.GenerativeModel(selected_model)
-                                context_prompt = f"You are a crypto expert. Answer this: {prompt}"
-                                
-                                full_response = ""
-                                response = model.generate_content(context_prompt, stream=True)
-                                for chunk in response:
-                                    if chunk.text:
-                                        full_response += chunk.text
-                                        message_placeholder.markdown(full_response + "▌")
-                                message_placeholder.markdown(full_response)
-                                st.session_state.chat_history.append({"role": "assistant", "content": full_response})
-                            except Exception as e:
-                                st.error(f"Error: {str(e)}")
-
-            except Exception as e:
-                st.error(f"Failed to list models: {e}")
-                st.info("Falling back to default 'gemini-pro'...")
-                # Fallback logic if listing fails (rare)
+                with st.chat_message("assistant"):
+                    message_placeholder = st.empty()
+                    try:
+                        # HARDCODED MODEL as requested
+                        model = genai.GenerativeModel('gemini-2.5-flash')
+                        context_prompt = f"You are a crypto expert. Answer this: {prompt}"
+                        
+                        full_response = ""
+                        response = model.generate_content(context_prompt, stream=True)
+                        for chunk in response:
+                            if chunk.text:
+                                full_response += chunk.text
+                                message_placeholder.markdown(full_response + "▌")
+                        message_placeholder.markdown(full_response)
+                        st.session_state.chat_history.append({"role": "assistant", "content": full_response})
+                    except Exception as e:
+                        st.error(f"Error: {str(e)}")
+                        st.info("Tip: If 'gemini-2.5-flash' is not available in your region/account, you may get a 404 error.")
 
     # --- TAB 5: NEWS ---
     with tab_news:
