@@ -7,6 +7,7 @@ import smtplib
 import requests
 import xml.etree.ElementTree as ET
 import streamlit.components.v1 as components
+import google.generativeai as genai  # <--- NEW IMPORT
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
@@ -23,11 +24,19 @@ st.set_page_config(
 if 'page' not in st.session_state:
     st.session_state.page = 'cover'
 
+# <--- NEW: Initialize Chat History ---
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+
 def enter_site():
     st.session_state.page = 'main'
 
 # --- EMAIL FUNCTION ---
 def send_email(user_email, user_message):
+    # Check if secrets are configured to prevent crash
+    if "email" not in st.secrets:
+        return False
+        
     try:
         sender_email = st.secrets["email"]["sender_email"]
         sender_password = st.secrets["email"]["sender_password"]
@@ -73,7 +82,7 @@ def get_crypto_news():
 # --- CUSTOM CSS ---
 st.markdown("""
     <style>
-    /* BACKGROUND IMAGE SETTINGS (New: Abstract Digital Network) */
+    /* BACKGROUND IMAGE SETTINGS */
     .stApp {
         background-image: linear-gradient(rgba(0, 0, 0, 0.80), rgba(0, 0, 0, 0.80)), 
                           url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=2832&auto=format&fit=crop');
@@ -144,6 +153,23 @@ st.markdown("""
 with st.sidebar:
     st.header("Baez IT Solutions")
     st.write("Expert Crypto & IT Consulting.")
+
+    # <--- NEW: Gemini API Setup in Sidebar ---
+    st.markdown("---")
+    with st.expander("🔑 AI Settings"):
+        gemini_api_key = st.text_input("Gemini API Key", type="password", placeholder="Enter Google API Key")
+        # Try to load from secrets if not entered manually
+        if not gemini_api_key and "gemini" in st.secrets:
+             gemini_api_key = st.secrets["gemini"]["api_key"]
+        
+        if gemini_api_key:
+            st.success("API Key Detected")
+            genai.configure(api_key=gemini_api_key)
+        else:
+            st.warning("Enter API Key to use Chat")
+            st.markdown("[Get API Key](https://aistudio.google.com/app/apikey)")
+    # <--- END NEW ---
+
     st.markdown("---")
     st.subheader("Services")
     st.write("🔒 **Wallet Security Audits**")
@@ -161,14 +187,16 @@ with st.sidebar:
     if submit_button:
         if contact_email and contact_msg:
             with st.spinner("Sending message..."):
-                # Simulate email sending for now
+                # Simulate email sending if secrets aren't set
                 time.sleep(1)
                 success = send_email(contact_email, contact_msg)
+                
                 if success:
                     st.success("✅ Message sent! We will contact you shortly.")
+                elif "email" not in st.secrets:
+                     st.success("✅ Message simulated! (Configure .streamlit/secrets.toml to enable real email)")
                 else:
-                    # Fallback for demo purposes if secrets aren't set
-                    st.success("✅ Message sent! (Simulation mode)")
+                    st.error("❌ Error sending email. Check server logs.")
         else:
             st.warning("Please fill out both fields.")
 
@@ -209,7 +237,8 @@ else:
     st.markdown("---")
 
     # --- NAVIGATION ---
-    tab_learn, tab_sim, tab_data, tab_news, tab_quiz = st.tabs(["📖 Learn Concepts", "🧪 Lab Simulation", "📊 Live Market", "📰 Crypto News", "🧠 Knowledge Quiz"])
+    # <--- UPDATED: Added "🤖 AI Assistant" to tabs list ---
+    tab_learn, tab_sim, tab_data, tab_ai, tab_news, tab_quiz = st.tabs(["📖 Learn Concepts", "🧪 Lab Simulation", "📊 Live Market", "🤖 AI Assistant", "📰 Crypto News", "🧠 Knowledge Quiz"])
 
     # --- TAB 1: THE CLASSROOM ---
     with tab_learn:
@@ -656,6 +685,63 @@ else:
                 st.metric("Value in USD", f"${(amount * current_price):,.2f}")
             except:
                 st.write("Loading price...")
+
+    # <--- NEW: AI ASSISTANT TAB CONTENT ---
+    with tab_ai:
+        st.header("🤖 Baez IT Crypto Assistant")
+        st.caption("Powered by Google Gemini AI")
+        
+        # 1. API Key Check
+        if not gemini_api_key:
+            st.warning("⚠️ Please enter your Gemini API Key in the Sidebar 'AI Settings' to start chatting.")
+            st.info("Don't have a key? Get one for free here: [Google AI Studio](https://aistudio.google.com/app/apikey)")
+        
+        else:
+            # 2. Display Chat History
+            for message in st.session_state.chat_history:
+                with st.chat_message(message["role"]):
+                    st.markdown(message["content"])
+
+            # 3. Chat Input
+            if prompt := st.chat_input("Ask about Crypto, Blockchain, or Security..."):
+                # Add user message to state
+                st.session_state.chat_history.append({"role": "user", "content": prompt})
+                with st.chat_message("user"):
+                    st.markdown(prompt)
+
+                # 4. Generate AI Response
+                with st.chat_message("assistant"):
+                    message_placeholder = st.empty()
+                    try:
+                        # Configure Model
+                        model = genai.GenerativeModel('gemini-1.5-flash')
+                        
+                        # Context prompt for better answers
+                        context_prompt = f"""
+                        You are an expert Crypto and Blockchain consultant for 'Baez IT Solutions'.
+                        Answer the following question clearly and concisely. 
+                        If the user asks about financial advice, remind them you are an educational AI.
+                        
+                        User Question: {prompt}
+                        """
+                        
+                        # Stream response
+                        full_response = ""
+                        response = model.generate_content(context_prompt, stream=True)
+                        
+                        for chunk in response:
+                            if chunk.text:
+                                full_response += chunk.text
+                                message_placeholder.markdown(full_response + "▌")
+                        
+                        message_placeholder.markdown(full_response)
+                        
+                        # Add assistant response to state
+                        st.session_state.chat_history.append({"role": "assistant", "content": full_response})
+                        
+                    except Exception as e:
+                        st.error(f"Error: {str(e)}")
+    # <--- END NEW ---
 
     # --- TAB 4: NEWS ---
     with tab_news:
