@@ -30,6 +30,16 @@ if "chat_history" not in st.session_state:
 def enter_site():
     st.session_state.page = 'main'
 
+# --- API CONFIGURATION (SILENT LOAD) ---
+# This attempts to load the key from secrets immediately
+api_configured = False
+if "gemini" in st.secrets and "api_key" in st.secrets["gemini"]:
+    try:
+        genai.configure(api_key=st.secrets["gemini"]["api_key"])
+        api_configured = True
+    except Exception as e:
+        pass
+
 # --- EMAIL FUNCTION ---
 def send_email(user_email, user_message):
     if "email" not in st.secrets:
@@ -145,29 +155,13 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # ==========================================
-# SIDEBAR: BUSINESS CONTACT & SETTINGS
+# SIDEBAR: BUSINESS CONTACT & COMMUNITY
 # ==========================================
 with st.sidebar:
     st.header("Baez IT Solutions")
     st.write("Expert Crypto & IT Consulting.")
 
-    # GEMINI API SETTINGS (Auto-Detects from Secrets)
-    st.markdown("---")
-    with st.expander("🔑 AI Settings", expanded=True):
-        # 1. Check for secret key
-        default_key = ""
-        if "gemini" in st.secrets and "api_key" in st.secrets["gemini"]:
-            default_key = st.secrets["gemini"]["api_key"]
-            
-        # 2. Input box (Pre-filled if secret exists)
-        gemini_api_key = st.text_input("Gemini API Key", value=default_key, type="password", placeholder="Enter Google API Key")
-        
-        if gemini_api_key:
-            st.success("✅ API Key Connected")
-            genai.configure(api_key=gemini_api_key)
-        else:
-            st.warning("⚠️ Enter API Key to use Chat")
-            st.markdown("[Get API Key](https://aistudio.google.com/app/apikey)")
+    # --- API INPUT REMOVED: Now loads silently from secrets ---
 
     st.markdown("---")
     st.subheader("Services")
@@ -179,7 +173,7 @@ with st.sidebar:
     st.markdown("---")
     st.subheader("Community")
     st.write("Join the conversation!")
-    # Replace link below with your actual invite
+    # Replace with your actual invite link
     st.link_button("💬 Join Discord Server", "https://discord.gg/YOUR_INVITE_CODE")
     
     st.markdown("---")
@@ -660,8 +654,9 @@ else:
         st.header("🤖 Baez IT Crypto Assistant")
         st.caption("Powered by Google Gemini AI")
         
-        if not gemini_api_key:
-            st.warning("⚠️ Please enter your Gemini API Key in the Sidebar 'AI Settings'.")
+        # Check if silent load failed
+        if not api_configured:
+            st.error("⚠️ AI Service Unavailable. Please contact the administrator to check server secrets.")
         else:
             for message in st.session_state.chat_history:
                 with st.chat_message(message["role"]):
@@ -689,7 +684,7 @@ else:
                         st.session_state.chat_history.append({"role": "assistant", "content": full_response})
                     except Exception as e:
                         st.error(f"Error: {str(e)}")
-                        st.info("Tip: If 'gemini-2.5-flash' is not available in your region/account, you may get a 404 error.")
+                        st.info("Tip: If 'gemini-2.5-flash' is not available, try switching to 'gemini-1.5-flash' in the code.")
 
     # --- TAB 5: NEWS ---
     with tab_news:
