@@ -31,7 +31,6 @@ def enter_site():
     st.session_state.page = 'main'
 
 # --- API CONFIGURATION (SILENT LOAD) ---
-# This attempts to load the key from secrets immediately
 api_configured = False
 if "gemini" in st.secrets and "api_key" in st.secrets["gemini"]:
     try:
@@ -155,13 +154,53 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # ==========================================
-# SIDEBAR: BUSINESS CONTACT & COMMUNITY
+# SIDEBAR: CLOUD AGENT & BUSINESS
 # ==========================================
 with st.sidebar:
     st.header("Baez IT Solutions")
     st.write("Expert Crypto & IT Consulting.")
 
-    # --- API INPUT REMOVED: Now loads silently from secrets ---
+    # --- ☁️ FLOATING CLOUD AGENT ---
+    st.markdown("---")
+    with st.expander("☁️ AI Cloud Agent", expanded=True):
+        st.caption("Ask me anything while you browse!")
+        
+        # Chat History Container (Scrollable)
+        chat_container = st.container(height=300)
+        with chat_container:
+            for message in st.session_state.chat_history:
+                with st.chat_message(message["role"]):
+                    st.markdown(message["content"])
+
+        # Chat Logic
+        if not api_configured:
+            st.error("⚠️ AI Offline (Check Secrets)")
+        else:
+            if prompt := st.chat_input("Ask the Cloud..."):
+                st.session_state.chat_history.append({"role": "user", "content": prompt})
+                with chat_container: # Force display in container
+                    with st.chat_message("user"):
+                        st.markdown(prompt)
+
+                    with st.chat_message("assistant"):
+                        message_placeholder = st.empty()
+                        try:
+                            # HARDCODED MODEL as requested
+                            model = genai.GenerativeModel('gemini-2.5-flash')
+                            context_prompt = f"You are a crypto expert. Answer this concise: {prompt}"
+                            
+                            full_response = ""
+                            response = model.generate_content(context_prompt, stream=True)
+                            for chunk in response:
+                                if chunk.text:
+                                    full_response += chunk.text
+                                    message_placeholder.markdown(full_response + "▌")
+                            message_placeholder.markdown(full_response)
+                            st.session_state.chat_history.append({"role": "assistant", "content": full_response})
+                        except Exception as e:
+                            st.error(f"Error: {str(e)}")
+                            st.info("Tip: If 'gemini-2.5-flash' fails, try 'gemini-1.5-flash'.")
+    # --- END AGENT ---
 
     st.markdown("---")
     st.subheader("Services")
@@ -172,32 +211,23 @@ with st.sidebar:
     # DISCORD COMMUNITY
     st.markdown("---")
     st.subheader("Community")
-    st.write("Join the conversation!")
-    # Replace with your actual invite link
     st.link_button("💬 Join Discord Server", "https://discord.gg/YOUR_INVITE_CODE")
     
     st.markdown("---")
     st.write("**Need Help?**")
-    
     with st.form("contact_form"):
-        contact_email = st.text_input("Your Email (for inquiry)")
+        contact_email = st.text_input("Your Email")
         contact_msg = st.text_area("How can we help?")
-        submit_button = st.form_submit_button("Send Inquiry")
+        submit_button = st.form_submit_button("Send")
 
     if submit_button:
         if contact_email and contact_msg:
-            with st.spinner("Sending message..."):
+            with st.spinner("Sending..."):
                 time.sleep(1)
                 success = send_email(contact_email, contact_msg)
-                
-                if success:
-                    st.success("✅ Message sent! We will contact you shortly.")
-                elif "email" not in st.secrets:
-                     st.success("✅ Message simulated! (Configure secrets to enable real email)")
-                else:
-                    st.error("❌ Error sending email. Check server logs.")
-        else:
-            st.warning("Please fill out both fields.")
+                if success: st.success("✅ Sent!")
+                elif "email" not in st.secrets: st.success("✅ Simulated!")
+                else: st.error("❌ Error.")
 
 # ==========================================
 # PAGE 1: THE COVER PAGE
@@ -235,8 +265,8 @@ else:
 
     st.markdown("---")
 
-    # --- NAVIGATION ---
-    tab_learn, tab_sim, tab_data, tab_ai, tab_news, tab_quiz = st.tabs(["📖 Learn Concepts", "🧪 Lab Simulation", "📊 Live Market", "🤖 AI Assistant", "📰 Crypto News", "🧠 Knowledge Quiz"])
+    # --- NAVIGATION (AI REMOVED FROM TABS) ---
+    tab_learn, tab_sim, tab_data, tab_news, tab_quiz = st.tabs(["📖 Learn Concepts", "🧪 Lab Simulation", "📊 Live Market", "📰 Crypto News", "🧠 Knowledge Quiz"])
 
     # --- TAB 1: THE CLASSROOM ---
     with tab_learn:
@@ -249,9 +279,7 @@ else:
             st.write("In **2008**, the global financial system collapsed. Banks gambled with user money, and governments printed trillions to bail them out. People lost trust in centralization.")
             st.info("👤 **Satoshi Nakamoto:** On Oct 31, 2008, an anonymous cryptographer published the **Bitcoin Whitepaper**. It proposed a system of money that required no banks, no governments, and no trust.")
             st.link_button("📜 Read the Bitcoin Whitepaper", "https://bitcoin.org/bitcoin.pdf")
-            
             st.divider()
-            
             st.subheader("2. What is it? (The Digital Ledger)")
             st.write("A blockchain is a **Distributed Digital Ledger**.")
             st.markdown("""
@@ -260,9 +288,7 @@ else:
             * **Blocks:** Transactions are bundled into groups called 'Blocks'.
             * **Chain:** Each block is cryptographically tied to the one before it.
             """)
-            
             st.divider()
-
             st.subheader("3. Security: Why is it Unhackable?")
             st.write("Blockchain security relies on **Hashing (SHA-256)** and **Consensus**.")
             c_sec1, c_sec2 = st.columns(2)
@@ -272,9 +298,7 @@ else:
             with c_sec2:
                 st.error("🛡️ The 51% Rule")
                 st.write("To successfully hack Bitcoin, you would need to control **51% of all computing power in the world** simultaneously. This would cost billions of dollars per hour, making it economically impossible.")
-
             st.divider()
-
             st.subheader("4. Types of Blockchains")
             st.write("Not all blockchains are Bitcoin. There are three main types:")
             st.markdown("""
@@ -282,9 +306,7 @@ else:
             2.  **Private (Permissioned):** Hyperledger, Ripple (historically). Used by banks/enterprises. You need an invite to join.
             3.  **Hybrid:** A mix of both. Used for medical records or identity verification.
             """)
-
             st.divider()
-
             st.subheader("5. The Future of Crypto")
             st.write("Where are we going from here?")
             st.success("🚀 **The Phase of Utility**")
@@ -300,9 +322,7 @@ else:
             st.write("A Smart Contract is **self-executing code** stored on a blockchain. It acts like a digital agreement that runs exactly as programmed, with no possibility of downtime, censorship, or fraud.")
             st.info("💡 **The Concept:** 'If This, Then That' (IFTTT). It replaces the middleman with mathematics.")
             st.write("Unlike a paper contract, which requires a lawyer to enforce, a smart contract enforces itself. Once the conditions are met, the transaction happens instantly.")
-            
             st.divider()
-            
             st.subheader("2. The Vending Machine Analogy (The Perfect Example)")
             st.write("Nick Szabo, who invented the concept, compared it to a Vending Machine:")
             c_human, c_bot = st.columns(2)
@@ -314,31 +334,22 @@ else:
                 st.success("🤖 The New Way (The Vending Machine)")
                 st.write("**Process:** You insert a coin ($2.00). You press 'A1'. The machine drops the soda. No clerk needed. No trust needed.")
                 st.write("**Cost:** Low Fees + Instant.")
-
             st.divider()
-            
             st.subheader("3. Real World Use Cases (It's not just money)")
             st.write("Smart contracts are disrupting massive industries right now:")
-            
             st.markdown("##### 🏦 Decentralized Finance (DeFi)")
             st.write("Apps like **Uniswap** allow you to trade stocks/crypto without a broker. The 'Smart Contract' acts as the Market Maker. It holds the funds and swaps them automatically based on the current price.")
-            
             st.markdown("##### 🎨 NFT Royalties")
             st.write("In the old art world, an artist sold a painting for $100. If it resold for $1M later, they got $0. With Smart Contracts, the code can say: *'Every time this token is sold, send 5% of the price to the Original Artist.'* This happens automatically forever.")
-            
             st.markdown("##### ✈️ Parametric Insurance")
             st.write("Companies like **Etherisc** are building flight insurance. If your flight is delayed by >45 minutes (verified by flight data oracle), the smart contract **instantly** pays your refund. No claims form. No waiting on hold.")
-
             st.divider()
-            
             st.subheader("4. The Future: A Tokenized World")
             st.write("Where is this technology going in the next 10 years?")
             st.success("🏠 **Real Estate:**")
             st.write("House deeds will be NFTs. You will buy a house by sending USDC to a smart contract, and the 'House Token' will be sent to your wallet. No Title Company needed. Settlement time: 10 seconds.")
-            
             st.success("🗳️ **DAOs (Decentralized Autonomous Organizations):**")
             st.write("Companies managed by code, not CEOs. Token holders vote on decisions (like treasury spending), and the smart contract automatically executes the result of the vote.")
-
             st.code("""
             // Pseudo-code of a simple Smart Contract
             contract SimplePayment {
@@ -359,7 +370,6 @@ else:
         with st.expander("Lesson 3: Staking, Liquid Staking & Yield (How to Earn)"):
             st.subheader("1. The Two Ways to Earn in DeFi")
             st.write("Just holding crypto is like stuffing cash under your mattress. In DeFi, you can make your assets work for you.")
-            
             c_earn1, c_earn2 = st.columns(2)
             with c_earn1:
                 st.success("🛡️ Protocol Staking")
@@ -371,9 +381,7 @@ else:
                 st.write("**What is it?** You lend your coins to other users (borrowers) through a smart contract.")
                 st.write("**Risk:** Medium (Smart Contract Risk).")
                 st.write("**Reward:** Variable (Based on demand).")
-            
             st.divider()
-            
             st.subheader("2. Deep Dive: Liquid Staking (Jito & Lido)")
             st.write("Standard staking has a flaw: your money is **locked**. You can't sell it if the market crashes.")
             st.write("**The Solution: Liquid Staking Tokens (LSTs).**")
@@ -381,15 +389,12 @@ else:
             st.write("1. **Liquidity:** You can swap JitoSOL back to SOL instantly (no waiting period).")
             st.write("2. **Yield:** The token value grows automatically.")
             st.write("3. **MEV Rewards:** (Specific to Jito) You earn extra money from 'Maximal Extractable Value'—basically tips paid by traders for speed.")
-            
             col_jito1, col_jito2 = st.columns([3,1])
             with col_jito1:
                 st.write("**Example:** You deposit **10 SOL** into Jito. You get **9.x JitoSOL**. A year later, that 9.x JitoSOL is worth **10.7 SOL**.")
             with col_jito2:
                 st.link_button("Explore Jito ↗", "https://www.jito.network/")
-
             st.divider()
-
             st.subheader("3. Deep Dive: Decentralized Lending (Aave)")
             st.write("**Aave** is the biggest 'Bank' in DeFi, but it has no employees. It is run entirely by code.")
             st.markdown("""
@@ -397,7 +402,6 @@ else:
             * **Borrowers:** Deposit collateral (like BTC) to borrow USDC.
             """)
             st.warning("⚠️ **Safety Feature:** Aave is 'Over-Collateralized'. To borrow $100, you must deposit ~$120 worth of collateral. If the value drops, the robot liquidates the collateral to pay YOU (the depositor) back. This protects your deposit.")
-            
             col_aave1, col_aave2 = st.columns([3,1])
             with col_aave1:
                 st.write("**Strategy:** Many people deposit ETH into Aave to earn a small yield, while keeping the flexibility to withdraw instantly.")
@@ -503,14 +507,12 @@ else:
         # --- LAB 1 ---
         st.subheader("📈 1. Compound Interest Calculator")
         st.write("Visualize the power of **DCA (Dollar Cost Averaging)** + **Staking Yield**.")
-        
         c_calc1, c_calc2 = st.columns([1, 2])
         with c_calc1:
             initial = st.number_input("Starting Balance ($)", value=1000)
             monthly = st.number_input("Monthly Contribution ($)", value=100)
             apy = st.slider("APY (%)", 1, 50, 8)
             years = st.slider("Years to Grow", 1, 20, 10)
-        
         with c_calc2:
             months = years * 12
             monthly_rate = (apy / 100) / 12
@@ -518,14 +520,12 @@ else:
             contributions = []
             current_bal = initial
             total_contributed = initial
-            
             for i in range(months + 1):
                 if i > 0:
                     current_bal = current_bal * (1 + monthly_rate) + monthly
                     total_contributed += monthly
                 balance.append(current_bal)
                 contributions.append(total_contributed)
-                
             chart_data = pd.DataFrame({"Total Value": balance, "Your Principal": contributions})
             st.line_chart(chart_data)
             profit = balance[-1] - contributions[-1]
@@ -536,14 +536,12 @@ else:
         st.markdown("---")
         st.subheader("💰 2. Trade Profit (ROI) Calculator")
         st.write("Calculate your exact Net Profit after exchange fees.")
-        
         roi_c1, roi_c2 = st.columns(2)
         with roi_c1:
             buy_price = st.number_input("Buy Price per Coin ($)", value=50000.0)
             sell_price = st.number_input("Sell Price per Coin ($)", value=65000.0)
             amount_coin = st.number_input("Amount of Coins", value=0.1)
             fee_pct = st.number_input("Exchange Fee (%)", value=0.1)
-            
         with roi_c2:
             cost_basis = buy_price * amount_coin
             gross_sale = sell_price * amount_coin
@@ -552,7 +550,6 @@ else:
             total_fees = buy_fee + sell_fee
             net_profit = gross_sale - cost_basis - total_fees
             roi_pct = (net_profit / cost_basis) * 100
-            
             st.write("### 📊 Results")
             if net_profit >= 0:
                 st.success(f"**Net Profit:** ${net_profit:,.2f}")
@@ -566,24 +563,20 @@ else:
         st.markdown("---")
         st.subheader("⚖️ 3. Risk/Reward Ratio Calculator")
         st.write("Strategy Tool: Should you take this trade? (Target Ratio: 1:3 or higher)")
-        
         risk_c1, risk_c2 = st.columns(2)
         with risk_c1:
             entry_p = st.number_input("Entry Price ($)", value=100.0)
             stop_loss = st.number_input("Stop Loss ($)", value=90.0)
             take_profit = st.number_input("Take Profit Target ($)", value=130.0)
-            
         with risk_c2:
             risk_amt = entry_p - stop_loss
             reward_amt = take_profit - entry_p
-            
             if risk_amt <= 0 or reward_amt <= 0:
                 st.warning("Check your inputs. Stop Loss must be lower than Entry (for Longs).")
             else:
                 ratio = reward_amt / risk_amt
                 st.metric("Risk / Reward Ratio", f"1 : {ratio:.1f}")
                 st.write(f"Risking **${risk_amt:.2f}** to make **${reward_amt:.2f}**")
-                
                 if ratio >= 3: st.success("✅ **Excellent Trade.** (Ratio > 1:3)")
                 elif ratio >= 2: st.info("🆗 **Good Trade.** (Ratio > 1:2)")
                 else: st.error("❌ **Bad Trade.** Risk is too high for the reward.")
@@ -595,7 +588,6 @@ else:
         with col_sel:
             coin_opt = st.selectbox("Select Asset to Analyze:", 
                                     ["Bitcoin (BTC)", "Ethereum (ETH)", "Solana (SOL)", "Cardano (ADA)", "Ripple (XRP)", "Dogecoin (DOGE)"])
-            
             asset_map = {
                 "Bitcoin (BTC)": {"yf": "BTC-USD", "tv": "COINBASE:BTCUSD"},
                 "Ethereum (ETH)": {"yf": "ETH-USD", "tv": "COINBASE:ETHUSD"},
@@ -606,7 +598,6 @@ else:
             }
             yf_symbol = asset_map[coin_opt]["yf"]
             tv_symbol = asset_map[coin_opt]["tv"]
-
         try:
             coin_data = yf.Ticker(yf_symbol)
             hist = coin_data.history(period="2d")
@@ -649,43 +640,6 @@ else:
             except:
                 st.write("Loading price...")
 
-    # --- TAB 4: AI ASSISTANT (HARDCODED GEMINI-2.5-FLASH) ---
-    with tab_ai:
-        st.header("🤖 Baez IT Crypto Assistant")
-        st.caption("Powered by Google Gemini AI")
-        
-        # Check if silent load failed
-        if not api_configured:
-            st.error("⚠️ AI Service Unavailable. Please contact the administrator to check server secrets.")
-        else:
-            for message in st.session_state.chat_history:
-                with st.chat_message(message["role"]):
-                    st.markdown(message["content"])
-
-            if prompt := st.chat_input("Ask about Crypto..."):
-                st.session_state.chat_history.append({"role": "user", "content": prompt})
-                with st.chat_message("user"):
-                    st.markdown(prompt)
-
-                with st.chat_message("assistant"):
-                    message_placeholder = st.empty()
-                    try:
-                        # HARDCODED MODEL as requested
-                        model = genai.GenerativeModel('gemini-2.5-flash')
-                        context_prompt = f"You are a crypto expert. Answer this: {prompt}"
-                        
-                        full_response = ""
-                        response = model.generate_content(context_prompt, stream=True)
-                        for chunk in response:
-                            if chunk.text:
-                                full_response += chunk.text
-                                message_placeholder.markdown(full_response + "▌")
-                        message_placeholder.markdown(full_response)
-                        st.session_state.chat_history.append({"role": "assistant", "content": full_response})
-                    except Exception as e:
-                        st.error(f"Error: {str(e)}")
-                        st.info("Tip: If 'gemini-2.5-flash' is not available, try switching to 'gemini-1.5-flash' in the code.")
-
     # --- TAB 5: NEWS ---
     with tab_news:
         st.header("📰 Global Crypto News")
@@ -716,7 +670,6 @@ else:
     with tab_quiz:
         st.header("🧠 Knowledge Check")
         st.write("Test your mastery of the Academy material. Can you get a perfect 10/10?")
-        
         with st.form("quiz_form"):
             score = 0
             st.subheader("Part 1: The Basics")
@@ -734,10 +687,8 @@ else:
             q8 = st.radio("8. What does 'Bullish' mean in market terms?", ["Prices going DOWN", "Prices going UP", "Market is flat"], index=None)
             q9 = st.radio("9. What pays for a transaction on the network?", ["Gas Fees", "Subscription Fees", "It is free"], index=None)
             q10 = st.radio("10. Can you reverse a blockchain transaction?", ["Yes, call support", "No, it is immutable (permanent)"], index=None)
-            
             st.markdown("---")
             submitted = st.form_submit_button("Submit Answers")
-            
             if submitted:
                 if q1 == "On the Blockchain": score += 1
                 if q2 == "No one (Distributed Network)": score += 1
@@ -749,7 +700,6 @@ else:
                 if q8 == "Prices going UP": score += 1
                 if q9 == "Gas Fees": score += 1
                 if q10 == "No, it is immutable (permanent)": score += 1
-                
                 if score == 10:
                     st.balloons()
                     st.success(f"🏆 PERFECT SCORE! 10/10. You are a true Crypto Master.")
