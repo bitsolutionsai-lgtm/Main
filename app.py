@@ -204,8 +204,7 @@ with st.sidebar:
     # --- ☁️ FLOATING CLOUD AGENT BUTTON ---
     st.markdown("---")
     st.write("Need help?")
-    # High Visibility Button
-    if st.button("☁️ OPEN CLOUD AGENT", type="primary", use_container_width=True):
+    if st.button("☁️ OPEN CLOUD AGENT", type="primary", use_container_width=True, key="sidebar_agent"):
         show_chat_dialog()
     # --- END AGENT ---
 
@@ -266,13 +265,17 @@ else:
         st.title("BIT SOLUTIONS ACADEMY")
         st.caption("Classroom Dashboard")
     with col2:
-        if st.button("⬅ Exit to Cover"):
+        # --- NEW DASHBOARD AGENT BUTTON ---
+        if st.button("☁️ Launch AI Agent", type="primary", use_container_width=True, key="dashboard_agent"):
+            show_chat_dialog()
+            
+        if st.button("⬅ Exit to Cover", use_container_width=True):
             st.session_state.page = 'cover'
             st.rerun()
 
     st.markdown("---")
 
-    # --- NAVIGATION (AI REMOVED FROM TABS) ---
+    # --- NAVIGATION ---
     tab_learn, tab_sim, tab_data, tab_news, tab_quiz = st.tabs(["📖 Learn Concepts", "🧪 Lab Simulation", "📊 Live Market", "📰 Crypto News", "🧠 Knowledge Quiz"])
 
     # --- TAB 1: THE CLASSROOM ---
