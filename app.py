@@ -153,53 +153,60 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
+# --- ☁️ FLOATING CHAT DIALOG FUNCTION ---
+@st.dialog("☁️ Cloud Agent")
+def show_chat_dialog():
+    st.caption("I am your floating assistant. Ask me anything!")
+    
+    # Display History
+    for message in st.session_state.chat_history:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+    
+    # Chat Input (Inside the Modal)
+    if prompt := st.chat_input("Ask a question..."):
+        # 1. User Message
+        st.session_state.chat_history.append({"role": "user", "content": prompt})
+        with st.chat_message("user"):
+            st.markdown(prompt)
+        
+        # 2. AI Response
+        if not api_configured:
+            st.error("⚠️ AI Offline. Please check your API Key in Secrets.")
+        else:
+            with st.chat_message("assistant"):
+                message_placeholder = st.empty()
+                try:
+                    model = genai.GenerativeModel('gemini-2.5-flash')
+                    context_prompt = f"You are a crypto expert. Answer this concise: {prompt}"
+                    
+                    full_response = ""
+                    response = model.generate_content(context_prompt, stream=True)
+                    for chunk in response:
+                        if chunk.text:
+                            full_response += chunk.text
+                            message_placeholder.markdown(full_response + "▌")
+                    message_placeholder.markdown(full_response)
+                    st.session_state.chat_history.append({"role": "assistant", "content": full_response})
+                    st.rerun() # Force refresh to show updated history cleanly
+                except Exception as e:
+                    st.error(f"Error: {str(e)}")
+                    st.info("Tip: If 'gemini-2.5-flash' fails, try 'gemini-1.5-flash'.")
+
+
 # ==========================================
-# SIDEBAR: CLOUD AGENT & BUSINESS
+# SIDEBAR: CLOUD AGENT BUTTON & BUSINESS
 # ==========================================
 with st.sidebar:
     st.header("Baez IT Solutions")
     st.write("Expert Crypto & IT Consulting.")
 
-    # --- ☁️ FLOATING CLOUD AGENT ---
+    # --- ☁️ FLOATING CLOUD AGENT BUTTON ---
     st.markdown("---")
-    with st.expander("☁️ AI Cloud Agent", expanded=True):
-        st.caption("Ask me anything while you browse!")
-        
-        # Chat History Container (Scrollable)
-        chat_container = st.container(height=300)
-        with chat_container:
-            for message in st.session_state.chat_history:
-                with st.chat_message(message["role"]):
-                    st.markdown(message["content"])
-
-        # Chat Logic
-        if not api_configured:
-            st.error("⚠️ AI Offline (Check Secrets)")
-        else:
-            if prompt := st.chat_input("Ask the Cloud..."):
-                st.session_state.chat_history.append({"role": "user", "content": prompt})
-                with chat_container: # Force display in container
-                    with st.chat_message("user"):
-                        st.markdown(prompt)
-
-                    with st.chat_message("assistant"):
-                        message_placeholder = st.empty()
-                        try:
-                            # HARDCODED MODEL as requested
-                            model = genai.GenerativeModel('gemini-2.5-flash')
-                            context_prompt = f"You are a crypto expert. Answer this concise: {prompt}"
-                            
-                            full_response = ""
-                            response = model.generate_content(context_prompt, stream=True)
-                            for chunk in response:
-                                if chunk.text:
-                                    full_response += chunk.text
-                                    message_placeholder.markdown(full_response + "▌")
-                            message_placeholder.markdown(full_response)
-                            st.session_state.chat_history.append({"role": "assistant", "content": full_response})
-                        except Exception as e:
-                            st.error(f"Error: {str(e)}")
-                            st.info("Tip: If 'gemini-2.5-flash' fails, try 'gemini-1.5-flash'.")
+    st.write("Need help?")
+    # High Visibility Button
+    if st.button("☁️ OPEN CLOUD AGENT", type="primary", use_container_width=True):
+        show_chat_dialog()
     # --- END AGENT ---
 
     st.markdown("---")
