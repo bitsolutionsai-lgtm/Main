@@ -273,7 +273,8 @@ with st.sidebar:
     st.write("📈 **DeFi Strategy Planning**")
     st.markdown("---")
     st.subheader("Community")
-    st.link_button("💬 Join Discord Server", "https://discord.gg/YOUR_INVITE_CODE")
+    # LINK UPDATED HERE
+    st.link_button("💬 Join Discord Server", "https://discord.gg/f8txmDA2mJ")
     st.markdown("---")
     with st.form("contact_form"):
         contact_email = st.text_input("Your Email")
@@ -400,32 +401,28 @@ else:
                 elif current_rsi < 30: rsi_state = "Oversold (Buy Opp) 🟢"
                 kpi4.metric("RSI (14)", f"{current_rsi:.1f}", rsi_state, delta_color="off")
 
-                # <--- NEW EDUCATIONAL GUIDE ADDED HERE --->
+                # <--- EDUCATIONAL GUIDE --->
                 with st.expander("📘 How to Read These Charts"):
                     st.write("**1. Candlesticks (The Bars):**")
                     st.caption("Each bar shows the price movement for one day. [attachment_0](attachment)")
                     st.write("* **Green Candle:** Price went UP (Closed higher than it opened).")
                     st.write("* **Red Candle:** Price went DOWN (Closed lower than it opened).")
                     st.write("* **Wicks (Lines):** The highest and lowest price reached that day.")
-                    
                     st.divider()
-                    
                     st.write("**2. SMA (Simple Moving Average) - The Orange Line:**")
                     st.caption("This smoothes out the price action to show the trend. [attachment_1](attachment)")
                     st.write("* **Price Above Orange Line:** Generally considered an **UPTREND** (Bullish).")
                     st.write("* **Price Below Orange Line:** Generally considered a **DOWNTREND** (Bearish).")
-                    
                     st.divider()
-                    
                     st.write("**3. RSI (Relative Strength Index) - The Purple Graph:**")
                     st.caption("This measures momentum (speed of price change) on a scale of 0 to 100. [attachment_2](attachment)")
                     c_rsi1, c_rsi2 = st.columns(2)
                     with c_rsi1:
                         st.error("🔴 Overbought (>70)")
-                        st.write("The price rose too fast. Traders might sell soon to take profit. **Risk of Drop.**")
+                        st.write("The price rose too fast. Traders might sell soon. **Risk of Drop.**")
                     with c_rsi2:
                         st.success("🟢 Oversold (<30)")
-                        st.write("The price fell too hard. Traders might buy the 'dip'. **Potential Bounce.**")
+                        st.write("The price fell too hard. Traders might buy. **Potential Bounce.**")
                 # <--- END GUIDE --->
 
                 st.markdown("---")
