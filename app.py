@@ -8,8 +8,8 @@ import requests
 import xml.etree.ElementTree as ET
 import streamlit.components.v1 as components
 import google.generativeai as genai 
-import plotly.graph_objects as go # <--- NEW IMPORT FOR PRO CHARTS
-from plotly.subplots import make_subplots # <--- NEW IMPORT
+import plotly.graph_objects as go 
+from plotly.subplots import make_subplots 
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
@@ -164,6 +164,13 @@ st.markdown("""
         border: 1px solid rgba(255, 255, 255, 0.1);
         padding: 15px;
         border-radius: 10px;
+    }
+    
+    /* AI Agent Modal - Dark Background Fix */
+    div[role="dialog"] {
+        background-color: #1a1a1d !important;
+        color: white !important;
+        border: 1px solid #333;
     }
     
     /* Code Block */
