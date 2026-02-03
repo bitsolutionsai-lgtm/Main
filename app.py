@@ -119,6 +119,28 @@ st.markdown("""
         line-height: 1.6; 
     }
     
+    /* --- FIX: SELECT BOX & INPUT VISIBILITY --- */
+    /* This targets the box where you select the currency */
+    div[data-baseweb="select"] > div {
+        background-color: rgba(0, 0, 0, 0.7) !important; /* Dark background */
+        color: white !important; /* White text */
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    }
+    
+    /* Targets the text inside the box */
+    div[data-baseweb="select"] span {
+        color: white !important;
+    }
+    
+    /* Targets the dropdown list that appears when clicked */
+    div[role="listbox"] ul {
+        background-color: #1a1a1d !important;
+    }
+    div[role="listbox"] li {
+        color: white !important;
+    }
+    /* ------------------------------------------- */
+
     /* Buttons */
     div.stButton > button {
         background-color: #00BFA5;
