@@ -85,68 +85,84 @@ def get_crypto_news():
         return []
     return news_items
 
-# --- CUSTOM CSS ---
+# --- CUSTOM CSS (IMPROVED UI/UX) ---
 st.markdown("""
     <style>
-    /* BACKGROUND IMAGE SETTINGS */
+    /* BACKGROUND IMAGE SETTINGS - New Abstract Dark Theme */
     .stApp {
-        background-image: linear-gradient(rgba(0, 0, 0, 0.80), rgba(0, 0, 0, 0.80)), 
-                          url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=2832&auto=format&fit=crop');
+        background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)), 
+                          url('https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&q=80');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
     }
     
-    /* Text Readability */
-    h1, h2, h3 { color: #FFFFFF !important; text-shadow: 0px 2px 4px rgba(0,0,0,0.5); }
-    p, li, label { color: #E0E0E0 !important; font-size: 1.1em; line-height: 1.6; }
-    
-    /* Info Boxes */
-    div[data-baseweb="notification"] {
-        background-color: rgba(13, 71, 161, 0.8);
-        color: white;
-        border: 1px solid #1976D2;
-        backdrop-filter: blur(5px);
+    /* Text Readability - High Contrast */
+    h1, h2, h3 { 
+        color: #FFFFFF !important; 
+        text-shadow: 0px 4px 4px rgba(0,0,0,0.8); /* Drop shadow for pop */
+        font-weight: 700 !important;
     }
     
-    /* Buttons */
+    /* Brighter Text for Dark Mode */
+    p, li, label, div { 
+        color: #E6E6E6 !important; 
+        font-weight: 500 !important; 
+        line-height: 1.6; 
+    }
+    
+    /* Info Boxes - Glassmorphism */
+    div[data-baseweb="notification"] {
+        background-color: rgba(13, 71, 161, 0.3) !important;
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+    }
+    
+    /* Buttons - Neon Style */
     div.stButton > button {
         background-color: #00BFA5;
         color: white;
         border: none;
         padding: 10px 24px;
         font-size: 1.2em;
+        font-weight: 600;
         border-radius: 8px;
         transition: all 0.3s;
+        box-shadow: 0px 4px 10px rgba(0, 191, 165, 0.3);
     }
     div.stButton > button:hover {
-        background-color: #009688;
-        box-shadow: 0px 0px 10px #00BFA5;
+        background-color: #00E5C0;
+        box-shadow: 0px 0px 15px #00BFA5;
+        transform: translateY(-2px);
     }
     
-    /* Sidebar */
+    /* Sidebar - Dark Glass */
     section[data-testid="stSidebar"] {
-        background-color: rgba(33, 37, 41, 0.95);
+        background-color: rgba(20, 20, 25, 0.95);
         border-right: 1px solid #343A40;
     }
     
-    /* Tabs */
+    /* Tabs - Custom Styling */
     .stTabs [data-baseweb="tab-list"] { gap: 10px; }
     .stTabs [data-baseweb="tab"] {
-        background-color: rgba(33, 37, 41, 0.9);
+        background-color: rgba(255, 255, 255, 0.05);
         color: #ADB5BD;
-        border: 1px solid #343A40;
+        border-radius: 5px;
+        border: 1px solid rgba(255,255,255,0.1);
     }
     .stTabs [aria-selected="true"] {
         background-color: #00BFA5;
         color: #FFFFFF !important;
+        font-weight: bold;
         border-color: #00BFA5;
     }
     
     /* Code Block */
     code {
         color: #e83e8c;
-        background-color: #f1f3f5;
+        background-color: #212529;
         padding: 2px 4px;
         border-radius: 4px;
     }
@@ -275,13 +291,12 @@ else:
 
     st.markdown("---")
 
-    # --- NAVIGATION (REORDERED) ---
-    # New Order: News -> Data -> Learn -> Quiz (Lab Removed)
-    tab_news, tab_data, tab_learn, tab_quiz = st.tabs(["📰 Crypto News", "📊 Live Market", "📖 Learn Concepts", "🧠 Knowledge Quiz"])
+    # --- NAVIGATION (NEW ICONS) ---
+    tab_news, tab_data, tab_learn, tab_quiz = st.tabs(["⚡ Crypto News", "💎 Live Market", "🎓 Learn Concepts", "🧩 Knowledge Quiz"])
 
-    # --- TAB 1: NEWS (MOVED FIRST) ---
+    # --- TAB 1: NEWS ---
     with tab_news:
-        st.header("📰 Global Crypto News")
+        st.header("⚡ Global Crypto News")
         st.write("Live feed from **Cointelegraph**. Always verify news from multiple sources.")
         col_news1, col_news2 = st.columns([2, 1])
         with col_news1:
@@ -305,9 +320,9 @@ else:
                 st.write("**FOMO:** Fake hype to make you buy.")
             st.info("💡 **Pro Tip:** Never trade immediately on a headline. Wait 15 minutes.")
 
-    # --- TAB 2: LIVE MARKET (MOVED SECOND) ---
+    # --- TAB 2: LIVE MARKET ---
     with tab_data:
-        st.header("📊 Market Dashboard")
+        st.header("💎 Market Dashboard")
         col_sel, col_empty = st.columns([3, 1])
         with col_sel:
             coin_opt = st.selectbox("Select Asset to Analyze:", 
@@ -364,7 +379,7 @@ else:
             except:
                 st.write("Loading price...")
 
-    # --- TAB 3: LEARN CONCEPTS (MOVED THIRD) ---
+    # --- TAB 3: LEARN CONCEPTS ---
     with tab_learn:
         st.header("Blockchain Fundamentals")
         
@@ -595,7 +610,7 @@ else:
             st.write("When you use a DeFi app (like Uniswap), you give it permission to spend your coins. If that app gets hacked later, your wallet is at risk.")
             st.info("🛠️ **The Fix:** Once a month, use a tool like **Revoke.cash** to disconnect your wallet from old apps.")
 
-    # --- TAB 4: QUIZ (MOVED LAST) ---
+    # --- TAB 4: QUIZ ---
     with tab_quiz:
         st.header("🧠 Knowledge Check")
         st.write("Test your mastery of the Academy material. Can you get a perfect 10/10?")
@@ -636,3 +651,4 @@ else:
                     st.success(f"✅ Great Job! You got {score}/10. You are ready to start.")
                 else:
                     st.error(f"⚠️ You got {score}/10. Please review the lessons and try again.")
+   
