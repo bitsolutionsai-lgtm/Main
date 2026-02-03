@@ -119,43 +119,47 @@ st.markdown("""
         line-height: 1.6; 
     }
     
-    /* --- CRITICAL FIX: SELECT BOX & DROPDOWN MENU VISIBILITY --- */
+    /* --- FIX: DROPDOWN MENU VISIBILITY --- */
     
-    /* 1. The Closed Box (Input Field) */
+    /* 1. The Box Itself (Closed) */
     div[data-baseweb="select"] > div {
-        background-color: #1a1a1d !important; /* Dark Grey Background */
-        color: white !important;               /* White Text */
-        border-color: #444 !important;         /* Dark Border */
+        background-color: #1a1a1d !important;
+        color: white !important;
+        border-color: #555 !important;
     }
     
-    /* 2. The Text Inside the Closed Box */
+    /* 2. The Text inside the box */
     div[data-baseweb="select"] span {
         color: white !important;
     }
     
-    /* 3. The Dropdown Menu (The List that Pops Open) */
+    /* 3. The Popup Menu (Open State) - FORCE DARK BACKGROUND */
+    div[data-baseweb="popover"] {
+        background-color: #2b2b2b !important;
+    }
+    
+    /* 4. The Options List inside the Popup */
     div[data-baseweb="menu"] {
-        background-color: #1a1a1d !important; /* Dark Background for the list */
+        background-color: #2b2b2b !important;
     }
     
-    /* 4. The Options Inside the Menu */
-    div[data-baseweb="menu"] div, 
-    div[data-baseweb="menu"] span, 
+    /* 5. The Option Text */
     div[data-baseweb="menu"] li {
-        color: white !important; /* Force all list text to white */
+        color: white !important;
+        background-color: #2b2b2b !important;
     }
     
-    /* 5. Hover State (When you mouse over an option) */
+    /* 6. Hover Highlight Effect */
     div[data-baseweb="menu"] li:hover {
         background-color: #00BFA5 !important; /* Teal Highlight */
         color: white !important;
     }
     
-    /* 6. Icon Colors (The arrow) */
-    div[data-baseweb="select"] svg {
-        fill: white !important;
+    /* 7. Selected Option Highlight */
+    div[data-baseweb="menu"] li[aria-selected="true"] {
+        background-color: #00BFA5 !important;
     }
-    /* ----------------------------------------------------------- */
+    /* ------------------------------------- */
 
     /* Buttons */
     div.stButton > button {
