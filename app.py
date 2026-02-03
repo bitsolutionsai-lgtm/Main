@@ -119,43 +119,47 @@ st.markdown("""
         line-height: 1.6; 
     }
     
-    /* --- CRITICAL FIX: SELECT BOX & DROPDOWN MENU VISIBILITY --- */
+    /* --- FIX: DROPDOWN MENU VISIBILITY --- */
     
-    /* 1. The Closed Box (Input Field) */
+    /* 1. The Box Itself (Closed) */
     div[data-baseweb="select"] > div {
-        background-color: #1a1a1d !important; /* Dark Grey Background */
-        color: white !important;               /* White Text */
-        border-color: #444 !important;         /* Dark Border */
+        background-color: #1a1a1d !important;
+        color: white !important;
+        border-color: #555 !important;
     }
     
-    /* 2. The Text Inside the Closed Box */
+    /* 2. The Text inside the box */
     div[data-baseweb="select"] span {
         color: white !important;
     }
     
-    /* 3. The Dropdown Menu (The List that Pops Open) */
+    /* 3. The Popup Menu (Open State) - FORCE DARK BACKGROUND */
+    div[data-baseweb="popover"] {
+        background-color: #2b2b2b !important;
+    }
+    
+    /* 4. The Options List inside the Popup */
     div[data-baseweb="menu"] {
-        background-color: #1a1a1d !important; /* Dark Background for the list */
+        background-color: #2b2b2b !important;
     }
     
-    /* 4. The Options Inside the Menu */
-    div[data-baseweb="menu"] div, 
-    div[data-baseweb="menu"] span, 
+    /* 5. The Option Text */
     div[data-baseweb="menu"] li {
-        color: white !important; /* Force all list text to white */
+        color: white !important;
+        background-color: #2b2b2b !important;
     }
     
-    /* 5. Hover State (When you mouse over an option) */
+    /* 6. Hover Highlight Effect */
     div[data-baseweb="menu"] li:hover {
         background-color: #00BFA5 !important; /* Teal Highlight */
         color: white !important;
     }
     
-    /* 6. Icon Colors (The arrow) */
-    div[data-baseweb="select"] svg {
-        fill: white !important;
+    /* 7. Selected Option Highlight */
+    div[data-baseweb="menu"] li[aria-selected="true"] {
+        background-color: #00BFA5 !important;
     }
-    /* ----------------------------------------------------------- */
+    /* ------------------------------------- */
 
     /* Buttons */
     div.stButton > button {
@@ -395,6 +399,34 @@ else:
                 if current_rsi > 70: rsi_state = "Overbought (Sell Risk) 🔴"
                 elif current_rsi < 30: rsi_state = "Oversold (Buy Opp) 🟢"
                 kpi4.metric("RSI (14)", f"{current_rsi:.1f}", rsi_state, delta_color="off")
+
+                # <--- NEW EDUCATIONAL GUIDE ADDED HERE --->
+                with st.expander("📘 How to Read These Charts"):
+                    st.write("**1. Candlesticks (The Bars):**")
+                    st.caption("Each bar shows the price movement for one day. [attachment_0](attachment)")
+                    st.write("* **Green Candle:** Price went UP (Closed higher than it opened).")
+                    st.write("* **Red Candle:** Price went DOWN (Closed lower than it opened).")
+                    st.write("* **Wicks (Lines):** The highest and lowest price reached that day.")
+                    
+                    st.divider()
+                    
+                    st.write("**2. SMA (Simple Moving Average) - The Orange Line:**")
+                    st.caption("This smoothes out the price action to show the trend. [attachment_1](attachment)")
+                    st.write("* **Price Above Orange Line:** Generally considered an **UPTREND** (Bullish).")
+                    st.write("* **Price Below Orange Line:** Generally considered a **DOWNTREND** (Bearish).")
+                    
+                    st.divider()
+                    
+                    st.write("**3. RSI (Relative Strength Index) - The Purple Graph:**")
+                    st.caption("This measures momentum (speed of price change) on a scale of 0 to 100. [attachment_2](attachment)")
+                    c_rsi1, c_rsi2 = st.columns(2)
+                    with c_rsi1:
+                        st.error("🔴 Overbought (>70)")
+                        st.write("The price rose too fast. Traders might sell soon to take profit. **Risk of Drop.**")
+                    with c_rsi2:
+                        st.success("🟢 Oversold (<30)")
+                        st.write("The price fell too hard. Traders might buy the 'dip'. **Potential Bounce.**")
+                # <--- END GUIDE --->
 
                 st.markdown("---")
 
