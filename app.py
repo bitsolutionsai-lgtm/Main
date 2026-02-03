@@ -119,27 +119,43 @@ st.markdown("""
         line-height: 1.6; 
     }
     
-    /* --- FIX: SELECT BOX & INPUT VISIBILITY --- */
-    /* This targets the box where you select the currency */
+    /* --- CRITICAL FIX: SELECT BOX & DROPDOWN MENU VISIBILITY --- */
+    
+    /* 1. The Closed Box (Input Field) */
     div[data-baseweb="select"] > div {
-        background-color: rgba(0, 0, 0, 0.7) !important; /* Dark background */
-        color: white !important; /* White text */
-        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        background-color: #1a1a1d !important; /* Dark Grey Background */
+        color: white !important;               /* White Text */
+        border-color: #444 !important;         /* Dark Border */
     }
     
-    /* Targets the text inside the box */
+    /* 2. The Text Inside the Closed Box */
     div[data-baseweb="select"] span {
         color: white !important;
     }
     
-    /* Targets the dropdown list that appears when clicked */
-    div[role="listbox"] ul {
-        background-color: #1a1a1d !important;
+    /* 3. The Dropdown Menu (The List that Pops Open) */
+    div[data-baseweb="menu"] {
+        background-color: #1a1a1d !important; /* Dark Background for the list */
     }
-    div[role="listbox"] li {
+    
+    /* 4. The Options Inside the Menu */
+    div[data-baseweb="menu"] div, 
+    div[data-baseweb="menu"] span, 
+    div[data-baseweb="menu"] li {
+        color: white !important; /* Force all list text to white */
+    }
+    
+    /* 5. Hover State (When you mouse over an option) */
+    div[data-baseweb="menu"] li:hover {
+        background-color: #00BFA5 !important; /* Teal Highlight */
         color: white !important;
     }
-    /* ------------------------------------------- */
+    
+    /* 6. Icon Colors (The arrow) */
+    div[data-baseweb="select"] svg {
+        fill: white !important;
+    }
+    /* ----------------------------------------------------------- */
 
     /* Buttons */
     div.stButton > button {
