@@ -530,18 +530,55 @@ else:
             4.  **The Security:** To hack the network, you would need to beat all the computers in the world at this math puzzle simultaneously. It is mathematically impossible.
             """)
 
-        # --- LESSON 2 ---
-        with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
-            st.subheader("1. What exactly is a Smart Contract?")
-            st.write("It is **self-executing code**. 'If This, Then That'.")
-            st.info("💡 **Analogy:** A Vending Machine. You pay, you get item. No clerk needed.")
-            st.code("""
-            // Pseudo-code
-            contract SimplePayment {
-                function sendMoney() public payable {
-                    if (msg.value >= 10 ETH) { transferOwnership(msg.sender); }
-                }
-            }""", language="solidity")
+        # --- LESSON 2: BLOCKCHAIN ARCHITECTURE ---
+        with st.expander("Lesson 2: What is a Blockchain? (Types & Layers)", expanded=False):
+            st.subheader("1. It's Not Just Bitcoin")
+            st.write("Bitcoin was the *first* blockchain, but now there are thousands. Think of Blockchain as the **Operating System** (like Windows or iOS), and Bitcoin as just one **App** running on it.")
+            st.write("")
+            
+            st.divider()
+            
+            st.subheader("2. The Three Main Types")
+            st.write("Not all blockchains are public. Here is how they differ:")
+            
+            c_type1, c_type2, c_type3 = st.columns(3)
+            with c_type1:
+                st.success("🌍 Public (Permissionless)")
+                st.write("**Examples:** Bitcoin, Ethereum, Solana.")
+                st.write("**Who can join?** Anyone.")
+                st.write("**Pros:** Totally transparent, censorship-resistant.")
+                st.write("**Cons:** Can be slow and expensive.")
+            with c_type2:
+                st.info("🏢 Private (Permissioned)")
+                st.write("**Examples:** Hyperledger, R3 Corda.")
+                st.write("**Who can join?** Only invited members (Banks, Supply Chains).")
+                st.write("**Pros:** Fast, private data.")
+                st.write("**Cons:** Centralized (Trust required).")
+            with c_type3:
+                st.warning("🤝 Hybrid")
+                st.write("**Examples:** Dragonchain.")
+                st.write("**Concept:** A mix of both. Public for verification, private for sensitive data.")
+
+            st.divider()
+
+            st.subheader("3. The Scaling Problem (Why is it slow?)")
+            st.write("Imagine a single highway lane (Layer 1) trying to process every transaction in the world. It gets jammed. This is the **Blockchain Trilemma**: You usually have to sacrifice Speed to get Security.")
+
+            st.subheader("4. The Solution: Layer 2 (L2)")
+            st.write("**Layer 1 (L1):** The Main Settlement Layer (e.g., Ethereum). It is secure but expensive.")
+            st.write("**Layer 2 (L2):** The Express Lane built *on top* of L1.")
+            st.write("")
+            
+            st.info("💡 **The Bar Tab Analogy:**")
+            st.write("1. **Layer 1:** You pay for every single drink with a credit card transaction. (Slow, high fees).")
+            st.write("2. **Layer 2:** You open a tab. You order 10 drinks instantly (L2). At the end of the night, you settle the *total* bill once on the main credit card machine (L1).")
+            
+            st.write("**Real World L2 Examples:**")
+            st.markdown("""
+            * **Optimism & Arbitrum:** These 'roll up' hundreds of transactions into one bundle and post it to Ethereum.
+            * **Lightning Network:** Allows for instant, nearly free Bitcoin payments.
+            * **Base:** Coinbase's L2 chain that makes using crypto as cheap as sending an email.
+            """)
 
         # --- LESSON 3 ---
         with st.expander("Lesson 3: Staking & Yield"):
