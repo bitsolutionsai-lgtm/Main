@@ -273,7 +273,6 @@ with st.sidebar:
     st.write("📈 **DeFi Strategy Planning**")
     st.markdown("---")
     st.subheader("Community")
-    # LINK UPDATED HERE
     st.link_button("💬 Join Discord Server", "https://discord.gg/f8txmDA2mJ")
     st.markdown("---")
     with st.form("contact_form"):
@@ -404,18 +403,18 @@ else:
                 # <--- EDUCATIONAL GUIDE --->
                 with st.expander("📘 How to Read These Charts"):
                     st.write("**1. Candlesticks (The Bars):**")
-                    st.caption("Each bar shows the price movement for one day. [attachment_0](attachment)")
+                    st.caption("Each bar shows the price movement for one day.")
                     st.write("* **Green Candle:** Price went UP (Closed higher than it opened).")
                     st.write("* **Red Candle:** Price went DOWN (Closed lower than it opened).")
                     st.write("* **Wicks (Lines):** The highest and lowest price reached that day.")
                     st.divider()
                     st.write("**2. SMA (Simple Moving Average) - The Orange Line:**")
-                    st.caption("This smoothes out the price action to show the trend. [attachment_1](attachment)")
+                    st.caption("This smoothes out the price action to show the trend.")
                     st.write("* **Price Above Orange Line:** Generally considered an **UPTREND** (Bullish).")
                     st.write("* **Price Below Orange Line:** Generally considered a **DOWNTREND** (Bearish).")
                     st.divider()
                     st.write("**3. RSI (Relative Strength Index) - The Purple Graph:**")
-                    st.caption("This measures momentum (speed of price change) on a scale of 0 to 100. [attachment_2](attachment)")
+                    st.caption("This measures momentum (speed of price change) on a scale of 0 to 100.")
                     c_rsi1, c_rsi2 = st.columns(2)
                     with c_rsi1:
                         st.error("🔴 Overbought (>70)")
@@ -489,21 +488,47 @@ else:
     # --- TAB 3: LEARN CONCEPTS ---
     with tab_learn:
         st.header("Blockchain Fundamentals")
-        # --- LESSON 1 ---
-        with st.expander("Lesson 1: What is a Blockchain? (The Deep Dive)"):
-            st.subheader("1. The History: Origins of Bitcoin")
-            st.write("To understand Blockchain, you must understand why it was built. In **2008**, the global financial system collapsed.")
-            st.info("👤 **Satoshi Nakamoto:** On Oct 31, 2008, an anonymous cryptographer published the **Bitcoin Whitepaper**.")
+        # --- LESSON 1: BITCOIN DEEP DIVE ---
+        with st.expander("Lesson 1: What is Bitcoin? (The Digital Gold)", expanded=True):
+            st.subheader("1. The Origin Story")
+            st.write("In 2008, the global economy collapsed. Banks gambled with people's money, governments printed trillions to bail them out, and normal people lost their savings.")
+            st.info("👤 **Satoshi Nakamoto:** On Oct 31, 2008, an anonymous genius released the **Bitcoin Whitepaper**. It wasn't just a new money; it was a protest against the corrupt banking system.")
+            
             st.link_button("📜 Read the Bitcoin Whitepaper", "https://bitcoin.org/bitcoin.pdf")
+            
             st.divider()
-            st.subheader("2. What is it?")
-            st.write("A blockchain is a **Distributed Digital Ledger**. No single computer runs it.")
+            
+            st.subheader("2. What exactly IS Bitcoin?")
+            st.write("Forget the technical jargon for a second. Think of it like this:")
+            
+            c_analogy1, c_analogy2 = st.columns(2)
+            with c_analogy1:
+                st.success("📒 The Giant Public Notebook")
+                st.write("Imagine a notebook shared by everyone in the world. When Alice sends Bob 5 BTC, she writes it in the notebook. Everyone sees it. Everyone agrees. **No bank is needed to verify it.**")
+            with c_analogy2:
+                st.warning("🪙 Digital Gold")
+                st.write("Like gold, Bitcoin is scarce. There will only ever be **21 Million** Bitcoins. Governments cannot print more to cause inflation. It is the first 'absolute scarce' digital object.")
+
             st.divider()
-            st.subheader("3. Security")
-            st.write("Blockchain security relies on **Hashing (SHA-256)** and **Consensus**.")
+
+            st.subheader("3. Who controls it? (No Boss)")
+            st.write("This is the hardest part to understand: **No one controls Bitcoin.**")
+            st.markdown("""
+            * **No CEO:** You can't fire the CEO of Bitcoin.
+            * **No Server:** It doesn't run on Amazon Web Services. It runs on thousands of home computers.
+            * **Censorship Resistant:** If you want to send money to your family in another country, no government or bank can stop you.
+            """)
+
             st.divider()
-            st.subheader("4. The Future")
-            st.success("🚀 **The Phase of Utility:** Tokenization, L2 Scaling, DePIN.")
+
+            st.subheader("4. How does Mining work? (The Digital Lottery)")
+            st.write("Mining is not about digging. It is about **Security**.")
+            st.markdown("""
+            1.  **The Puzzle:** Every 10 minutes, the Bitcoin network creates a super-hard math puzzle.
+            2.  **The Race:** Thousands of computers (Miners) race to solve it.
+            3.  **The Reward:** The winner gets to add the next page to the 'Public Notebook' (Block) and is paid in new Bitcoin.
+            4.  **The Security:** To hack the network, you would need to beat all the computers in the world at this math puzzle simultaneously. It is mathematically impossible.
+            """)
 
         # --- LESSON 2 ---
         with st.expander("Lesson 2: Smart Contracts (The 'Robot Lawyer')"):
